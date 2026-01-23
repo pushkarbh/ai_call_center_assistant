@@ -1,0 +1,32 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+.Python
+venv/
+env/
+.env
+*.env
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Project specific
+data/uploads/
+*.wav
+*.mp3
+*.m4a
+.streamlit/secrets.toml
+
+# Redis
+dump.rdb
+
+# Logs
+*.log
