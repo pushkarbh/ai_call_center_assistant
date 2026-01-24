@@ -10,9 +10,10 @@ class Settings:
     OPENAI_API_KEY: str = os.getenv("OPENAI_API_KEY", "")
     ANTHROPIC_API_KEY: str = os.getenv("ANTHROPIC_API_KEY", "")
 
-    # LangSmith
+    # LangSmith (Observability - https://smith.langchain.com)
+    # Note: Variable is LANGCHAIN_API_KEY but it's for LangSmith service
     LANGCHAIN_TRACING_V2: str = os.getenv("LANGCHAIN_TRACING_V2", "true")
-    LANGCHAIN_API_KEY: str = os.getenv("LANGCHAIN_API_KEY", "")
+    LANGCHAIN_API_KEY: str = os.getenv("LANGCHAIN_API_KEY", "")  # LangSmith API key
     LANGCHAIN_PROJECT: str = os.getenv("LANGCHAIN_PROJECT", "call-center-assistant")
 
     # App Settings
@@ -26,7 +27,7 @@ class Settings:
         return {
             "openai": bool(cls.OPENAI_API_KEY),
             "anthropic": bool(cls.ANTHROPIC_API_KEY),
-            "langsmith": bool(cls.LANGCHAIN_API_KEY),
+            "langsmith": bool(cls.LANGCHAIN_API_KEY),  # LangSmith observability
         }
 
 settings = Settings()
