@@ -1,0 +1,29 @@
+Agent: Thank you for calling, this is Alex speaking. How can I help?
+
+Customer: Yes, I ordered something three days ago and I still haven't received a shipping confirmation. What's going on?
+
+Agent: I apologize for the delay. Let me check your order status. Can I have your order number?
+
+Customer: ORD-55443.
+
+Agent: Thank you. I see your order here... it looks like the item you ordered is currently on backorder. Our system should have notified you, but it appears that email didn't go through. I'm very sorry about that.
+
+Customer: Backorder? How long?
+
+Agent: The item is expected back in stock next week, around January 31st. However, I can see we have a similar item in stock right now that might work for you. It's actually an upgraded version.
+
+Customer: What's the price difference?
+
+Agent: The upgraded version is normally $20 more, but I can offer it to you at the same price as your original order as an apology for the inconvenience and lack of communication.
+
+Customer: Okay, that works. Let's do that instead.
+
+Agent: Perfect. I've cancelled your original order and placed a new order for the upgraded item. It will ship out today, and you'll have tracking information within the hour. I've also added free express shipping so you'll get it by Monday.
+
+Customer: Great, that's much better. Thank you for sorting this out.
+
+Agent: You're welcome! Is there anything else I can help you with?
+
+Customer: No, that's all. Thanks!
+
+Agent: Thank you for your patience. Have a wonderful day!

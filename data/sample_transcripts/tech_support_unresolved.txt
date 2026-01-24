@@ -1,0 +1,37 @@
+Agent: Thank you for calling TechSupport, this is Mike. How can I assist you?
+
+Customer: Hi Mike, my internet has been cutting out constantly for the past three days. It's really frustrating because I work from home.
+
+Agent: I'm sorry to hear that. Let me look into this for you. Can I get your account number?
+
+Customer: It's 87654321.
+
+Agent: Thank you. I can see your account. Let me check the network status in your area... It looks like there have been some intermittent outages reported in your neighborhood.
+
+Customer: That's what I figured. When is it going to be fixed?
+
+Agent: Our technicians are currently working on the issue. Unfortunately, I don't have an exact timeline for when it will be resolved.
+
+Customer: That's not acceptable. I've been paying for service I'm not receiving. I need this fixed today.
+
+Agent: I completely understand your frustration. What I can do is escalate this to our priority support team and schedule a technician visit for tomorrow morning. Would that work for you?
+
+Customer: Tomorrow? I need it fixed now. I have important meetings today.
+
+Agent: I apologize, but the earliest available appointment is tomorrow between 8 AM and 12 PM. I can also apply a credit to your account for the days of service interruption.
+
+Customer: Fine, schedule the appointment. But I expect a full credit for this month.
+
+Agent: I've scheduled the appointment and added a note about the service credit request. A supervisor will review it and follow up with you.
+
+Customer: Alright. Is there anything else I should do?
+
+Agent: For now, try restarting your modem. Sometimes that can help with intermittent issues. If the technician visit doesn't resolve it, please call us back.
+
+Customer: Okay, thanks.
+
+Agent: Thank you for your patience. Is there anything else I can help with?
+
+Customer: No, that's it.
+
+Agent: Thank you for calling TechSupport. We'll get this resolved for you. Have a good day.

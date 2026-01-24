@@ -1,0 +1,25 @@
+Agent: Thank you for calling TechSupport, my name is Sarah. How can I help you today?
+
+Customer: Hi Sarah, I'm calling about my bill. I was charged $150 but my plan is supposed to be $99 per month.
+
+Agent: I understand your concern about the billing discrepancy. Let me pull up your account. Can I have your account number please?
+
+Customer: Sure, it's 12345678.
+
+Agent: Thank you. I can see your account now. It looks like there was a one-time setup fee of $50 added to your first bill, plus your regular $99 plan charge. That's why the total is $150.
+
+Customer: Oh, I wasn't told about any setup fee when I signed up online. The website didn't mention it.
+
+Agent: I apologize for the confusion. That's definitely not the experience we want you to have. Let me check if we can waive that fee for you... Yes, I've gone ahead and credited the $50 setup fee back to your account. You'll see this credit on your next statement.
+
+Customer: That's great, thank you so much Sarah! I really appreciate you taking care of this.
+
+Agent: You're welcome! I'm glad I could help. Is there anything else I can assist you with today?
+
+Customer: No, that's all I needed. Thanks again!
+
+Agent: Thank you for calling TechSupport. Have a wonderful day!
+
+Customer: You too, bye!
+
+Agent: Goodbye!

@@ -1,0 +1,33 @@
+Agent: Premium Customer Service, this is Marcus. How can I assist you today?
+
+Customer: I've been on hold for 45 minutes and I'm absolutely furious. This is completely unacceptable!
+
+Agent: I sincerely apologize for the long wait time. That's definitely not the level of service we aim to provide. I'm here now and I'll do everything I can to help you. What can I do for you today?
+
+Customer: I was charged twice for my order last month and nobody has fixed it yet. I called two weeks ago and they said it would be resolved in 3-5 business days. Well, it's been 14 days and I still haven't gotten my refund!
+
+Agent: I'm truly sorry for this experience. Being charged twice is serious and the delay is unacceptable. Let me pull up your account right now... Can you confirm your account email?
+
+Customer: support-test@company.com
+
+Agent: Thank you. I can see both charges here - $299 each. You're absolutely right, the refund should have been processed already. I can see a ticket was created but it was never escalated properly. That's on us, and I apologize.
+
+Customer: This is ridiculous. I want to speak to a supervisor!
+
+Agent: I completely understand your frustration. I can transfer you to a supervisor, or I can handle this right now and have the supervisor follow up with you to ensure everything is resolved. Which would you prefer?
+
+Customer: Just fix it. I don't have time for more transfers.
+
+Agent: Absolutely. I'm processing the refund right now... Done. You'll see $299 back in your account within 24 hours. I'm also adding a $50 credit to your account for the inconvenience and the poor service you experienced. Additionally, I'm personally flagging your account for a supervisor callback within 48 hours to confirm you received everything.
+
+Customer: Well... okay. I appreciate you actually doing something about it.
+
+Agent: It's the least I can do. Again, I apologize for the wait time and the delay in resolving this. Is there anything else you need from me right now?
+
+Customer: No, that's it. Just make sure that refund goes through.
+
+Agent: I guarantee it. You'll have an email confirmation in the next 5 minutes. Thank you for your patience, and again, my apologies for this experience.
+
+Customer: Alright. Thanks.
+
+Agent: Thank you for calling, and we hope to provide you with much better service going forward.

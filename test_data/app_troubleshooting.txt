@@ -1,0 +1,37 @@
+Agent: Hello, this is Emma with Technical Support. How can I assist you today?
+
+Customer: Hi, I'm trying to set up your app on my phone but I keep getting an error message.
+
+Agent: I'd be happy to help you with that. What error message are you seeing?
+
+Customer: It says "Unable to verify account. Please check your internet connection." But my internet is working fine.
+
+Agent: Okay, let's troubleshoot this. First, can you tell me what type of phone you have?
+
+Customer: It's an iPhone 12.
+
+Agent: Great. Have you tried deleting the app and reinstalling it?
+
+Customer: Yes, I tried that twice already.
+
+Agent: Alright. Let me check your account on our end... I can see your account is active and everything looks normal. Can you try signing out of your iCloud account and signing back in? Sometimes that refreshes the connection.
+
+Customer: Hmm, how do I do that?
+
+Agent: Go to Settings, tap on your name at the top, scroll down and tap Sign Out. Then sign back in with your Apple ID.
+
+Customer: Okay, doing that now... Alright, I signed back in. Should I try the app again?
+
+Agent: Yes, please try opening the app now.
+
+Customer: Oh wow, it's working! It just logged me right in. Thank you so much!
+
+Agent: Excellent! I'm glad that fixed it. The issue was likely a temporary sync problem with your iCloud keychain. Is there anything else you need help with?
+
+Customer: No, that's it. I really appreciate your help!
+
+Agent: You're very welcome! Enjoy using the app, and don't hesitate to call back if you need anything else.
+
+Customer: Thanks, bye!
+
+Agent: Have a great day!

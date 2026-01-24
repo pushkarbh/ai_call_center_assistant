@@ -1,0 +1,31 @@
+Agent: Good afternoon, Sales Department. This is Patricia. How can I help you today?
+
+Customer: Hi Patricia! I'm interested in upgrading my current plan. Can you tell me about your premium options?
+
+Agent: I'd be happy to help you with that! Currently, you're on our Basic plan at $29 per month. Our Premium plan is $79 per month and includes unlimited storage, priority support, and advanced analytics. We also have a Pro plan at $149 per month with additional team collaboration features.
+
+Customer: What's the difference between Premium and Pro for team features?
+
+Agent: Great question! Premium allows up to 5 team members with basic sharing capabilities. Pro gives you unlimited team members, role-based permissions, real-time collaboration, and dedicated team workspaces. If you have a larger team or need more control over permissions, Pro is the way to go.
+
+Customer: I have a team of 8 people, so it sounds like Pro would be better. Are there any discounts for annual billing?
+
+Agent: Absolutely! If you pay annually, you get 2 months free. So Pro would be $1,490 per year instead of $1,788 - that's a savings of $298. Plus, I can see you've been a customer for over 2 years, so I can apply our loyalty discount for an additional 10% off your first year.
+
+Customer: That's fantastic! So what would that come out to?
+
+Agent: With the loyalty discount, your first year would be $1,341 - that's $447 in savings compared to paying monthly. After the first year, you'd pay the standard annual rate of $1,490.
+
+Customer: Perfect! Let's do it. When would this start?
+
+Agent: I can upgrade you right now, and I'll prorate your current month so you only pay the difference. You'll have immediate access to all Pro features, and your annual renewal will be 12 months from today.
+
+Customer: Excellent. Let's proceed!
+
+Agent: Great! I'm processing that now... All set! You're now on our Pro plan. You should receive a confirmation email within a few minutes with all the details and a guide for setting up your team workspace. Is there anything else I can help you with?
+
+Customer: No, that's perfect. Thank you so much for your help!
+
+Agent: You're very welcome! Enjoy all the new features, and don't hesitate to reach out if you need any assistance. Have a wonderful day!
+
+Customer: You too, thanks!

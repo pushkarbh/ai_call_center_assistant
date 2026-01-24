@@ -1,0 +1,23 @@
+Agent: Good morning, thank you for calling Premium Support. My name is David. How can I help you today?
+
+Customer: Hi David, I need to cancel my subscription. I've been trying to do it online but the button doesn't work.
+
+Agent: I'm sorry to hear you're having trouble with the website. I can definitely help you with the cancellation. May I ask the reason you'd like to cancel?
+
+Customer: I'm just not using the service enough to justify the cost. Nothing wrong with the product, it's just not for me right now.
+
+Agent: I completely understand. Before I process the cancellation, I want to make sure you're aware that you have some unused credits on your account - about $45 worth. Would you like to use those first, or shall I process a refund?
+
+Customer: Oh, I didn't know about the credits. Can I get those refunded?
+
+Agent: Absolutely. I'll process the full refund which includes your remaining subscription time plus the $45 in credits. You should see that back in your account within 3-5 business days. Your service will remain active until the end of your current billing cycle, which is February 15th.
+
+Customer: That's perfect, thank you for being so helpful about this.
+
+Agent: You're very welcome. Is there anything else I can assist you with today?
+
+Customer: No, that's everything. Thanks again!
+
+Agent: My pleasure. Thank you for being a customer, and we hope to see you back in the future. Have a great day!
+
+Customer: You too, bye!

@@ -1,0 +1,29 @@
+Agent: Thank you for calling, this is Jennifer. How may I help you?
+
+Customer: Yeah, I need to speak to a manager right now. I've called three times about the same issue and nothing has been done!
+
+Agent: I'm sorry to hear you've had to call multiple times. I'd be happy to help you today. Can you tell me what the issue is?
+
+Customer: My package was supposed to arrive two weeks ago. I keep getting told it's "on the way" but nothing ever shows up. This is ridiculous!
+
+Agent: I completely understand your frustration. That's not acceptable service. Let me look into this immediately. Can I have your order number?
+
+Customer: It's ORD-98765. And before you tell me it's "in transit" again, I've already checked the tracking. It's been stuck at the same location for 10 days!
+
+Agent: You're absolutely right. I can see the package has been stuck at our distribution center. I'm so sorry for this. It appears there was a labeling error that caused it to be misdirected.
+
+Customer: A labeling error? How does that even happen? This is completely unprofessional.
+
+Agent: You're right to be upset. This shouldn't have happened, and I apologize. Here's what I'm going to do: I'm issuing a full refund to your original payment method right now, and I'm also sending you a replacement package with expedited shipping at no charge. You should receive it within 2-3 business days.
+
+Customer: Okay... that's actually more than I expected. Thank you.
+
+Agent: It's the least we can do. I've also flagged your account for priority handling on any future orders. Is there anything else I can help you with today?
+
+Customer: No, that covers it. I appreciate you actually doing something about this.
+
+Agent: Of course. Again, I apologize for the inconvenience. You'll receive an email confirmation of the refund and the new shipment tracking within the hour.
+
+Customer: Alright, thank you Jennifer.
+
+Agent: Thank you for your patience. Have a great day!

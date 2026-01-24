@@ -1,4 +1,10 @@
 import streamlit as st
+import os
+from pathlib import Path
+from dotenv import load_dotenv
+
+# Load environment variables FIRST
+load_dotenv()
 
 st.set_page_config(
     page_title="Call Center Assistant",
@@ -6,247 +12,173 @@ st.set_page_config(
     layout="wide"
 )
 
+# ===================
+# Initialize
+# ===================
 st.title("📞 AI Call Center Assistant")
-st.markdown("**Phase 1**: Dependency Verification + UI Skeleton")
+st.markdown("**Phase 2**: Single Agent (Summarization)")
+
+# Check for API key
+if not os.getenv("OPENAI_API_KEY"):
+    st.error("⚠️ OPENAI_API_KEY not set. Please add it to your environment or HF Spaces secrets.")
+    st.stop()
+
+# Import after env check
+from agents.summarization_agent import SummarizationAgent
+from models.schemas import CallSummary
+
+# Initialize agent (cached)
+@st.cache_resource
+def get_summarization_agent():
+    return SummarizationAgent(model="gpt-4o-mini")
+
+agent = get_summarization_agent()
 
 # ===================
-# Dependency Check
+# Sidebar - Sample Data
 # ===================
-st.header("1. Dependency Verification")
+with st.sidebar:
+    st.header("📁 Sample Transcripts")
 
-with st.status("Checking dependencies...", expanded=True) as status:
-    all_ok = True
-
-    # Test core imports
-    try:
-        st.write("Checking Streamlit...")
-        import streamlit
-        st.write(f"  ✅ streamlit {streamlit.__version__}")
-    except Exception as e:
-        st.write(f"  ❌ streamlit: {e}")
-        all_ok = False
-
-    try:
-        st.write("Checking Pydantic...")
-        import pydantic
-        st.write(f"  ✅ pydantic {pydantic.__version__}")
-    except Exception as e:
-        st.write(f"  ❌ pydantic: {e}")
-        all_ok = False
-
-    try:
-        st.write("Checking LangChain...")
-        import langchain
-        st.write(f"  ✅ langchain {langchain.__version__}")
-    except Exception as e:
-        st.write(f"  ❌ langchain: {e}")
-        all_ok = False
-
-    try:
-        st.write("Checking LangChain-OpenAI...")
-        from langchain_openai import ChatOpenAI
-        st.write("  ✅ langchain-openai")
-    except Exception as e:
-        st.write(f"  ❌ langchain-openai: {e}")
-        all_ok = False
-
-    try:
-        st.write("Checking LangChain-Anthropic...")
-        from langchain_anthropic import ChatAnthropic
-        st.write("  ✅ langchain-anthropic")
-    except Exception as e:
-        st.write(f"  ❌ langchain-anthropic: {e}")
-        all_ok = False
-
-    try:
-        st.write("Checking LangGraph...")
-        from langgraph.graph import StateGraph
-        st.write("  ✅ langgraph")
-    except Exception as e:
-        st.write(f"  ❌ langgraph: {e}")
-        all_ok = False
-
-    try:
-        st.write("Checking LiteLLM...")
-        import litellm
-        try:
-            version = litellm.__version__
-        except AttributeError:
-            version = "(version info not available)"
-        st.write(f"  ✅ litellm {version}")
-    except Exception as e:
-        st.write(f"  ❌ litellm: {e}")
-        all_ok = False
-
-    try:
-        st.write("Checking OpenAI...")
-        import openai
-        st.write(f"  ✅ openai {openai.__version__}")
-    except Exception as e:
-        st.write(f"  ❌ openai: {e}")
-        all_ok = False
-
-    try:
-        st.write("Checking streamlit-flow...")
-        from streamlit_flow import streamlit_flow
-        st.write("  ✅ streamlit-flow")
-    except Exception as e:
-        st.write(f"  ❌ streamlit-flow: {e}")
-        all_ok = False
-
-    try:
-        st.write("Checking project modules...")
-        from config.settings import settings
-        from models.schemas import CallSummary, QAScores, AgentState
-        st.write("  ✅ project modules")
-    except Exception as e:
-        st.write(f"  ❌ project modules: {e}")
-        all_ok = False
-
-    if all_ok:
-        status.update(label="All dependencies verified!", state="complete")
+    sample_dir = Path("data/sample_transcripts")
+    if sample_dir.exists():
+        sample_files = list(sample_dir.glob("*.txt"))
+        if sample_files:
+            selected_sample = st.selectbox(
+                "Load a sample transcript:",
+                options=["None"] + [f.name for f in sample_files]
+            )
+        else:
+            selected_sample = "None"
+            st.info("No sample files found")
     else:
-        status.update(label="Some dependencies failed!", state="error")
+        selected_sample = "None"
+        st.info("Sample directory not found")
+
+    st.divider()
+    st.markdown("**Agent Info**")
+    st.caption(f"Model: {agent.model_name}")
 
 # ===================
-# Configuration Check
+# Main Content
 # ===================
-st.header("2. Configuration Status")
-
-try:
-    from config.settings import settings
-    config_status = settings.validate()
-
-    col1, col2, col3 = st.columns(3)
-    with col1:
-        if config_status["openai"]:
-            st.success("✅ OpenAI API Key")
-        else:
-            st.warning("⚠️ OpenAI API Key not set")
-
-    with col2:
-        if config_status["anthropic"]:
-            st.success("✅ Anthropic API Key")
-        else:
-            st.warning("⚠️ Anthropic API Key not set")
-
-    with col3:
-        if config_status["langsmith"]:
-            st.success("✅ LangSmith API Key")
-        else:
-            st.warning("⚠️ LangSmith API Key not set")
-except Exception as e:
-    st.error(f"Configuration error: {e}")
-
-# ===================
-# UI Skeleton
-# ===================
-st.header("3. UI Skeleton")
-
-st.divider()
-
-# Two-column layout
-col_left, col_right = st.columns([1, 2])
+col_left, col_right = st.columns([1, 1])
 
 with col_left:
-    st.subheader("📤 Upload")
+    st.subheader("📤 Input")
+
+    # File uploader
     uploaded_file = st.file_uploader(
-        "Upload audio or transcript",
-        type=["wav", "mp3", "m4a", "txt", "json"],
-        help="Supported formats: WAV, MP3, M4A (audio) or TXT, JSON (transcript)"
+        "Upload transcript (.txt)",
+        type=["txt"],
+        help="Upload a text file containing a call transcript"
     )
 
+    # Text area for transcript
     if uploaded_file:
-        st.info(f"File: {uploaded_file.name} ({uploaded_file.size} bytes)")
+        transcript_text = uploaded_file.read().decode("utf-8")
+    elif selected_sample != "None":
+        sample_path = Path("data/sample_transcripts") / selected_sample
+        transcript_text = sample_path.read_text()
+    else:
+        transcript_text = ""
 
-    process_btn = st.button("🚀 Process Call", type="primary", disabled=not uploaded_file)
+    transcript_input = st.text_area(
+        "Transcript",
+        value=transcript_text,
+        height=400,
+        placeholder="Paste or upload a call transcript..."
+    )
 
-    if process_btn:
-        st.info("Processing will be implemented in Phase 2")
+    # Process button
+    process_btn = st.button(
+        "🚀 Generate Summary",
+        type="primary",
+        disabled=not transcript_input.strip()
+    )
 
 with col_right:
-    st.subheader("🔄 Workflow")
-    st.info("Workflow animation will be implemented in Phase 6")
+    st.subheader("📊 Results")
 
-    # Placeholder for workflow visualization
-    st.markdown("""
-    ```
-    ┌────────────┐     ┌──────────────┐     ┌─────────────┐
-    │  Intake    │────▶│ Transcribe   │────▶│  Summarize  │
-    │  Agent     │     │    Agent     │     │    Agent    │
-    └────────────┘     └──────────────┘     └─────────────┘
-                                                   │
-                                                   ▼
-                                           ┌─────────────┐
-                                           │  QA Score   │
-                                           │    Agent    │
-                                           └─────────────┘
-    ```
-    """)
+    if process_btn and transcript_input.strip():
+        with st.spinner("Analyzing transcript with GPT-4..."):
+            try:
+                summary = agent.run(transcript_input)
+                st.session_state["last_summary"] = summary
+                st.session_state["last_transcript"] = transcript_input
+            except Exception as e:
+                st.error(f"Error generating summary: {e}")
+                st.stop()
 
-st.divider()
+    # Display results if available
+    if "last_summary" in st.session_state:
+        summary: CallSummary = st.session_state["last_summary"]
 
-# Results tabs
-st.subheader("📊 Results")
-tab1, tab2, tab3, tab4, tab5 = st.tabs([
-    "Transcript",
-    "Summary",
-    "QA Scores",
-    "Abuse Flags",
-    "Debug"
-])
+        # Brief Summary
+        st.markdown("**Brief Summary**")
+        st.info(summary.brief_summary)
 
-with tab1:
-    st.markdown("*Transcript will appear here after processing...*")
+        # Key Points
+        st.markdown("**Key Points**")
+        for point in summary.key_points:
+            st.markdown(f"• {point}")
 
-with tab2:
-    st.markdown("*Summary will appear here after processing...*")
+        # Action Items
+        if summary.action_items:
+            st.markdown("**Action Items**")
+            for item in summary.action_items:
+                st.markdown(f"☐ {item}")
+        else:
+            st.markdown("**Action Items**")
+            st.markdown("_No action items_")
 
-    # Preview of what summary will look like
-    with st.expander("Preview: Summary Format"):
-        st.markdown("""
-        **Brief Summary**
-        > Customer called about billing issue. Agent resolved by applying credit.
+        # Customer Intent
+        st.markdown("**Customer Intent**")
+        st.write(summary.customer_intent)
 
-        **Key Points**
-        - Customer charged $150 instead of $99
-        - Setup fee was not communicated
-        - Agent credited $50 back
+        # Metadata
+        st.divider()
+        cols = st.columns(3)
 
-        **Action Items**
-        - None
+        with cols[0]:
+            sentiment_colors = {
+                "positive": "🟢",
+                "neutral": "🟡",
+                "negative": "🔴"
+            }
+            st.metric(
+                "Sentiment",
+                f"{sentiment_colors.get(summary.sentiment.value, '⚪')} {summary.sentiment.value.title()}"
+            )
 
-        **Sentiment**: Positive | **Resolution**: Resolved
-        """)
+        with cols[1]:
+            resolution_colors = {
+                "resolved": "✅",
+                "unresolved": "⏳",
+                "escalated": "⬆️"
+            }
+            st.metric(
+                "Resolution",
+                f"{resolution_colors.get(summary.resolution_status.value, '❓')} {summary.resolution_status.value.title()}"
+            )
 
-with tab3:
-    st.markdown("*QA Scores will appear here after processing...*")
+        with cols[2]:
+            st.metric("Topics", len(summary.topics))
 
-    # Preview of what scores will look like
-    with st.expander("Preview: QA Scores Format"):
-        cols = st.columns(4)
-        cols[0].metric("Empathy", "8.5", delta="Good")
-        cols[1].metric("Professionalism", "9.0", delta="Excellent")
-        cols[2].metric("Resolution", "8.0", delta="Good")
-        cols[3].metric("Tone", "8.5", delta="Good")
+        # Topics
+        with st.expander("Topics Discussed"):
+            for topic in summary.topics:
+                st.markdown(f"• {topic}")
 
-with tab4:
-    st.markdown("*Abuse flags will appear here if detected...*")
+        # Raw JSON
+        with st.expander("Raw JSON Output"):
+            st.json(summary.model_dump())
 
-with tab5:
-    st.markdown("*Debug info will appear here after processing...*")
-
-    with st.expander("Preview: Debug Info"):
-        st.json({
-            "execution_path": ["supervisor", "intake", "transcription", "summarization", "qa_scoring"],
-            "models_used": ["gpt-4o-mini", "whisper-1", "gpt-4", "gpt-4"],
-            "revision_count": 0,
-            "total_time_ms": 3500,
-            "langsmith_trace_url": "https://smith.langchain.com/..."
-        })
+    else:
+        st.info("Upload or select a transcript, then click 'Generate Summary' to see results.")
 
 # ===================
 # Footer
 # ===================
 st.divider()
-st.caption("AI Call Center Assistant | Capstone Project | Phase 1")
+st.caption("AI Call Center Assistant | Capstone Project | Phase 2 - Single Agent")
