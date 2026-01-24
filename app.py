@@ -75,13 +75,20 @@ with col_left:
     )
 
     # Text area for transcript
+    transcript_text = ""
     if uploaded_file:
-        transcript_text = uploaded_file.read().decode("utf-8")
+        try:
+            transcript_text = uploaded_file.read().decode("utf-8")
+        except Exception as e:
+            st.error(f"Error reading file: {e}")
+            transcript_text = ""
     elif selected_sample != "None":
-        sample_path = Path("data/sample_transcripts") / selected_sample
-        transcript_text = sample_path.read_text()
-    else:
-        transcript_text = ""
+        try:
+            sample_path = Path("data/sample_transcripts") / selected_sample
+            transcript_text = sample_path.read_text()
+        except Exception as e:
+            st.error(f"Error loading sample: {e}")
+            transcript_text = ""
 
     transcript_input = st.text_area(
         "Transcript",
