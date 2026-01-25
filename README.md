@@ -12,18 +12,21 @@ license: mit
 
 A multi-agent system for analyzing call center recordings and transcripts using LangGraph.
 
-## Current Phase: 3 - Multi-Agent Pipeline ✅
+## Current Phase: 4 - Supervisor + Critic Loop ✅
 
-**Pipeline**: Intake → Transcription → Summarization → QA Scoring
+**Pipeline**: Intake → Transcription → Summarization → Critic → (Revision Loop) → QA Scoring
 
 ### Features
 - ✅ **Intake Agent**: Metadata extraction and input validation
 - ✅ **Transcription Agent**: Text pass-through (Whisper API integration coming soon)
-- ✅ **Summarization Agent**: Call analysis with GPT-4o-mini
+- ✅ **Summarization Agent**: Call analysis with GPT-4o-mini (supports revisions)
+- ✅ **Critic Agent**: Evaluates summary quality (faithfulness, completeness, conciseness)
+- ✅ **Revision Loop**: Automatically improves summaries (up to 3 attempts)
 - ✅ **QA Scoring Agent**: Empathy, professionalism, resolution, tone evaluation (0-10 scale)
-- ✅ **LangGraph Workflow**: Linear multi-agent orchestration
+- ✅ **Supervisor Agent**: Dynamic routing and workflow control
+- ✅ **LangGraph Conditional Routing**: Loops back for revisions when needed
 - ✅ **File Upload**: Support for .txt, .wav, .mp3, .m4a files
-- ⏳ **Audio Transcription**: Whisper API integration (Phase 3+)
+- ⏳ **Audio Transcription**: Whisper API integration (Phase 5+)
 - ⏳ **Abuse Detection**: Coming in Phase 5
 - ⏳ **Workflow Visualization**: n8n-style animation (Phase 6)
 
@@ -34,8 +37,10 @@ A multi-agent system for analyzing call center recordings and transcripts using 
    - **Intake**: Validates input and extracts metadata
    - **Transcription**: Prepares text for analysis
    - **Summarization**: Analyzes call content, sentiment, resolution
+   - **Critic**: Evaluates summary quality (faithfulness, completeness, conciseness)
+   - **Revision Loop**: If needed, sends summary back for improvement (up to 3 times)
    - **QA Scoring**: Evaluates agent performance on 4 dimensions
-3. View comprehensive results: summary, scores, metadata, execution path
+3. View comprehensive results: summary, critique scores, revision history, QA metrics, metadata
 
 ## Tech Stack
 - **Orchestration**: LangGraph

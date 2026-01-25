@@ -16,7 +16,7 @@ st.set_page_config(
 # Initialize
 # ===================
 st.title("📞 AI Call Center Assistant")
-st.markdown("**Phase 3**: Multi-Agent Pipeline (Intake → Transcription → Summarization → QA)")
+st.markdown("**Phase 4**: Multi-Agent with Supervisor + Critic (Revision Loop)")
 
 # Check for API key
 if not os.getenv("OPENAI_API_KEY"):
@@ -24,7 +24,7 @@ if not os.getenv("OPENAI_API_KEY"):
     st.stop()
 
 # Import after env check
-from graph.workflow import run_call_analysis
+from graph.workflow_phase4 import run_phase4_analysis
 from models.schemas import AgentState
 
 # ===================
@@ -55,7 +55,9 @@ with st.sidebar:
 
     st.divider()
     st.markdown("**Pipeline**")
-    st.caption("Intake → Transcription → Summarization → QA Scoring")
+    st.caption("Intake → Transcription → Summarization → Critic")
+    st.caption("(Critic may loop back for revision)")
+    st.caption("→ QA Scoring")
 
 # ===================
 # Main Content
@@ -130,10 +132,10 @@ with col_right:
     st.subheader("📊 Results")
 
     if process_btn and transcript_input.strip():
-        with st.spinner("Running multi-agent analysis pipeline..."):
+        with st.spinner("Running multi-agent analysis with critic loop..."):
             try:
-                # Run the complete workflow
-                final_state = run_call_analysis(
+                # Run the Phase 4 workflow
+                final_state = run_phase4_analysis(
                     raw_input=transcript_input,
                     input_type=input_type,
                     input_file_path=file_name
@@ -230,6 +232,41 @@ with col_right:
             with st.expander("Detailed QA Comments"):
                 st.markdown(qa.comments)
 
+        # Critique Results
+        if state.get("summary_critique"):
+            st.divider()
+            st.markdown("### 🔍 Summary Critique")
+            
+            critique = state["summary_critique"]
+            
+            # Critique scores
+            crit_cols = st.columns(3)
+            with crit_cols[0]:
+                st.metric("Faithfulness", f"{critique.faithfulness_score}/10")
+            with crit_cols[1]:
+                st.metric("Completeness", f"{critique.completeness_score}/10")
+            with crit_cols[2]:
+                st.metric("Conciseness", f"{critique.conciseness_score}/10")
+            
+            # Revision status
+            if state["revision_count"] > 0:
+                if critique.needs_revision:
+                    st.warning(f"⚠️ Revision {state['revision_count']}/3: Summary needs improvement")
+                else:
+                    st.success(f"✅ Summary approved after {state['revision_count']} revision(s)")
+            else:
+                if critique.needs_revision:
+                    st.info("ℹ️ Summary could be improved (but no revisions were made)")
+                else:
+                    st.success("✅ Summary approved on first attempt")
+            
+            # Feedback
+            with st.expander("Detailed Critique Feedback"):
+                st.markdown(critique.feedback)
+                if critique.revision_instructions:
+                    st.markdown("**Revision Instructions:**")
+                    st.markdown(critique.revision_instructions)
+
         # Metadata
         if state.get("metadata"):
             with st.expander("Call Metadata"):
@@ -260,4 +297,4 @@ with col_right:
 # Footer
 # ===================
 st.divider()
-st.caption("AI Call Center Assistant | Capstone Project | Phase 3 - Multi-Agent Pipeline")
+st.caption("AI Call Center Assistant | Capstone Project | Phase 4 - Supervisor + Critic Loop")

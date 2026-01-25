@@ -38,10 +38,35 @@ Be concise but thorough. Focus on facts from the transcript."""),
         if not state.transcript:
             raise ValueError("No transcript available for summarization")
 
-        summary = self.chain.invoke({"transcript": state.transcript.full_text})
+        # Check if this is a revision
+        if state.revision_count > 0 and state.summary_critique:
+            # Add revision instructions to the prompt
+            revised_prompt = self.prompt + ChatPromptTemplate.from_messages([
+                ("human", """REVISION REQUIRED (Attempt {revision_count}/3):
+
+Previous critique:
+{critique_feedback}
+
+Revision instructions:
+{revision_instructions}
+
+Please improve the summary based on this feedback.""")
+            ])
+            
+            revised_chain = revised_prompt | self.llm
+            
+            summary = revised_chain.invoke({
+                "transcript": state.transcript.full_text,
+                "revision_count": state.revision_count,
+                "critique_feedback": state.summary_critique.feedback,
+                "revision_instructions": state.summary_critique.revision_instructions or "Improve based on the critique scores."
+            })
+        else:
+            # First attempt - standard summarization
+            summary = self.chain.invoke({"transcript": state.transcript.full_text})
         
         state.summary = summary
-        state.execution_path.append("summarization")
+        state.execution_path.append(f"summarization{'_v'+str(state.revision_count+1) if state.revision_count > 0 else ''}")
         state.models_used.append(self.model_name)
         
         return state
