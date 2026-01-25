@@ -16,7 +16,7 @@ st.set_page_config(
 # Initialize
 # ===================
 st.title("📞 AI Call Center Assistant")
-st.markdown("**Phase 4**: Multi-Agent with Supervisor + Critic (Revision Loop)")
+st.markdown("**Phase 5**: Guardrails (Input Validation + Abuse Detection)")
 
 # Check for API key
 if not os.getenv("OPENAI_API_KEY"):
@@ -24,7 +24,7 @@ if not os.getenv("OPENAI_API_KEY"):
     st.stop()
 
 # Import after env check
-from graph.workflow_phase4 import run_phase4_analysis
+from graph.workflow_phase5 import run_phase5_analysis
 from models.schemas import AgentState
 
 # ===================
@@ -55,9 +55,8 @@ with st.sidebar:
 
     st.divider()
     st.markdown("**Pipeline**")
-    st.caption("Intake → Transcription → Summarization → Critic")
-    st.caption("(Critic may loop back for revision)")
-    st.caption("→ QA Scoring")
+    st.caption("Validation → Intake → Transcription → Abuse Detection")
+    st.caption("→ Summarization → Critic (loop) → QA Scoring")
 
 # ===================
 # Main Content
@@ -132,10 +131,10 @@ with col_right:
     st.subheader("📊 Results")
 
     if process_btn and transcript_input.strip():
-        with st.spinner("Running multi-agent analysis with critic loop..."):
+        with st.spinner("Running analysis with guardrails..."):
             try:
-                # Run the Phase 4 workflow
-                final_state = run_phase4_analysis(
+                # Run the Phase 5 workflow
+                final_state = run_phase5_analysis(
                     raw_input=transcript_input,
                     input_type=input_type,
                     input_file_path=file_name
@@ -150,11 +149,65 @@ with col_right:
     # Display results if available
     if "last_state" in st.session_state:
         state = st.session_state["last_state"]  # LangGraph returns a dict
-        summary = state["summary"]
+        
+        # Validation Results
+        if state.get("validation_result"):
+            validation = state["validation_result"]
+            
+            if validation.is_valid:
+                st.success("✅ Input validation passed")
+            else:
+                st.error("❌ Input validation failed")
+                for issue in validation.issues:
+                    st.error(f"• {issue}")
+            
+            if validation.warnings:
+                with st.expander("⚠️ Validation Warnings"):
+                    for warning in validation.warnings:
+                        st.warning(warning)
+        
+        # Abuse Detection Results
+        if state.get("abuse_flags"):
+            abuse_flags = state["abuse_flags"]
+            
+            if abuse_flags:
+                st.divider()
+                st.markdown("### 🚨 Abuse Detection Alerts")
+                
+                for flag in abuse_flags:
+                    severity_colors = {
+                        "low": "🟡",
+                        "medium": "🟠",
+                        "high": "🔴",
+                        "critical": "🔴",
+                        "none": "⚪"
+                    }
+                    
+                    severity_icon = severity_colors.get(flag.severity.value, "⚪")
+                    
+                    # Display abuse types (it's a list)
+                    abuse_types_str = ", ".join([t.value.upper() for t in flag.abuse_type])
+                    
+                    with st.expander(f"{severity_icon} {abuse_types_str} - {flag.severity.value.upper()} severity"):
+                        if flag.speaker:
+                            st.markdown(f"**Speaker**: {flag.speaker}")
+                        if flag.evidence:
+                            st.markdown(f"**Evidence**: {', '.join([f'\"{e}\"' for e in flag.evidence])}")
+                        if flag.recommended_action:
+                            st.markdown(f"**Recommended Action**: {flag.recommended_action}")
+            else:
+                st.success("✅ No abusive content detected")
+        
+        # Only show summary if validation passed
+        if not state.get("validation_result") or state.get("validation_result").is_valid:
+            summary = state["summary"]
+            
+            st.divider()
+            st.markdown("### 📋 Call Summary")
 
-        # Brief Summary
-        st.markdown("**Brief Summary**")
-        st.info(summary.brief_summary)
+            # Brief Summary
+            st.markdown("**Brief Summary**")
+            st.info(summary.brief_summary)
 
         # Key Points
         st.markdown("**Key Points**")
@@ -297,4 +350,4 @@ with col_right:
 # Footer
 # ===================
 st.divider()
-st.caption("AI Call Center Assistant | Capstone Project | Phase 4 - Supervisor + Critic Loop")
+st.caption("AI Call Center Assistant | Capstone Project | Phase 5 - Guardrails")

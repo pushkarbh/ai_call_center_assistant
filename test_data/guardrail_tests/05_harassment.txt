@@ -1,0 +1,7 @@
+Customer: I need to speak with someone competent, not some idiot like you!
+Agent: I'm sorry you're frustrated. I'm here to help.
+Customer: You're useless! Are you even qualified for this job? You sound incompetent!
+Agent: I understand you're upset. Let me transfer you to my supervisor.
+Customer: Yes, please get me someone with a brain! You're clearly too stupid to help me!
+Agent: I'm connecting you now. Please hold.
+Customer: Finally! Get me away from this moron!

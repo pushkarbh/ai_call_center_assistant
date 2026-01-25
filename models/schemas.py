@@ -104,6 +104,7 @@ class InputValidationResult(BaseModel):
     confidence: float = Field(ge=0.0, le=1.0)
     input_type_detected: str
     issues: List[str] = []
+    warnings: List[str] = []
     requires_user_confirmation: bool = False
     rejection_reason: Optional[str] = None
 

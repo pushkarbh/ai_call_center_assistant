@@ -1,0 +1,9 @@
+Customer: This is the worst service I've ever experienced! You guys are complete idiots!
+Agent: I'm sorry to hear that you're frustrated. I'd like to help resolve this.
+Customer: Damn right you should be sorry! This is bullshit! I've been waiting for over an hour!
+Agent: I understand your frustration. Let me look into this right away.
+Customer: You better fix this crap or I'm canceling everything!
+Agent: I'm checking your account now. I see the issue and I'll have it resolved immediately.
+Customer: About damn time! This is ridiculous!
+Agent: I've processed the correction. Is there anything else I can help with?
+Customer: No, just don't screw up again!

@@ -1,0 +1,12 @@
+Customer: I'm extremely upset about this billing error.
+Agent: I sincerely apologize for any inconvenience. I'll help you resolve this right away.
+Customer: This has caused me a lot of stress and wasted my time.
+Agent: I completely understand your frustration. Let me pull up your account and see exactly what happened.
+Customer: I just want this fixed properly this time.
+Agent: Absolutely. I'm reviewing your billing history now. I can see the error, and I'm processing a full refund immediately.
+Customer: How long will that take?
+Agent: The refund will be processed today and should appear in your account within 3-5 business days.
+Customer: Okay, thank you for handling this professionally.
+Agent: You're very welcome. I've also added a credit to your account for the inconvenience. Is there anything else I can help with?
+Customer: No, that resolves everything. Thank you.
+Agent: Great! Thank you for your patience and for being a valued customer. Have a wonderful day!

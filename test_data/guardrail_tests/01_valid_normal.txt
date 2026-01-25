@@ -1,0 +1,8 @@
+Customer: Hi, can you help me reset my password?
+Agent: Of course! I'd be happy to help you with that. Can you verify your email address?
+Customer: Sure, it's john.smith@email.com
+Agent: Thank you. I've sent a password reset link to that email. You should receive it within a few minutes.
+Customer: Got it! Thanks for the quick help.
+Agent: You're welcome! Is there anything else I can assist you with today?
+Customer: No, that's all. Have a great day!
+Agent: You too! Thank you for contacting us.

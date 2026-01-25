@@ -1,0 +1,8 @@
+Customer: I'm very frustrated with the service quality lately. I feel like nobody is listening to my concerns.
+Agent: I'm truly sorry you've had that experience. I'm here to listen and help however I can.
+Customer: I've been a loyal customer for 5 years and this is really disappointing. I expected better.
+Agent: I completely understand your frustration, and I apologize. Your loyalty means a lot to us. Let me make this right.
+Customer: I appreciate that. I just want to feel valued as a customer again.
+Agent: Absolutely. Let me review your account and see what we can do to improve your experience.
+Customer: Thank you. I'm glad you're taking this seriously.
+Agent: Of course. I'm finding a solution right now that I think you'll be happy with.

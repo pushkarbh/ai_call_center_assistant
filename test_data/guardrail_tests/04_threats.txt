@@ -1,0 +1,8 @@
+Customer: I'm going to sue your entire company if you don't fix this immediately!
+Agent: I understand you're upset. Let me help resolve this for you.
+Customer: I will come down to your office and make you regret this! You better watch out!
+Agent: Sir, I want to help but I need you to remain calm. Let me look into your account.
+Customer: If I don't get my refund today, I'm reporting you to the authorities and filing a lawsuit!
+Agent: I'm escalating this to my supervisor right away.
+Customer: You better! I know where your corporate office is. This is a threat - fix this now!
+Agent: I'm getting a supervisor on the line immediately. Please hold.
