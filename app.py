@@ -131,6 +131,10 @@ with col_right:
     st.subheader("📊 Results")
 
     if process_btn and transcript_input.strip():
+        # Clear previous results when starting new analysis
+        if "last_state" in st.session_state:
+            del st.session_state["last_state"]
+        
         with st.spinner("Running analysis with guardrails..."):
             try:
                 # Run the Phase 5 workflow

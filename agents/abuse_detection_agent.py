@@ -72,7 +72,8 @@ List any abuse detected:""")
         # Find all abuse entries by matching TYPE: pattern
         type_pattern = r'TYPE:\s*(\w+)'
         severity_pattern = r'SEVERITY:\s*(\d+)'
-        text_pattern = r'TEXT:\s*["\'](.+?)["\']'
+        # Match either "..." or '...' but not mixed, and handle internal quotes/apostrophes
+        text_pattern = r'TEXT:\s*"([^"]+)"|TEXT:\s*\'([^\']+)\''
         context_pattern = r'CONTEXT:\s*(.+?)(?=TYPE:|$)'
         
         # Split response into potential abuse entries
@@ -94,7 +95,11 @@ List any abuse detected:""")
                 
                 abuse_type_str = type_match.group(1).lower().strip()
                 severity_num = int(severity_match.group(1)) if severity_match else 5
-                quoted_text = text_match.group(1).strip() if text_match else ""
+                # Handle either double quotes (group 1) or single quotes (group 2)
+                if text_match:
+                    quoted_text = (text_match.group(1) or text_match.group(2) or "").strip()
+                else:
+                    quoted_text = ""
                 context = context_match.group(1).strip() if context_match else ""
                 
                 # Map to enum
