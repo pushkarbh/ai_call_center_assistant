@@ -160,3 +160,63 @@ lsof -ti:7860 | xargs kill -9
 # Or use different port
 streamlit run app.py --server.port=8501
 ```
+
+## Phase 3 - Multi-Agent Pipeline
+
+### What's New in Phase 3
+
+Phase 3 introduces a **linear multi-agent workflow** using LangGraph:
+
+**Pipeline**: Intake → Transcription → Summarization → QA Scoring
+
+**Agents**:
+1. **Intake Agent**: Validates input, extracts metadata, generates call ID
+2. **Transcription Agent**: Pass-through for text, Whisper API for audio (future)
+3. **Summarization Agent**: Analyzes call with GPT-4o-mini (from Phase 2)
+4. **QA Scoring Agent**: Evaluates empathy, professionalism, resolution, tone (0-10 scale)
+
+**State Management**: Uses `AgentState` Pydantic model to pass data between agents
+
+### Testing Phase 3
+
+```bash
+# Activate venv
+source venv/bin/activate
+
+# Run locally
+streamlit run app.py --server.port=7860
+
+# Test with sample transcripts
+# - Select from dropdown: billing_inquiry.txt, tech_support_unresolved.txt, etc.
+# - Click "Analyze Call" button
+# - View all agent outputs: Summary, QA Scores, Metadata, Execution Path
+
+# Test with uploaded file
+# - Upload a .txt file with transcript
+# - See complete pipeline results
+```
+
+### Architecture
+
+```
+Input (text/audio)
+    ↓
+[Intake Agent]
+    ↓ (metadata extracted)
+[Transcription Agent]
+    ↓ (transcript ready)
+[Summarization Agent]
+    ↓ (summary generated)
+[QA Scoring Agent]
+    ↓ (quality scores)
+Final State → UI Display
+```
+
+### Files Created in Phase 3
+
+- `agents/intake_agent.py` - Input validation and metadata extraction
+- `agents/transcription_agent.py` - Text pass-through and Whisper integration
+- `agents/qa_scoring_agent.py` - Quality evaluation with GPT-4o-mini
+- `graph/workflow.py` - LangGraph workflow definition
+- Updated `app.py` - Multi-agent UI with tabs for all outputs
+

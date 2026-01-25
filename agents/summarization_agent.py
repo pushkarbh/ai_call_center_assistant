@@ -1,6 +1,6 @@
 from langchain_openai import ChatOpenAI
 from langchain_core.prompts import ChatPromptTemplate
-from models.schemas import CallSummary
+from models.schemas import CallSummary, AgentState
 import os
 
 class SummarizationAgent:
@@ -33,10 +33,28 @@ Be concise but thorough. Focus on facts from the transcript."""),
 
         self.chain = self.prompt | self.llm
 
-    def run(self, transcript: str) -> CallSummary:
-        """Generate a summary from the transcript"""
-        return self.chain.invoke({"transcript": transcript})
+    def run(self, state: AgentState) -> AgentState:
+        """Generate a summary from the transcript in the state"""
+        if not state.transcript:
+            raise ValueError("No transcript available for summarization")
 
-    async def arun(self, transcript: str) -> CallSummary:
+        summary = self.chain.invoke({"transcript": state.transcript.full_text})
+        
+        state.summary = summary
+        state.execution_path.append("summarization")
+        state.models_used.append(self.model_name)
+        
+        return state
+
+    async def arun(self, state: AgentState) -> AgentState:
         """Async version"""
-        return await self.chain.ainvoke({"transcript": transcript})
+        if not state.transcript:
+            raise ValueError("No transcript available for summarization")
+
+        summary = await self.chain.ainvoke({"transcript": state.transcript.full_text})
+        
+        state.summary = summary
+        state.execution_path.append("summarization")
+        state.models_used.append(self.model_name)
+        
+        return state

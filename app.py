@@ -16,7 +16,7 @@ st.set_page_config(
 # Initialize
 # ===================
 st.title("📞 AI Call Center Assistant")
-st.markdown("**Phase 2**: Single Agent (Summarization)")
+st.markdown("**Phase 3**: Multi-Agent Pipeline (Intake → Transcription → Summarization → QA)")
 
 # Check for API key
 if not os.getenv("OPENAI_API_KEY"):
@@ -24,15 +24,8 @@ if not os.getenv("OPENAI_API_KEY"):
     st.stop()
 
 # Import after env check
-from agents.summarization_agent import SummarizationAgent
-from models.schemas import CallSummary
-
-# Initialize agent (cached)
-@st.cache_resource
-def get_summarization_agent():
-    return SummarizationAgent(model="gpt-4o-mini")
-
-agent = get_summarization_agent()
+from graph.workflow import run_call_analysis
+from models.schemas import AgentState
 
 # ===================
 # Sidebar - Sample Data
@@ -40,24 +33,29 @@ agent = get_summarization_agent()
 with st.sidebar:
     st.header("📁 Sample Transcripts")
 
+    # Collect samples from both directories
+    all_samples = []
+    
     sample_dir = Path("data/sample_transcripts")
     if sample_dir.exists():
-        sample_files = list(sample_dir.glob("*.txt"))
-        if sample_files:
-            selected_sample = st.selectbox(
-                "Load a sample transcript:",
-                options=["None"] + [f.name for f in sample_files]
-            )
-        else:
-            selected_sample = "None"
-            st.info("No sample files found")
+        all_samples.extend([f.name for f in sample_dir.glob("*.txt")])
+    
+    test_dir = Path("test_data")
+    if test_dir.exists():
+        all_samples.extend([f.name for f in test_dir.glob("*.txt")])
+    
+    if all_samples:
+        selected_sample = st.selectbox(
+            "Load a sample transcript:",
+            options=["None"] + sorted(all_samples)
+        )
     else:
         selected_sample = "None"
-        st.info("Sample directory not found")
+        st.info("No sample files found")
 
     st.divider()
-    st.markdown("**Agent Info**")
-    st.caption(f"Model: {agent.model_name}")
+    st.markdown("**Pipeline**")
+    st.caption("Intake → Transcription → Summarization → QA Scoring")
 
 # ===================
 # Main Content
@@ -69,23 +67,47 @@ with col_left:
 
     # File uploader
     uploaded_file = st.file_uploader(
-        "Upload transcript (.txt)",
-        type=["txt"],
-        help="Upload a text file containing a call transcript"
+        "Upload transcript or audio",
+        type=["txt", "wav", "mp3", "m4a"],
+        help="Upload a text transcript or audio file"
     )
 
     # Text area for transcript
     transcript_text = ""
+    file_name = None
+    input_type = "transcript"
+    
     if uploaded_file:
-        try:
-            transcript_text = uploaded_file.read().decode("utf-8")
-        except Exception as e:
-            st.error(f"Error reading file: {e}")
+        file_name = uploaded_file.name
+        # Check if audio file
+        if file_name.endswith(('.wav', '.mp3', '.m4a')):
+            input_type = "audio"
+            st.info(f"🎵 Audio file detected: {file_name}")
+            st.warning("⚠️ Audio transcription with Whisper API not yet implemented. Coming soon!")
+            # For now, just show the file name
             transcript_text = ""
+        else:
+            # Text file
+            try:
+                transcript_text = uploaded_file.read().decode("utf-8")
+            except Exception as e:
+                st.error(f"Error reading file: {e}")
+                transcript_text = ""
     elif selected_sample != "None":
         try:
+            # Load from test_data first, then sample_transcripts
+            test_path = Path("test_data") / selected_sample
             sample_path = Path("data/sample_transcripts") / selected_sample
-            transcript_text = sample_path.read_text()
+            
+            if test_path.exists():
+                transcript_text = test_path.read_text()
+                file_name = selected_sample
+            elif sample_path.exists():
+                transcript_text = sample_path.read_text()
+                file_name = selected_sample
+            else:
+                st.error(f"Sample file not found: {selected_sample}")
+                transcript_text = ""
         except Exception as e:
             st.error(f"Error loading sample: {e}")
             transcript_text = ""
@@ -99,7 +121,7 @@ with col_left:
 
     # Process button
     process_btn = st.button(
-        "🚀 Generate Summary",
+        "🚀 Analyze Call",
         type="primary",
         disabled=not transcript_input.strip()
     )
@@ -108,18 +130,25 @@ with col_right:
     st.subheader("📊 Results")
 
     if process_btn and transcript_input.strip():
-        with st.spinner("Analyzing transcript with GPT-4..."):
+        with st.spinner("Running multi-agent analysis pipeline..."):
             try:
-                summary = agent.run(transcript_input)
-                st.session_state["last_summary"] = summary
-                st.session_state["last_transcript"] = transcript_input
+                # Run the complete workflow
+                final_state = run_call_analysis(
+                    raw_input=transcript_input,
+                    input_type=input_type,
+                    input_file_path=file_name
+                )
+                st.session_state["last_state"] = final_state
             except Exception as e:
-                st.error(f"Error generating summary: {e}")
+                st.error(f"Error running analysis: {e}")
+                import traceback
+                st.code(traceback.format_exc())
                 st.stop()
 
     # Display results if available
-    if "last_summary" in st.session_state:
-        summary: CallSummary = st.session_state["last_summary"]
+    if "last_state" in st.session_state:
+        state: AgentState = st.session_state["last_state"]
+        summary = state.summary
 
         # Brief Summary
         st.markdown("**Brief Summary**")
@@ -177,15 +206,58 @@ with col_right:
             for topic in summary.topics:
                 st.markdown(f"• {topic}")
 
-        # Raw JSON
-        with st.expander("Raw JSON Output"):
-            st.json(summary.model_dump())
+        # QA Scores
+        if state.qa_scores:
+            st.divider()
+            st.markdown("### 📋 Quality Evaluation")
+            
+            qa = state.qa_scores
+            qa_cols = st.columns(4)
+            
+            with qa_cols[0]:
+                st.metric("Empathy", f"{qa.empathy}/10")
+            with qa_cols[1]:
+                st.metric("Professionalism", f"{qa.professionalism}/10")
+            with qa_cols[2]:
+                st.metric("Resolution", f"{qa.resolution}/10")
+            with qa_cols[3]:
+                st.metric("Tone", f"{qa.tone}/10")
+            
+            # Overall score
+            st.metric("Overall Score", f"{qa.overall}/10")
+            
+            # Comments
+            with st.expander("Detailed QA Comments"):
+                st.markdown(qa.comments)
+
+        # Metadata
+        if state.metadata:
+            with st.expander("Call Metadata"):
+                meta = state.metadata
+                st.write(f"**Call ID**: {meta.call_id}")
+                st.write(f"**Timestamp**: {meta.timestamp}")
+                if meta.duration_seconds:
+                    minutes = int(meta.duration_seconds // 60)
+                    seconds = int(meta.duration_seconds % 60)
+                    st.write(f"**Estimated Duration**: {minutes}m {seconds}s")
+                st.write(f"**Input Type**: {meta.input_type}")
+                if meta.file_name:
+                    st.write(f"**File**: {meta.file_name}")
+
+        # Execution info
+        with st.expander("Pipeline Execution"):
+            st.write(f"**Execution Path**: {' → '.join(state.execution_path)}")
+            st.write(f"**Models Used**: {', '.join(state.models_used)}")
+
+        # Raw state JSON
+        with st.expander("Raw State JSON"):
+            st.json(state.model_dump())
 
     else:
-        st.info("Upload or select a transcript, then click 'Generate Summary' to see results.")
+        st.info("Upload or select a transcript, then click 'Analyze Call' to see results.")
 
 # ===================
 # Footer
 # ===================
 st.divider()
-st.caption("AI Call Center Assistant | Capstone Project | Phase 2 - Single Agent")
+st.caption("AI Call Center Assistant | Capstone Project | Phase 3 - Multi-Agent Pipeline")
