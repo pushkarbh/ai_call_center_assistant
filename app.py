@@ -168,7 +168,8 @@ with col_right:
                                 "transcription": "📝 Transcription",
                                 "abuse_detection": "🚨 Abuse Detection",
                                 "summarization": "📋 Summarization",
-                                "summarization_v2": "📋 Summarization (Revision)",
+                                "summarization_v2": "📋 Summarization (Revision 1)",
+                                "summarization_v3": "📋 Summarization (Revision 2)",
                                 "critic": "🔍 Critic",
                                 "qa_scoring": "📊 QA Scoring"
                             }
@@ -190,14 +191,7 @@ with col_right:
     # Display results if available
     if "last_state" in st.session_state:
         state = st.session_state["last_state"]  # LangGraph returns a dict
-        
-        # Agent Interaction Details (collapsible)
-        if state.get("execution_path"):
-            with st.expander("🔗 View Agent Interactions & Data Flow (Click to Expand)", expanded=True):
-                from ui.agent_interactions import render_agent_interactions
-                render_agent_interactions(state)
-            st.divider()
-        
+
         # Validation Results
         if state.get("validation_result"):
             validation = state["validation_result"]
@@ -368,6 +362,13 @@ with col_right:
                 if critique.revision_instructions:
                     st.markdown("**Revision Instructions:**")
                     st.markdown(critique.revision_instructions)
+
+        # Agent Interaction Details
+        if state.get("execution_path"):
+            st.divider()
+            st.markdown("### 🔗 Agent Interactions & Data Flow")
+            from ui.agent_interactions import render_agent_interactions
+            render_agent_interactions(state)
 
         # Metadata
         if state.get("metadata"):

@@ -12,7 +12,6 @@ def render_agent_interactions(state: Dict[str, Any]):
         state: Final workflow state with all agent contributions
     """
     
-    st.markdown("### 🔗 Agent Interactions & State Flow")
     st.caption("Shows all agents and their execution status")
     
     execution_path = state.get("execution_path", [])
@@ -92,9 +91,9 @@ def render_agent_interactions(state: Dict[str, Any]):
             "decision": None
         })
         
-        # Determine execution status
-        was_executed = agent_id in execution_path
-        execution_count = execution_path.count(agent_id) if was_executed else 0
+        # Determine execution status (handle versioned agent names like summarization_v2)
+        was_executed = any(step == agent_id or step.startswith(f"{agent_id}_v") for step in execution_path)
+        execution_count = sum(1 for step in execution_path if step == agent_id or step.startswith(f"{agent_id}_v"))
         has_error = any(agent_id in str(err) for err in errors)
         
         # Color coding based on status
@@ -197,21 +196,23 @@ def render_agent_interactions(state: Dict[str, Any]):
             elif not was_executed:
                 st.markdown("**· · ·** _(skipped)_")
     
-    # Summary statistics
+    # Summary statistics - invocations by agent type
     st.divider()
-    col1, col2, col3, col4 = st.columns(4)
-    
-    with col1:
-        st.metric("Total Agents", len(all_agents))
-    
-    with col2:
-        executed = len(set(execution_path))
-        st.metric("Executed", executed, delta=None)
-    
-    with col3:
-        skipped = len(all_agents) - len(set(execution_path))
-        st.metric("Skipped", skipped, delta=None)
-    
-    with col4:
-        revision_count = execution_path.count("summarization") - 1 if execution_path.count("summarization") > 0 else 0
-        st.metric("Revisions", revision_count)
+    st.markdown("**Agent Invocations**")
+
+    # Count invocations per base agent type
+    invocation_counts = {}
+    for step in execution_path:
+        # Map versioned names to base agent
+        if step.startswith("summarization"):
+            base = "summarization"
+        else:
+            base = step
+        invocation_counts[base] = invocation_counts.get(base, 0) + 1
+
+    # Display as compact metrics
+    cols = st.columns(len(invocation_counts) if invocation_counts else 1)
+    for i, (agent, count) in enumerate(invocation_counts.items()):
+        agent_info = agent_contributions.get(agent, {"icon": "❓", "name": agent})
+        with cols[i]:
+            st.metric(f"{agent_info['icon']} {agent_info['name']}", f"{count}x")
