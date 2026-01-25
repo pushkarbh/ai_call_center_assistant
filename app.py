@@ -196,7 +196,9 @@ with col_right:
                         if flag.speaker:
                             st.markdown(f"**Speaker**: {flag.speaker}")
                         if flag.evidence:
-                            st.markdown(f"**Evidence**: {', '.join([f'\"{e}\"' for e in flag.evidence])}")
+                            # Format evidence with quotes (avoiding backslash in f-string)
+                            evidence_formatted = ', '.join([f'"{e}"' for e in flag.evidence])
+                            st.markdown(f"**Evidence**: {evidence_formatted}")
                         if flag.recommended_action:
                             st.markdown(f"**Recommended Action**: {flag.recommended_action}")
             else:
