@@ -1,0 +1,166 @@
+{
+  "version": "1.0",
+  "description": "Evaluation dataset for AI Call Center Assistant",
+  "test_cases": [
+    {
+      "id": "tc_001",
+      "name": "Simple billing inquiry - resolved",
+      "category": "billing",
+      "transcript": "Agent: Thank you for calling TechCorp support. My name is Sarah. How can I help you today?\n\nCustomer: Hi Sarah, I have a question about my bill. I was charged $99 but I thought my plan was $79.\n\nAgent: I'd be happy to help you understand your bill. Let me pull up your account. I can see that you were upgraded to the Premium plan last month, which is $99 per month.\n\nCustomer: Oh, I didn't authorize that upgrade.\n\nAgent: I apologize for the confusion. I can see it was an automatic upgrade. I'll reverse that and credit you the $20 difference. Is there anything else I can help with?\n\nCustomer: No, that's perfect. Thank you so much!\n\nAgent: You're welcome. Have a great day!",
+      "expected": {
+        "sentiment": "positive",
+        "resolution_status": "resolved",
+        "has_action_items": true,
+        "abuse_detected": false,
+        "key_topics": ["billing", "plan upgrade", "refund"]
+      }
+    },
+    {
+      "id": "tc_002",
+      "name": "Technical issue - escalated",
+      "category": "technical",
+      "transcript": "Agent: Good afternoon, Tech Support. This is Mike speaking.\n\nCustomer: Hi Mike, my internet has been down for 3 days now. I've called 5 times already and nobody has fixed it.\n\nAgent: I'm very sorry to hear about this ongoing issue. Let me check the status of your service tickets.\n\nCustomer: I work from home and this is costing me money. I need this fixed today.\n\nAgent: I completely understand the urgency. I can see multiple tickets here. Unfortunately, this requires a technician visit. The earliest available slot is tomorrow between 9 AM and 12 PM. However, given the extended outage, I'm going to escalate this to our priority team.\n\nCustomer: Tomorrow is still not acceptable, but I guess it's better than nothing.\n\nAgent: I'll also apply a service credit for the days you've been without service. A supervisor will call you within 2 hours to confirm the escalation.\n\nCustomer: Alright, thank you for at least trying to help.",
+      "expected": {
+        "sentiment": "negative",
+        "resolution_status": "escalated",
+        "has_action_items": true,
+        "abuse_detected": false,
+        "key_topics": ["internet outage", "escalation", "technician visit", "service credit"]
+      }
+    },
+    {
+      "id": "tc_003",
+      "name": "Abusive customer - profanity",
+      "category": "abuse",
+      "transcript": "Agent: Thank you for calling customer service. How may I assist you?\n\nCustomer: This is bullshit! Your damn company charged me twice and now my account is overdrawn!\n\nAgent: I understand you're frustrated, and I apologize for the billing issue. Let me look into this right away.\n\nCustomer: You better fix this crap right now or I'm going to sue you people!\n\nAgent: Sir, I can see the duplicate charge and I'm processing a refund immediately. It will be back in your account within 24 hours.\n\nCustomer: 24 hours? That's ridiculous! This is the worst company I've ever dealt with!\n\nAgent: I understand your frustration. I can also provide a $25 courtesy credit for the inconvenience. Is there anything else I can help with?\n\nCustomer: Fine. Just make sure it actually happens this time.",
+      "expected": {
+        "sentiment": "negative",
+        "resolution_status": "resolved",
+        "has_action_items": true,
+        "abuse_detected": true,
+        "abuse_types": ["profanity"],
+        "key_topics": ["double charge", "refund", "overdraft"]
+      }
+    },
+    {
+      "id": "tc_004",
+      "name": "Product return - simple resolution",
+      "category": "returns",
+      "transcript": "Agent: Hello, this is Lisa from Returns Department. How can I help?\n\nCustomer: Hi Lisa, I need to return a laptop I bought last week. It's not what I expected.\n\nAgent: I can help with that. Do you have your order number?\n\nCustomer: Yes, it's ORD-789456.\n\nAgent: Perfect. I see your order here. Since it's within our 30-day return window, I'll email you a prepaid shipping label. Once we receive the laptop, your refund will be processed within 3-5 business days.\n\nCustomer: Great, that sounds easy enough. Thank you!\n\nAgent: You're welcome! Is there anything else I can help with today?\n\nCustomer: No, that's all. Have a nice day!\n\nAgent: You too!",
+      "expected": {
+        "sentiment": "positive",
+        "resolution_status": "resolved",
+        "has_action_items": true,
+        "abuse_detected": false,
+        "key_topics": ["laptop return", "refund", "shipping label"]
+      }
+    },
+    {
+      "id": "tc_005",
+      "name": "Account cancellation - unresolved",
+      "category": "retention",
+      "transcript": "Agent: Thank you for calling. This is James from Account Services.\n\nCustomer: I want to cancel my subscription immediately.\n\nAgent: I'm sorry to hear that. May I ask why you're looking to cancel?\n\nCustomer: I found a better deal with your competitor. They're offering the same service for half the price.\n\nAgent: I understand. Before you go, I can offer you a 30% discount for the next 6 months. Would that interest you?\n\nCustomer: No, I've already made up my mind. I just want to cancel.\n\nAgent: I understand. Unfortunately, our cancellation system is currently down for maintenance. You'll need to call back tomorrow after 9 AM, or you can submit a cancellation request through our website.\n\nCustomer: That's really inconvenient. I'll try the website.\n\nAgent: I apologize for the inconvenience. Is there anything else I can help with?\n\nCustomer: No, goodbye.",
+      "expected": {
+        "sentiment": "negative",
+        "resolution_status": "unresolved",
+        "has_action_items": true,
+        "abuse_detected": false,
+        "key_topics": ["subscription cancellation", "competitor pricing", "system down"]
+      }
+    },
+    {
+      "id": "tc_006",
+      "name": "Positive feedback call",
+      "category": "feedback",
+      "transcript": "Agent: Good morning, Customer Care. This is Amanda.\n\nCustomer: Hi Amanda! I just wanted to call and say how happy I am with your service. The technician who came yesterday, David, was absolutely amazing!\n\nAgent: Oh, that's wonderful to hear! Thank you so much for taking the time to share this feedback.\n\nCustomer: He fixed my heating system in no time and even gave me tips on maintenance. Please make sure his supervisor knows how great he was.\n\nAgent: I absolutely will! I'm documenting this feedback right now and will make sure it reaches his manager. Is there anything else you'd like to add?\n\nCustomer: No, that's it. Just wanted to share some positivity. Have a great day!\n\nAgent: Thank you so much! You've made our day. Take care!",
+      "expected": {
+        "sentiment": "positive",
+        "resolution_status": "resolved",
+        "has_action_items": true,
+        "abuse_detected": false,
+        "key_topics": ["positive feedback", "technician praise", "heating system"]
+      }
+    },
+    {
+      "id": "tc_007",
+      "name": "Threatening customer - high severity abuse",
+      "category": "abuse",
+      "transcript": "Agent: Customer service, how may I help you?\n\nCustomer: Listen carefully. If you don't refund my money right now, I'm going to come down to your office and make sure someone pays for this.\n\nAgent: Sir, I understand you're upset, but I need to ask you to refrain from making threatening statements.\n\nCustomer: I don't care what you need. You people are thieves and I know where your headquarters is. Someone is going to regret this.\n\nAgent: Sir, I'm going to have to end this call if you continue with threatening language. I want to help resolve your issue, but I cannot do so under these circumstances.\n\nCustomer: Fine, whatever. Just tell me how to get my refund.\n\nAgent: I can help with that. Can you provide your order number so I can look into the refund?",
+      "expected": {
+        "sentiment": "negative",
+        "resolution_status": "unresolved",
+        "has_action_items": false,
+        "abuse_detected": true,
+        "abuse_types": ["threat"],
+        "abuse_severity": "high",
+        "key_topics": ["refund request", "threatening behavior"]
+      }
+    },
+    {
+      "id": "tc_008",
+      "name": "Multi-issue complex call",
+      "category": "complex",
+      "transcript": "Agent: Thank you for calling Premium Support. I'm Rachel.\n\nCustomer: Hi Rachel, I have several issues to discuss. First, my bill shows a charge I don't recognize. Second, my mobile app keeps crashing. And third, I never received my rewards card.\n\nAgent: I'll be happy to help with all of these. Let's start with the unrecognized charge. Can you tell me the amount and date?\n\nCustomer: It's $45.99 from January 15th.\n\nAgent: I see that charge - it's for the premium add-on service. Were you not aware of this?\n\nCustomer: No, I didn't sign up for any add-on.\n\nAgent: I apologize for the confusion. I'll remove that charge and refund the $45.99. Now, regarding the app crashing - what device are you using?\n\nCustomer: iPhone 14.\n\nAgent: Please try deleting and reinstalling the app. If that doesn't work, call us back. Finally, for the rewards card - I see it was mailed on January 10th. It should arrive within 7-10 business days. If you don't receive it by January 25th, please call us.\n\nCustomer: Okay, thank you for handling all of this.\n\nAgent: You're welcome! Anything else?\n\nCustomer: No, that's everything.",
+      "expected": {
+        "sentiment": "neutral",
+        "resolution_status": "resolved",
+        "has_action_items": true,
+        "abuse_detected": false,
+        "key_topics": ["billing dispute", "app issue", "rewards card", "refund"]
+      }
+    },
+    {
+      "id": "tc_009",
+      "name": "Neutral inquiry - information only",
+      "category": "inquiry",
+      "transcript": "Agent: Hello, this is InfoLine. How can I assist you?\n\nCustomer: Hi, I'm considering signing up for your service. Can you tell me about your different plans?\n\nAgent: Of course! We have three plans: Basic at $29/month, Standard at $49/month, and Premium at $79/month.\n\nCustomer: What's the difference between them?\n\nAgent: Basic includes 100GB storage and email support. Standard adds 500GB storage and phone support. Premium offers unlimited storage, priority support, and a dedicated account manager.\n\nCustomer: I see. And are there any contracts?\n\nAgent: All plans are month-to-month with no long-term contracts. You can cancel anytime.\n\nCustomer: Great, I'll think about it and maybe sign up online. Thanks for the information.\n\nAgent: You're welcome! Feel free to call back if you have any other questions.",
+      "expected": {
+        "sentiment": "neutral",
+        "resolution_status": "resolved",
+        "has_action_items": false,
+        "abuse_detected": false,
+        "key_topics": ["plan information", "pricing", "features comparison"]
+      }
+    },
+    {
+      "id": "tc_010",
+      "name": "Warranty claim - partial resolution",
+      "category": "warranty",
+      "transcript": "Agent: Warranty Department, this is Tom speaking.\n\nCustomer: Hi Tom, my washing machine broke down and it's still under warranty. I need it repaired.\n\nAgent: I'm sorry to hear that. Can you provide your warranty number?\n\nCustomer: Yes, it's WR-2024-55678.\n\nAgent: Thank you. I can see your warranty is valid until March 2025. What seems to be the problem?\n\nCustomer: It's making a loud grinding noise and won't spin properly.\n\nAgent: Based on what you're describing, this sounds like a motor issue. I can schedule a technician visit. The earliest available is next Thursday between 2-6 PM.\n\nCustomer: That's almost a week away. I have a lot of laundry piling up.\n\nAgent: I understand. Unfortunately, that's our earliest slot. I can add you to the cancellation list in case something opens up sooner.\n\nCustomer: Alright, please do that. I'll take the Thursday appointment as backup.\n\nAgent: Done. You'll receive a confirmation email shortly. Anything else?\n\nCustomer: No, thank you.",
+      "expected": {
+        "sentiment": "neutral",
+        "resolution_status": "resolved",
+        "has_action_items": true,
+        "abuse_detected": false,
+        "key_topics": ["warranty claim", "washing machine repair", "technician scheduling"]
+      }
+    },
+    {
+      "id": "tc_011",
+      "name": "Short frustrated call",
+      "category": "frustration",
+      "transcript": "Agent: Support line, how may I help?\n\nCustomer: I've been on hold for 45 minutes! This is unacceptable.\n\nAgent: I sincerely apologize for the long wait time. How can I assist you today?\n\nCustomer: I need to update my address. That's it. 45 minutes for an address change.\n\nAgent: I completely understand your frustration. Let me update that for you right now. What's your new address?\n\nCustomer: 123 Oak Street, Apartment 4B, Chicago, IL 60601.\n\nAgent: Done. Your address has been updated. Is there anything else?\n\nCustomer: No. Goodbye.",
+      "expected": {
+        "sentiment": "negative",
+        "resolution_status": "resolved",
+        "has_action_items": false,
+        "abuse_detected": false,
+        "key_topics": ["address update", "long hold time"]
+      }
+    },
+    {
+      "id": "tc_012",
+      "name": "Harassment - discriminatory language",
+      "category": "abuse",
+      "transcript": "Agent: Thank you for calling. This is Priya, how can I help?\n\nCustomer: Oh great, another one of you people. Can I speak to a real American?\n\nAgent: Sir, I'm here to help you with your inquiry. What can I assist you with today?\n\nCustomer: I can barely understand your accent. This is exactly what's wrong with companies today, outsourcing everything.\n\nAgent: I apologize if you're having difficulty understanding me. I'm happy to speak more slowly. How can I help you?\n\nCustomer: Whatever. I need to check my balance.\n\nAgent: I can help with that. Your current balance is $234.56. Is there anything else?\n\nCustomer: No.",
+      "expected": {
+        "sentiment": "negative",
+        "resolution_status": "resolved",
+        "has_action_items": false,
+        "abuse_detected": true,
+        "abuse_types": ["harassment", "hate_speech"],
+        "key_topics": ["balance inquiry", "discriminatory remarks"]
+      }
+    }
+  ]
+}

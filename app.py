@@ -16,7 +16,6 @@ st.set_page_config(
 # Initialize
 # ===================
 st.title("📞 AI Call Center Assistant")
-st.markdown("**Phase 5**: Guardrails (Input Validation + Abuse Detection)")
 
 # Check for API key
 if not os.getenv("OPENAI_API_KEY"):
@@ -388,6 +387,95 @@ with col_right:
             st.markdown("### 🔗 Agent Interactions & Data Flow")
             from ui.agent_interactions import render_agent_interactions
             render_agent_interactions(state)
+
+        # Live Evaluation Section
+        st.divider()
+        st.markdown("### 📈 Live Evaluation")
+
+        run_eval = st.checkbox("Run independent quality evaluation", value=False,
+                               help="Runs additional LLM evaluators to score the output quality. Results are logged to LangSmith.")
+
+        if run_eval and state.get("summary") and state.get("transcript"):
+            with st.spinner("Running evaluation..."):
+                try:
+                    from evaluation.evaluators import FaithfulnessEvaluator, CompletenessEvaluator, QAScoreValidator
+
+                    # Prepare summary dict
+                    summary = state["summary"]
+                    if hasattr(summary, "model_dump"):
+                        summary_dict = summary.model_dump()
+                    else:
+                        summary_dict = summary
+
+                    transcript_text = state["transcript"].full_text if hasattr(state["transcript"], "full_text") else str(state["transcript"])
+
+                    # Run evaluators
+                    faith_eval = FaithfulnessEvaluator()
+                    faith_result = faith_eval.evaluate(transcript_text, summary_dict)
+
+                    comp_eval = CompletenessEvaluator()
+                    comp_result = comp_eval.evaluate(transcript_text, summary_dict)
+
+                    qa_validator = QAScoreValidator()
+                    qa_scores_dict = state["qa_scores"].model_dump() if hasattr(state.get("qa_scores"), "model_dump") else {}
+                    qa_result = qa_validator.validate(qa_scores_dict, transcript_text)
+
+                    # Display results
+                    eval_cols = st.columns(3)
+                    with eval_cols[0]:
+                        st.metric("Faithfulness", f"{faith_result.score}/10")
+                    with eval_cols[1]:
+                        st.metric("Completeness", f"{comp_result.score}/10")
+                    with eval_cols[2]:
+                        qa_status = "✅ Valid" if qa_result.is_valid else "⚠️ Issues"
+                        st.metric("QA Validity", qa_status)
+
+                    # Details in expander
+                    with st.expander("Evaluation Details"):
+                        st.markdown("**Faithfulness**")
+                        st.caption(faith_result.reasoning)
+                        if faith_result.hallucinations:
+                            st.warning(f"Hallucinations: {', '.join(faith_result.hallucinations)}")
+
+                        st.markdown("**Completeness**")
+                        st.caption(comp_result.reasoning)
+                        if comp_result.missing_information:
+                            st.warning(f"Missing: {', '.join(comp_result.missing_information)}")
+
+                        if qa_result.warnings:
+                            st.markdown("**QA Warnings**")
+                            for w in qa_result.warnings:
+                                st.caption(f"• {w}")
+
+                    # Log evaluation scores to LangSmith
+                    if os.getenv("LANGCHAIN_API_KEY"):
+                        try:
+                            from langsmith import Client
+                            from langsmith.run_helpers import traceable
+
+                            client = Client()
+                            project = os.getenv("LANGCHAIN_PROJECT", "call-center-assistant")
+
+                            # Log as a simple run with evaluation results
+                            client.create_run(
+                                name="live-evaluation",
+                                run_type="chain",
+                                inputs={"transcript_preview": transcript_text[:200] + "..." if len(transcript_text) > 200 else transcript_text},
+                                outputs={
+                                    "faithfulness": faith_result.score,
+                                    "completeness": comp_result.score,
+                                    "qa_valid": qa_result.is_valid,
+                                    "faithfulness_reasoning": faith_result.reasoning,
+                                    "completeness_reasoning": comp_result.reasoning
+                                },
+                                project_name=project
+                            )
+                            st.success("✅ Evaluation logged to LangSmith")
+                        except Exception as e:
+                            st.caption(f"💡 Agent traces logged to LangSmith (eval log skipped: {e})")
+
+                except Exception as e:
+                    st.error(f"Evaluation error: {e}")
 
         # Metadata
         if state.get("metadata"):
