@@ -1,16 +1,20 @@
-from langchain_openai import ChatOpenAI
+from langchain_anthropic import ChatAnthropic
 from langchain_core.prompts import ChatPromptTemplate
 from models.schemas import SummaryCritique, AgentState
 import os
 
 class CriticAgent:
-    """Agent that evaluates summary quality and decides if revision is needed"""
+    """Agent that evaluates summary quality and decides if revision is needed.
 
-    def __init__(self, model: str = "gpt-4o-mini"):
+    Uses Claude as an independent evaluator to critique GPT-generated summaries,
+    creating a 'student/teacher' dynamic for more rigorous quality control.
+    """
+
+    def __init__(self, model: str = "claude-sonnet-4-20250514"):
         self.model_name = model
-        self.llm = ChatOpenAI(
+        self.llm = ChatAnthropic(
             model=model,
-            api_key=os.getenv("OPENAI_API_KEY")
+            api_key=os.getenv("ANTHROPIC_API_KEY")
         ).with_structured_output(SummaryCritique)
 
         self.prompt = ChatPromptTemplate.from_messages([
