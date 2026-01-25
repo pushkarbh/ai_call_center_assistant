@@ -147,8 +147,8 @@ with col_right:
 
     # Display results if available
     if "last_state" in st.session_state:
-        state: AgentState = st.session_state["last_state"]
-        summary = state.summary
+        state = st.session_state["last_state"]  # LangGraph returns a dict
+        summary = state["summary"]
 
         # Brief Summary
         st.markdown("**Brief Summary**")
@@ -207,11 +207,11 @@ with col_right:
                 st.markdown(f"• {topic}")
 
         # QA Scores
-        if state.qa_scores:
+        if state.get("qa_scores"):
             st.divider()
             st.markdown("### 📋 Quality Evaluation")
             
-            qa = state.qa_scores
+            qa = state["qa_scores"]
             qa_cols = st.columns(4)
             
             with qa_cols[0]:
@@ -231,9 +231,9 @@ with col_right:
                 st.markdown(qa.comments)
 
         # Metadata
-        if state.metadata:
+        if state.get("metadata"):
             with st.expander("Call Metadata"):
-                meta = state.metadata
+                meta = state["metadata"]
                 st.write(f"**Call ID**: {meta.call_id}")
                 st.write(f"**Timestamp**: {meta.timestamp}")
                 if meta.duration_seconds:
@@ -246,12 +246,12 @@ with col_right:
 
         # Execution info
         with st.expander("Pipeline Execution"):
-            st.write(f"**Execution Path**: {' → '.join(state.execution_path)}")
-            st.write(f"**Models Used**: {', '.join(state.models_used)}")
+            st.write(f"**Execution Path**: {' → '.join(state['execution_path'])}")
+            st.write(f"**Models Used**: {', '.join(state['models_used'])}")
 
         # Raw state JSON
         with st.expander("Raw State JSON"):
-            st.json(state.model_dump())
+            st.json(state)
 
     else:
         st.info("Upload or select a transcript, then click 'Analyze Call' to see results.")
