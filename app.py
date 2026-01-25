@@ -77,16 +77,17 @@ with col_left:
     transcript_text = ""
     file_name = None
     input_type = "transcript"
-    
+    audio_data = None
+
     if uploaded_file:
         file_name = uploaded_file.name
         # Check if audio file
         if file_name.endswith(('.wav', '.mp3', '.m4a')):
             input_type = "audio"
-            st.info(f"🎵 Audio file detected: {file_name}")
-            st.warning("⚠️ Audio transcription with Whisper API not yet implemented. Coming soon!")
-            # For now, just show the file name
-            transcript_text = ""
+            audio_data = uploaded_file.read()
+            st.success(f"🎵 Audio file loaded: {file_name} ({len(audio_data) / 1024:.1f} KB)")
+            st.info("Audio will be transcribed using OpenAI Whisper API")
+            transcript_text = "[Audio file - will be transcribed]"
         else:
             # Text file
             try:
@@ -117,14 +118,16 @@ with col_left:
         "Transcript",
         value=transcript_text,
         height=400,
-        placeholder="Paste or upload a call transcript..."
+        placeholder="Paste or upload a call transcript...",
+        disabled=(input_type == "audio")
     )
 
-    # Process button
+    # Process button - enable for audio files even if text area is empty
+    can_process = (input_type == "audio" and audio_data) or transcript_input.strip()
     process_btn = st.button(
         "🚀 Analyze Call",
         type="primary",
-        disabled=not transcript_input.strip()
+        disabled=not can_process
     )
     
     # Progress tracker placeholder (shows during/after execution)
@@ -133,7 +136,7 @@ with col_left:
 with col_right:
     st.subheader("📊 Results")
 
-    if process_btn and transcript_input.strip():
+    if process_btn and can_process:
         # Clear previous results when starting new analysis
         if "last_state" in st.session_state:
             del st.session_state["last_state"]
@@ -143,15 +146,19 @@ with col_right:
             progress_placeholder = st.empty()
             with progress_placeholder.container():
                 st.markdown("### ⏳ Processing...")
-                st.info("Running workflow analysis...")
+                if input_type == "audio":
+                    st.info("Transcribing audio with Whisper API...")
+                else:
+                    st.info("Running workflow analysis...")
         
         with st.spinner("Running analysis with guardrails..."):
             try:
                 # Run the Phase 5 workflow
                 final_state = run_phase5_analysis(
-                    raw_input=transcript_input,
+                    raw_input=transcript_input if input_type == "transcript" else "",
                     input_type=input_type,
-                    input_file_path=file_name
+                    input_file_path=file_name,
+                    audio_data=audio_data
                 )
                 st.session_state["last_state"] = final_state
                 

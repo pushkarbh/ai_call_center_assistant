@@ -8,10 +8,57 @@ class InputValidationAgent:
         self.model_name = "input-validator"
         self.min_words = 10
         self.max_words = 5000
+        self.max_audio_size_mb = 25  # Whisper API limit
+        self.supported_audio_formats = ['.mp3', '.wav', '.m4a', '.webm', '.mp4', '.mpeg', '.mpga', '.oga', '.ogg']
+
+    def _validate_audio(self, state: AgentState) -> AgentState:
+        """Validate audio input"""
+        issues = []
+        warnings = []
+
+        if not state.audio_data:
+            issues.append("No audio data provided")
+        else:
+            # Check file size (Whisper has 25MB limit)
+            size_mb = len(state.audio_data) / (1024 * 1024)
+            if size_mb > self.max_audio_size_mb:
+                issues.append(f"Audio file too large: {size_mb:.1f}MB (max: {self.max_audio_size_mb}MB)")
+            elif size_mb < 0.001:  # Less than 1KB
+                issues.append("Audio file too small - may be empty or corrupted")
+
+            # Check file extension
+            if state.input_file_path:
+                ext = '.' + state.input_file_path.lower().split('.')[-1]
+                if ext not in self.supported_audio_formats:
+                    warnings.append(f"Unusual audio format: {ext}")
+
+        is_valid = len(issues) == 0
+        confidence = 0.9 if is_valid else 0.0
+
+        state.validation_result = InputValidationResult(
+            is_valid=is_valid,
+            confidence=confidence,
+            input_type_detected="audio",
+            issues=issues,
+            warnings=warnings,
+            rejection_reason="; ".join(issues) if issues else None
+        )
+
+        if not is_valid:
+            state.errors.extend(issues)
+
+        state.execution_path.append("validation")
+        state.models_used.append(self.model_name)
+
+        return state
 
     def run(self, state: AgentState) -> AgentState:
-        """Validate the input transcript"""
-        
+        """Validate the input transcript or audio"""
+
+        # Handle audio input separately
+        if state.input_type == "audio":
+            return self._validate_audio(state)
+
         if not state.raw_input:
             state.validation_result = InputValidationResult(
                 is_valid=False,

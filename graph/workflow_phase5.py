@@ -89,7 +89,8 @@ def create_phase5_workflow():
 def run_phase5_analysis(
     raw_input: str,
     input_type: str = "transcript",
-    input_file_path: str = None
+    input_file_path: str = None,
+    audio_data: bytes = None
 ) -> dict:
     """Run the Phase 5 call analysis workflow with guardrails"""
 
@@ -97,7 +98,8 @@ def run_phase5_analysis(
     initial_state = AgentState(
         raw_input=raw_input,
         input_type=input_type,
-        input_file_path=input_file_path
+        input_file_path=input_file_path,
+        audio_data=audio_data
     )
 
     # Get workflow

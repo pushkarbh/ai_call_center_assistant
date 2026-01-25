@@ -1,6 +1,7 @@
 from models.schemas import TranscriptData, TranscriptSegment, AgentState
 from openai import OpenAI
 import os
+import io
 
 class TranscriptionAgent:
     """Agent that handles transcription (pass-through for text, Whisper for audio)"""
@@ -18,6 +19,32 @@ class TranscriptionAgent:
             self.client = OpenAI(api_key=api_key)
         return self.client
 
+    def _transcribe_audio(self, audio_data: bytes, file_name: str = "audio.mp3") -> str:
+        """Transcribe audio using OpenAI Whisper API
+
+        Args:
+            audio_data: Raw audio bytes
+            file_name: Original file name (used to determine format)
+
+        Returns:
+            Transcribed text
+        """
+        client = self._get_client()
+
+        # Wrap bytes in a file-like object with the correct name
+        # The name helps Whisper understand the audio format
+        audio_file = io.BytesIO(audio_data)
+        audio_file.name = file_name
+
+        # Call Whisper API
+        response = client.audio.transcriptions.create(
+            model=self.model_name,
+            file=audio_file,
+            response_format="verbose_json"  # Get detailed response with segments
+        )
+
+        return response
+
     def run(self, state: AgentState) -> AgentState:
         """Transcribe audio or pass through text"""
 
@@ -33,15 +60,43 @@ class TranscriptionAgent:
 
         elif state.input_type == "audio":
             # Audio input - use Whisper API
-            # Note: In Phase 3, we'll just handle the structure
-            # Full audio transcription will be implemented when needed
+            if not state.audio_data:
+                raise ValueError("Audio input type specified but no audio_data provided")
+
             client = self._get_client()
-            # TODO: Implement actual Whisper API call
+
+            # Get file name for format detection
+            file_name = state.input_file_path or "audio.mp3"
+
+            # Transcribe using Whisper
+            response = self._transcribe_audio(state.audio_data, file_name)
+
+            # Extract segments if available
+            segments = []
+            if hasattr(response, 'segments') and response.segments:
+                for seg in response.segments:
+                    # Handle both dict and object responses
+                    if isinstance(seg, dict):
+                        text = seg.get('text', '').strip()
+                        start = seg.get('start', 0.0)
+                        end = seg.get('end', 0.0)
+                    else:
+                        text = getattr(seg, 'text', '').strip()
+                        start = getattr(seg, 'start', 0.0)
+                        end = getattr(seg, 'end', 0.0)
+
+                    segments.append(TranscriptSegment(
+                        speaker="Speaker",  # Whisper doesn't do diarization
+                        text=text,
+                        start_time=start,
+                        end_time=end
+                    ))
+
             transcript = TranscriptData(
-                segments=[],
-                full_text=state.raw_input or "",
-                language="en",
-                confidence=0.95
+                segments=segments,
+                full_text=response.text,
+                language=getattr(response, 'language', 'en'),
+                confidence=0.95  # Whisper doesn't return confidence scores
             )
             state.models_used.append(self.model_name)
 

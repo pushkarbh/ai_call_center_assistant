@@ -119,6 +119,7 @@ class AgentState(BaseModel):
     input_file_path: Optional[str] = None
     input_type: str = "transcript"  # "audio" | "transcript"
     raw_input: Optional[str] = None
+    audio_data: Optional[bytes] = None  # Raw audio bytes for Whisper API
 
     # Validation
     validation_result: Optional[InputValidationResult] = None
