@@ -126,6 +126,9 @@ with col_left:
         type="primary",
         disabled=not transcript_input.strip()
     )
+    
+    # Progress tracker placeholder (shows during/after execution)
+    progress_container = st.container()
 
 with col_right:
     st.subheader("📊 Results")
@@ -134,6 +137,13 @@ with col_right:
         # Clear previous results when starting new analysis
         if "last_state" in st.session_state:
             del st.session_state["last_state"]
+        
+        # Show progress in left column
+        with progress_container:
+            progress_placeholder = st.empty()
+            with progress_placeholder.container():
+                st.markdown("### ⏳ Processing...")
+                st.info("Running workflow analysis...")
         
         with st.spinner("Running analysis with guardrails..."):
             try:
@@ -144,6 +154,33 @@ with col_right:
                     input_file_path=file_name
                 )
                 st.session_state["last_state"] = final_state
+                
+                # Animate the execution path after completion
+                if final_state.get("execution_path"):
+                    import time
+                    with progress_placeholder.container():
+                        st.markdown("### ✅ Execution Complete")
+                        for i, step in enumerate(final_state["execution_path"], 1):
+                            # Map agent names to display names
+                            step_names = {
+                                "validation": "🛡️ Validation",
+                                "intake": "📥 Intake",
+                                "transcription": "📝 Transcription",
+                                "abuse_detection": "🚨 Abuse Detection",
+                                "summarization": "📋 Summarization",
+                                "summarization_v2": "📋 Summarization (Revision)",
+                                "critic": "🔍 Critic",
+                                "qa_scoring": "📊 QA Scoring"
+                            }
+                            step_display = step_names.get(step, step)
+                            st.success(f"✓ {step_display}")
+                            time.sleep(0.3)  # Brief animation delay
+                        
+                        # Show revision count if any
+                        revision_count = final_state["execution_path"].count("summarization") - 1
+                        if revision_count > 0:
+                            st.warning(f"🔄 Revisions: {revision_count} iteration(s)")
+                
             except Exception as e:
                 st.error(f"Error running analysis: {e}")
                 import traceback
@@ -153,6 +190,13 @@ with col_right:
     # Display results if available
     if "last_state" in st.session_state:
         state = st.session_state["last_state"]  # LangGraph returns a dict
+        
+        # Agent Interaction Details (collapsible)
+        if state.get("execution_path"):
+            with st.expander("🔗 View Agent Interactions & Data Flow (Click to Expand)", expanded=True):
+                from ui.agent_interactions import render_agent_interactions
+                render_agent_interactions(state)
+            st.divider()
         
         # Validation Results
         if state.get("validation_result"):
@@ -215,56 +259,56 @@ with col_right:
             st.markdown("#### 📝 Brief Summary")
             st.info(summary.brief_summary)
 
-        # Key Points
-        st.markdown("#### 🔑 Key Points")
-        for point in summary.key_points:
-            st.markdown(f"• {point}")
+            # Key Points
+            st.markdown("#### 🔑 Key Points")
+            for point in summary.key_points:
+                st.markdown(f"• {point}")
 
-        # Action Items
-        st.markdown("#### ✅ Action Items")
-        if summary.action_items:
-            for item in summary.action_items:
-                st.markdown(f"☐ {item}")
-        else:
-            st.markdown("_No action items_")
+            # Action Items
+            st.markdown("#### ✅ Action Items")
+            if summary.action_items:
+                for item in summary.action_items:
+                    st.markdown(f"☐ {item}")
+            else:
+                st.markdown("_No action items_")
 
-        # Customer Intent
-        st.markdown("#### 🎯 Customer Intent")
-        st.write(summary.customer_intent)
+            # Customer Intent
+            st.markdown("#### 🎯 Customer Intent")
+            st.write(summary.customer_intent)
 
-        # Metadata
-        st.divider()
-        cols = st.columns(3)
+            # Metadata
+            st.divider()
+            cols = st.columns(3)
 
-        with cols[0]:
-            sentiment_colors = {
-                "positive": "🟢",
-                "neutral": "🟡",
-                "negative": "🔴"
-            }
-            st.metric(
-                "Sentiment",
-                f"{sentiment_colors.get(summary.sentiment.value, '⚪')} {summary.sentiment.value.title()}"
-            )
+            with cols[0]:
+                sentiment_colors = {
+                    "positive": "🟢",
+                    "neutral": "🟡",
+                    "negative": "🔴"
+                }
+                st.metric(
+                    "Sentiment",
+                    f"{sentiment_colors.get(summary.sentiment.value, '⚪')} {summary.sentiment.value.title()}"
+                )
 
-        with cols[1]:
-            resolution_colors = {
-                "resolved": "✅",
-                "unresolved": "⏳",
-                "escalated": "⬆️"
-            }
-            st.metric(
-                "Resolution",
-                f"{resolution_colors.get(summary.resolution_status.value, '❓')} {summary.resolution_status.value.title()}"
-            )
+            with cols[1]:
+                resolution_colors = {
+                    "resolved": "✅",
+                    "unresolved": "⏳",
+                    "escalated": "⬆️"
+                }
+                st.metric(
+                    "Resolution",
+                    f"{resolution_colors.get(summary.resolution_status.value, '❓')} {summary.resolution_status.value.title()}"
+                )
 
-        with cols[2]:
-            st.metric("Topics", len(summary.topics))
+            with cols[2]:
+                st.metric("Topics", len(summary.topics))
 
-        # Topics
-        with st.expander("Topics Discussed"):
-            for topic in summary.topics:
-                st.markdown(f"• {topic}")
+            # Topics
+            with st.expander("Topics Discussed"):
+                for topic in summary.topics:
+                    st.markdown(f"• {topic}")
 
         # QA Scores
         if state.get("qa_scores"):
