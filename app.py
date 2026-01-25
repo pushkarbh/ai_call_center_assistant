@@ -212,25 +212,24 @@ with col_right:
             st.markdown("### 📋 Call Summary")
 
             # Brief Summary
-            st.markdown("**Brief Summary**")
+            st.markdown("#### 📝 Brief Summary")
             st.info(summary.brief_summary)
 
         # Key Points
-        st.markdown("**Key Points**")
+        st.markdown("#### 🔑 Key Points")
         for point in summary.key_points:
             st.markdown(f"• {point}")
 
         # Action Items
+        st.markdown("#### ✅ Action Items")
         if summary.action_items:
-            st.markdown("**Action Items**")
             for item in summary.action_items:
                 st.markdown(f"☐ {item}")
         else:
-            st.markdown("**Action Items**")
             st.markdown("_No action items_")
 
         # Customer Intent
-        st.markdown("**Customer Intent**")
+        st.markdown("#### 🎯 Customer Intent")
         st.write(summary.customer_intent)
 
         # Metadata
