@@ -199,6 +199,18 @@ with col_right:
     if "last_state" in st.session_state:
         state = st.session_state["last_state"]  # LangGraph returns a dict
 
+        # Show transcribed text for audio files
+        if state.get("input_type") == "audio" and state.get("transcript"):
+            st.markdown("### 🎙️ Transcribed Audio")
+            transcript_text = state["transcript"].full_text
+            st.text_area(
+                "Transcript from Whisper",
+                value=transcript_text,
+                height=300,
+                disabled=True
+            )
+            st.divider()
+
         # Validation Results
         if state.get("validation_result"):
             validation = state["validation_result"]
