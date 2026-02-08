@@ -42,16 +42,16 @@ The **AI Call Center Assistant** is a **true multi-agent AI system** that automa
 ┌─────────────────────────────────────────────────────────────────────────────┐
 │                        AI CALL CENTER ASSISTANT                             │
 │                                                                             │
-│  ┌─────────────┐    ┌─────────────┐    ┌─────────────┐    ┌─────────────┐  │
-│  │   INPUT     │ ─▶ │  MULTI-AGENT│ ─▶ │  QUALITY    │ ─▶ │  STRUCTURED │  │
-│  │  (Audio/    │    │  ANALYSIS   │    │  GUARDRAILS │    │   INSIGHTS  │  │
-│  │  Transcript)│    │  PIPELINE   │    │  & SAFETY   │    │   OUTPUT    │  │
-│  └─────────────┘    └─────────────┘    └─────────────┘    └─────────────┘  │
+│  ┌─────────────┐    ┌─────────────┐    ┌─────────────┐    ┌─────────────┐   │
+│  │   INPUT     │ ─▶ │  MULTI-AGENT│ ─▶ │  QUALITY    │ ─▶ │  STRUCTURED │   │
+│  │  (Audio/    │    │  ANALYSIS   │    │  GUARDRAILS │    │   INSIGHTS  │   │
+│  │  Transcript)│    │  PIPELINE   │    │  & SAFETY   │    │   OUTPUT    │   │
+│  └─────────────┘    └─────────────┘    └─────────────┘    └─────────────┘   │
 │                                                                             │
 │  Features:                                                                  │
-│  ✓ 7 Specialized AI Agents    ✓ Self-Correction Loops                      │
-│  ✓ Dynamic Routing            ✓ Abuse Detection                            │
-│  ✓ Input Validation           ✓ Production Observability                   │
+│  ✓ 7 Specialized AI Agents    ✓ Self-Correction Loops                       │
+│  ✓ Dynamic Routing            ✓ Abuse Detection                             │
+│  ✓ Input Validation           ✓ Production Observability                    │
 └─────────────────────────────────────────────────────────────────────────────┘
 ```
 
@@ -76,54 +76,54 @@ The **AI Call Center Assistant** is a **true multi-agent AI system** that automa
 ┌─────────────────────────────────────────────────────────────────────────────────────┐
 │                              SYSTEM ARCHITECTURE                                    │
 │                                                                                     │
-│  ┌─────────────────────────────────────────────────────────────────────────────┐   │
+│  ┌─────────────────────────────────────────────────────────────────────────────┐    │
 │  │                              PRESENTATION LAYER                              │   │
-│  │  ┌─────────────────┐  ┌─────────────────┐  ┌─────────────────────────────┐  │   │
-│  │  │   Streamlit     │  │   File Upload   │  │   Results Dashboard         │  │   │
-│  │  │   Web Interface │  │   (.txt/.wav)   │  │   (Summary, QA, Abuse)      │  │   │
-│  │  └─────────────────┘  └─────────────────┘  └─────────────────────────────┘  │   │
-│  └─────────────────────────────────────────────────────────────────────────────┘   │
+│  │  ┌─────────────────┐  ┌─────────────────┐  ┌─────────────────────────────┐  │    │
+│  │  │   Streamlit     │  │   File Upload   │  │   Results Dashboard         │  │    │
+│  │  │   Web Interface │  │   (.txt/.wav)   │  │   (Summary, QA, Abuse)      │  │    │
+│  │  └─────────────────┘  └─────────────────┘  └─────────────────────────────┘  │    │
+│  └─────────────────────────────────────────────────────────────────────────────┘    │
 │                                       │                                             │
 │                                       ▼                                             │
-│  ┌─────────────────────────────────────────────────────────────────────────────┐   │
+│  ┌─────────────────────────────────────────────────────────────────────────────┐    │
 │  │                           ORCHESTRATION LAYER                                │   │
 │  │                                                                              │   │
-│  │    ┌──────────────────────────────────────────────────────────────────┐     │   │
+│  │    ┌──────────────────────────────────────────────────────────────────┐     │    │
 │  │    │                     LangGraph StateGraph                          │     │   │
 │  │    │                                                                   │     │   │
-│  │    │   ┌─────────┐  ┌─────────┐  ┌─────────┐  ┌─────────┐  ┌────────┐ │     │   │
+│  │    │   ┌─────────┐  ┌─────────┐  ┌─────────┐  ┌─────────┐  ┌────────┐ │     │    │
 │  │    │   │Validation│─▶│ Intake  │─▶│Transcrip│─▶│ Abuse   │─▶│Summari-│ │     │   │
-│  │    │   │  Agent  │  │  Agent  │  │  Agent  │  │Detection│  │ zation │ │     │   │
-│  │    │   └─────────┘  └─────────┘  └─────────┘  └─────────┘  └───┬────┘ │     │   │
-│  │    │                                                           │      │     │   │
-│  │    │                          ┌─────────┐        ┌─────────┐   │      │     │   │
-│  │    │                          │   QA    │◀───────│  Critic │◀──┘      │     │   │
-│  │    │                          │ Scoring │        │  Agent  │──────────│     │   │
-│  │    │                          └─────────┘        └────┬────┘ Revision │     │   │
-│  │    │                                                  └─────Loop──────┘     │   │
-│  │    └──────────────────────────────────────────────────────────────────┘     │   │
+│  │    │   │  Agent  │  │  Agent  │  │  Agent  │  │Detection│  │ zation │ │     │    │
+│  │    │   └─────────┘  └─────────┘  └─────────┘  └─────────┘  └───┬────┘ │     │    │
+│  │    │                                                           │      │     │    │
+│  │    │                          ┌─────────┐        ┌─────────┐   │      │     │    │
+│  │    │                          │   QA    │◀───────│  Critic │◀──┘      │     │    │
+│  │    │                          │ Scoring │        │  Agent  │──────────│     │    │
+│  │    │                          └─────────┘        └────┬────┘ Revision │     │    │
+│  │    │                                                  └─────Loop──────┘     │    │
+│  │    └──────────────────────────────────────────────────────────────────┘     │    │
 │  │                                                                              │   │
-│  └─────────────────────────────────────────────────────────────────────────────┘   │
+│  └─────────────────────────────────────────────────────────────────────────────┘    │
 │                                       │                                             │
 │                                       ▼                                             │
-│  ┌─────────────────────────────────────────────────────────────────────────────┐   │
+│  ┌─────────────────────────────────────────────────────────────────────────────┐    │
 │  │                              AI/LLM LAYER                                    │   │
-│  │  ┌─────────────┐  ┌─────────────┐  ┌─────────────┐  ┌─────────────────────┐ │   │
-│  │  │  GPT-4o-mini│  │  GPT-4o     │  │  Claude     │  │  Whisper API        │ │   │
-│  │  │  (Summaries)│  │  (Critical) │  │  (Abuse)    │  │  (Transcription)    │ │   │
-│  │  └─────────────┘  └─────────────┘  └─────────────┘  └─────────────────────┘ │   │
-│  └─────────────────────────────────────────────────────────────────────────────┘   │
+│  │  ┌─────────────┐  ┌─────────────┐  ┌─────────────┐  ┌─────────────────────┐ │    │
+│  │  │  GPT-4o-mini│  │  GPT-4o     │  │  Claude     │  │  Whisper API        │ │    │
+│  │  │  (Summaries)│  │  (Critical) │  │  (Abuse)    │  │  (Transcription)    │ │    │
+│  │  └─────────────┘  └─────────────┘  └─────────────┘  └─────────────────────┘ │    │
+│  └─────────────────────────────────────────────────────────────────────────────┘    │
 │                                       │                                             │
 │                                       ▼                                             │
-│  ┌─────────────────────────────────────────────────────────────────────────────┐   │
+│  ┌─────────────────────────────────────────────────────────────────────────────┐    │
 │  │                          OBSERVABILITY LAYER                                 │   │
-│  │  ┌─────────────────────────┐  ┌─────────────────────────┐                   │   │
-│  │  │     LangSmith           │  │     LiteLLM             │                   │   │
-│  │  │  • Tracing & Debugging  │  │  • Model Routing        │                   │   │
-│  │  │  • Evaluation           │  │  • Cost Management      │                   │   │
-│  │  │  • Monitoring           │  │  • Fallback Chains      │                   │   │
-│  │  └─────────────────────────┘  └─────────────────────────┘                   │   │
-│  └─────────────────────────────────────────────────────────────────────────────┘   │
+│  │  ┌─────────────────────────┐  ┌─────────────────────────┐                   │    │
+│  │  │     LangSmith           │  │     LiteLLM             │                   │    │
+│  │  │  • Tracing & Debugging  │  │  • Model Routing        │                   │    │
+│  │  │  • Evaluation           │  │  • Cost Management      │                   │    │
+│  │  │  • Monitoring           │  │  • Fallback Chains      │                   │    │
+│  │  └─────────────────────────┘  └─────────────────────────┘                   │    │
+│  └─────────────────────────────────────────────────────────────────────────────┘    │
 │                                                                                     │
 └─────────────────────────────────────────────────────────────────────────────────────┘
 ```
@@ -546,27 +546,27 @@ class InputValidationAgent:
 │  DETECTION CATEGORIES:                                              │
 │  ─────────────────────                                              │
 │                                                                     │
-│  ┌─────────────┐  ┌─────────────┐  ┌─────────────┐  ┌─────────────┐│
-│  │  PROFANITY  │  │   THREAT    │  │ HARASSMENT  │  │ HATE SPEECH ││
-│  ├─────────────┤  ├─────────────┤  ├─────────────┤  ├─────────────┤│
-│  │ • bullshit  │  │ • lawsuit   │  │ • you idiot │  │ • racial    ││
-│  │ • damn      │  │ • sue you   │  │ • incompe-  │  │   slurs     ││
-│  │ • crap      │  │ • come to   │  │   tent      │  │ • xenophobic││
-│  │ • f-word    │  │   office    │  │ • personal  │  │ • discrimi- ││
-│  │ • s-word    │  │ • you'll    │  │   attacks   │  │   nation    ││
-│  │             │  │   regret    │  │             │  │             ││
-│  └─────────────┘  └─────────────┘  └─────────────┘  └─────────────┘│
+│  ┌─────────────┐  ┌─────────────┐  ┌─────────────┐  ┌─────────────┐ │
+│  │  PROFANITY  │  │   THREAT    │  │ HARASSMENT  │  │ HATE SPEECH │ │
+│  ├─────────────┤  ├─────────────┤  ├─────────────┤  ├─────────────┤ │
+│  │ • bullshit  │  │ • lawsuit   │  │ • you idiot │  │ • racial    │ │
+│  │ • damn      │  │ • sue you   │  │ • incompe-  │  │   slurs     │ │
+│  │ • crap      │  │ • come to   │  │   tent      │  │ • xenophobic│ │
+│  │ • f-word    │  │   office    │  │ • personal  │  │ • discrimi- │ │
+│  │ • s-word    │  │ • you'll    │  │   attacks   │  │   nation    │ │
+│  │             │  │   regret    │  │             │  │             │ │
+│  └─────────────┘  └─────────────┘  └─────────────┘  └─────────────┘ │
 │                                                                     │
 ├─────────────────────────────────────────────────────────────────────┤
 │  SEVERITY LEVELS:                                                   │
 │                                                                     │
-│  ┌────────────┬───────────┬─────────────────────────────────────┐  │
-│  │  Severity  │  Score    │  Examples                           │  │
-│  ├────────────┼───────────┼─────────────────────────────────────┤  │
-│  │  🟢 LOW    │   1-3     │  Mild profanity (damn, crap)        │  │
-│  │  🟡 MEDIUM │   4-6     │  Direct insults, legal threats      │  │
-│  │  🔴 HIGH   │   7-10    │  Severe profanity, physical threats │  │
-│  └────────────┴───────────┴─────────────────────────────────────┘  │
+│  ┌────────────┬───────────┬─────────────────────────────────────┐   │
+│  │  Severity  │  Score    │  Examples                           │   │
+│  ├────────────┼───────────┼─────────────────────────────────────┤   │
+│  │  🟢 LOW    │   1-3     │  Mild profanity (damn, crap)        │   │
+│  │  🟡 MEDIUM │   4-6     │  Direct insults, legal threats      │   │
+│  │  🔴 HIGH   │   7-10    │  Severe profanity, physical threats │   │
+│  └────────────┴───────────┴─────────────────────────────────────┘   │
 │                                                                     │
 ├─────────────────────────────────────────────────────────────────────┤
 │  OUTPUT SCHEMA:                                                     │
@@ -633,9 +633,9 @@ CONTEXT: [explanation]
 │                         └───────┬────────┘                          │
 │                                 │                                   │
 │                                 ▼                                   │
-│  ┌──────────────────────────────────────────────────────────────┐  │
+│  ┌──────────────────────────────────────────────────────────────┐   │
 │  │                     CallSummary (Pydantic)                    │  │
-│  ├──────────────────────────────────────────────────────────────┤  │
+│  ├──────────────────────────────────────────────────────────────┤   │
 │  │                                                               │  │
 │  │  brief_summary: str                                           │  │
 │  │  ├── "2-3 sentence overview of the call"                      │  │
@@ -658,7 +658,7 @@ CONTEXT: [explanation]
 │  │  topics: List[str]                                            │  │
 │  │  └── "Main topics discussed during the call"                  │  │
 │  │                                                               │  │
-│  └──────────────────────────────────────────────────────────────┘  │
+│  └──────────────────────────────────────────────────────────────┘   │
 │                                                                     │
 ├─────────────────────────────────────────────────────────────────────┤
 │  REVISION HANDLING:                                                 │
@@ -688,29 +688,29 @@ CONTEXT: [explanation]
 │                                                                     │
 │  EVALUATION DIMENSIONS:                                             │
 │                                                                     │
-│  ┌──────────────────────────────────────────────────────────────┐  │
+│  ┌──────────────────────────────────────────────────────────────┐   │
 │  │                                                               │  │
-│  │  ┌────────────────┐  ┌────────────────┐  ┌────────────────┐  │  │
-│  │  │  FAITHFULNESS  │  │ COMPLETENESS   │  │  CONCISENESS   │  │  │
-│  │  │    (1-10)      │  │    (1-10)      │  │    (1-10)      │  │  │
-│  │  ├────────────────┤  ├────────────────┤  ├────────────────┤  │  │
-│  │  │ Does summary   │  │ Are all key    │  │ Is it clear &  │  │  │
-│  │  │ accurately     │  │ points from    │  │ to-the-point   │  │  │
-│  │  │ reflect        │  │ transcript     │  │ without        │  │  │
-│  │  │ transcript?    │  │ captured?      │  │ verbosity?     │  │  │
-│  │  │                │  │                │  │                │  │  │
-│  │  │ 9-10: Perfect  │  │ 9-10: Complete │  │ 9-10: Perfect  │  │  │
-│  │  │ 7-8:  Minor    │  │ 7-8:  Most     │  │ 7-8:  Good     │  │  │
-│  │  │ 5-6:  Some     │  │ 5-6:  Missing  │  │ 5-6:  Verbose  │  │  │
-│  │  │ 1-4:  Major    │  │ 1-4:  Major    │  │ 1-4:  Confusing│  │  │
-│  │  └────────────────┘  └────────────────┘  └────────────────┘  │  │
+│  │  ┌────────────────┐  ┌────────────────┐  ┌────────────────┐  │   │
+│  │  │  FAITHFULNESS  │  │ COMPLETENESS   │  │  CONCISENESS   │  │   │
+│  │  │    (1-10)      │  │    (1-10)      │  │    (1-10)      │  │   │
+│  │  ├────────────────┤  ├────────────────┤  ├────────────────┤  │   │
+│  │  │ Does summary   │  │ Are all key    │  │ Is it clear &  │  │   │
+│  │  │ accurately     │  │ points from    │  │ to-the-point   │  │   │
+│  │  │ reflect        │  │ transcript     │  │ without        │  │   │
+│  │  │ transcript?    │  │ captured?      │  │ verbosity?     │  │   │
+│  │  │                │  │                │  │                │  │   │
+│  │  │ 9-10: Perfect  │  │ 9-10: Complete │  │ 9-10: Perfect  │  │   │
+│  │  │ 7-8:  Minor    │  │ 7-8:  Most     │  │ 7-8:  Good     │  │   │
+│  │  │ 5-6:  Some     │  │ 5-6:  Missing  │  │ 5-6:  Verbose  │  │   │
+│  │  │ 1-4:  Major    │  │ 1-4:  Major    │  │ 1-4:  Confusing│  │   │
+│  │  └────────────────┘  └────────────────┘  └────────────────┘  │   │
 │  │                                                               │  │
-│  └──────────────────────────────────────────────────────────────┘  │
+│  └──────────────────────────────────────────────────────────────┘   │
 │                                                                     │
 ├─────────────────────────────────────────────────────────────────────┤
 │  DECISION LOGIC:                                                    │
 │                                                                     │
-│  ┌──────────────────────────────────────────────────────────────┐  │
+│  ┌──────────────────────────────────────────────────────────────┐   │
 │  │                                                               │  │
 │  │   IF any score < 7:                                           │  │
 │  │       needs_revision = True                                   │  │
@@ -722,7 +722,7 @@ CONTEXT: [explanation]
 │  │                                                               │  │
 │  │   Maximum revision attempts: 3                                │  │
 │  │                                                               │  │
-│  └──────────────────────────────────────────────────────────────┘  │
+│  └──────────────────────────────────────────────────────────────┘   │
 │                                                                     │
 ├─────────────────────────────────────────────────────────────────────┤
 │  OUTPUT SCHEMA:                                                     │
@@ -755,28 +755,28 @@ CONTEXT: [explanation]
 │                                                                     │
 │  SCORING RUBRIC:                                                    │
 │                                                                     │
-│  ┌──────────────────────────────────────────────────────────────┐  │
+│  ┌──────────────────────────────────────────────────────────────┐   │
 │  │                                                               │  │
 │  │  ┌──────────────┐  ┌──────────────┐                           │  │
-│  │  │   EMPATHY    │  │PROFESSIONAL-│                           │  │
-│  │  │   (0-10)     │  │  ISM (0-10) │                           │  │
+│  │  │   EMPATHY    │  │PROFESSIONAL-│                           │   │
+│  │  │   (0-10)     │  │  ISM (0-10) │                           │   │
 │  │  ├──────────────┤  ├──────────────┤                           │  │
-│  │  │ Understanding│  │ Courteous & │                           │  │
-│  │  │ & compassion │  │ respectful  │                           │  │
-│  │  │ for customer │  │ behavior    │                           │  │
-│  │  │ situation    │  │             │                           │  │
+│  │  │ Understanding│  │ Courteous & │                           │   │
+│  │  │ & compassion │  │ respectful  │                           │   │
+│  │  │ for customer │  │ behavior    │                           │   │
+│  │  │ situation    │  │             │                           │   │
 │  │  └──────────────┘  └──────────────┘                           │  │
 │  │                                                               │  │
 │  │  ┌──────────────┐  ┌──────────────┐                           │  │
 │  │  │ RESOLUTION   │  │    TONE      │                           │  │
 │  │  │   (0-10)     │  │   (0-10)     │                           │  │
 │  │  ├──────────────┤  ├──────────────┤                           │  │
-│  │  │ Effectiveness│  │ Friendly &  │                           │  │
-│  │  │ of issue     │  │ appropriate │                           │  │
-│  │  │ resolution   │  │ throughout  │                           │  │
+│  │  │ Effectiveness│  │ Friendly &  │                           │   │
+│  │  │ of issue     │  │ appropriate │                           │   │
+│  │  │ resolution   │  │ throughout  │                           │   │
 │  │  └──────────────┘  └──────────────┘                           │  │
 │  │                                                               │  │
-│  └──────────────────────────────────────────────────────────────┘  │
+│  └──────────────────────────────────────────────────────────────┘   │
 │                                                                     │
 ├─────────────────────────────────────────────────────────────────────┤
 │  SCORING GUIDE:                                                     │
@@ -812,31 +812,31 @@ The agents in this system collaborate through a **shared state pattern** orchest
 ```
 ┌─────────────────────────────────────────────────────────────────────────────────────┐
 │                         AGENT COLLABORATION PATTERN                                 │
-│                                                                                      │
+│                                                                                     │
 │  ┌──────────────────────────────────────────────────────────────────────────────┐   │
-│  │                           SHARED STATE (AgentState)                           │   │
-│  │                                                                               │   │
-│  │   ┌─────────┐  ┌─────────┐  ┌─────────┐  ┌─────────┐  ┌─────────┐           │   │
+│  │                           SHARED STATE (AgentState)                           │  │
+│  │                                                                               │  │
+│  │   ┌─────────┐  ┌─────────┐  ┌─────────┐  ┌─────────┐  ┌─────────┐           │    │
 │  │   │ Input   │  │Metadata │  │Transcript│  │ Summary │  │ QA      │           │   │
-│  │   │ Data    │  │         │  │ Data    │  │ Data    │  │ Scores  │           │   │
-│  │   └────▲────┘  └────▲────┘  └────▲────┘  └────▲────┘  └────▲────┘           │   │
-│  │        │            │            │            │            │                  │   │
-│  └────────┼────────────┼────────────┼────────────┼────────────┼──────────────────┘   │
-│           │            │            │            │            │                      │
-│           │ writes     │ writes     │ writes     │ writes     │ writes               │
-│           │            │            │            │            │                      │
+│  │   │ Data    │  │         │  │ Data    │  │ Data    │  │ Scores  │           │    │
+│  │   └────▲────┘  └────▲────┘  └────▲────┘  └────▲────┘  └────▲────┘           │    │
+│  │        │            │            │            │            │                  │  │
+│  └────────┼────────────┼────────────┼────────────┼────────────┼──────────────────┘  │
+│           │            │            │            │            │                     │
+│           │ writes     │ writes     │ writes     │ writes     │ writes              │
+│           │            │            │            │            │                     │
 │     ┌─────┴─────┐┌─────┴─────┐┌─────┴─────┐┌─────┴─────┐┌─────┴─────┐               │
 │     │Validation ││  Intake   ││Transcrip- ││Summariza- ││    QA     │               │
 │     │  Agent    ││  Agent    ││tion Agent ││tion Agent ││  Scoring  │               │
 │     └───────────┘└───────────┘└───────────┘└───────────┘└───────────┘               │
-│                                                                                      │
-│  DATA FLOW:                                                                          │
-│  Each agent:                                                                         │
-│   1. Receives full state                                                             │
-│   2. Reads what it needs                                                             │
-│   3. Writes its output to state                                                      │
-│   4. Returns modified state                                                          │
-│                                                                                      │
+│                                                                                     │
+│  DATA FLOW:                                                                         │
+│  Each agent:                                                                        │
+│   1. Receives full state                                                            │
+│   2. Reads what it needs                                                            │
+│   3. Writes its output to state                                                     │
+│   4. Returns modified state                                                         │
+│                                                                                     │
 └─────────────────────────────────────────────────────────────────────────────────────┘
 ```
 
@@ -848,7 +848,7 @@ The agents in this system collaborate through a **shared state pattern** orchest
 ┌─────────────────────────────────────────────────────────────────────┐
 │                    SEQUENTIAL HANDOFF                               │
 │                                                                     │
-│   Validation ─────▶ Intake ─────▶ Transcription ─────▶ Abuse       │
+│   Validation ─────▶ Intake ─────▶ Transcription ─────▶ Abuse        │
 │       │               │               │                   │         │
 │       │               │               │                   │         │
 │       ▼               ▼               ▼                   ▼         │
@@ -932,33 +932,33 @@ The agents in this system collaborate through a **shared state pattern** orchest
 ```
 ┌─────────────────────────────────────────────────────────────────────────────────────┐
 │                           AGENT DEPENDENCIES                                        │
-│                                                                                      │
-│   AGENT              READS FROM STATE           WRITES TO STATE                      │
-│   ─────              ────────────────           ───────────────                      │
-│                                                                                      │
-│   Validation    ─▶   raw_input              ─▶   validation_result                   │
-│                                                  errors[]                            │
-│                                                                                      │
-│   Intake        ─▶   raw_input              ─▶   metadata                            │
-│                      input_type                  (call_id, timestamp)                │
-│                      input_file_path                                                 │
-│                                                                                      │
-│   Transcription ─▶   raw_input              ─▶   transcript                          │
-│                      input_type                  (full_text, segments)               │
-│                                                                                      │
-│   Abuse         ─▶   transcript.full_text   ─▶   abuse_flags[]                       │
-│   Detection                                                                          │
-│                                                                                      │
-│   Summarization ─▶   transcript.full_text   ─▶   summary                             │
-│                      summary_critique             (if revision)                      │
-│                      revision_count                                                  │
-│                                                                                      │
-│   Critic        ─▶   transcript.full_text   ─▶   summary_critique                    │
-│                      summary                      needs_revision                     │
-│                                                   revision_count                     │
-│                                                                                      │
-│   QA Scoring    ─▶   transcript.full_text   ─▶   qa_scores                           │
-│                                                                                      │
+│                                                                                     │
+│   AGENT              READS FROM STATE           WRITES TO STATE                     │
+│   ─────              ────────────────           ───────────────                     │
+│                                                                                     │
+│   Validation    ─▶   raw_input              ─▶   validation_result                  │
+│                                                  errors[]                           │
+│                                                                                     │
+│   Intake        ─▶   raw_input              ─▶   metadata                           │
+│                      input_type                  (call_id, timestamp)               │
+│                      input_file_path                                                │
+│                                                                                     │
+│   Transcription ─▶   raw_input              ─▶   transcript                         │
+│                      input_type                  (full_text, segments)              │
+│                                                                                     │
+│   Abuse         ─▶   transcript.full_text   ─▶   abuse_flags[]                      │
+│   Detection                                                                         │
+│                                                                                     │
+│   Summarization ─▶   transcript.full_text   ─▶   summary                            │
+│                      summary_critique             (if revision)                     │
+│                      revision_count                                                 │
+│                                                                                     │
+│   Critic        ─▶   transcript.full_text   ─▶   summary_critique                   │
+│                      summary                      needs_revision                    │
+│                                                   revision_count                    │
+│                                                                                     │
+│   QA Scoring    ─▶   transcript.full_text   ─▶   qa_scores                          │
+│                                                                                     │
 └─────────────────────────────────────────────────────────────────────────────────────┘
 ```
 
@@ -1016,120 +1016,120 @@ class AgentState(BaseModel):
 ```
 ┌─────────────────────────────────────────────────────────────────────────────────────┐
 │                           STATE LIFECYCLE                                           │
-│                                                                                      │
-│   PHASE 1: INITIALIZATION                                                            │
-│   ───────────────────────                                                            │
-│                                                                                      │
+│                                                                                     │
+│   PHASE 1: INITIALIZATION                                                           │
+│   ───────────────────────                                                           │
+│                                                                                     │
 │   ┌─────────────────────────────────────────────────────────────────────────────┐   │
-│   │  AgentState(                                                                 │   │
-│   │      raw_input = "Agent: Hello...",                                          │   │
-│   │      input_type = "transcript",                                              │   │
-│   │      input_file_path = "billing_inquiry.txt"                                 │   │
-│   │  )                                                                           │   │
+│   │  AgentState(                                                                 │  │
+│   │      raw_input = "Agent: Hello...",                                          │  │
+│   │      input_type = "transcript",                                              │  │
+│   │      input_file_path = "billing_inquiry.txt"                                 │  │
+│   │  )                                                                           │  │
 │   └─────────────────────────────────────────────────────────────────────────────┘   │
-│                                        │                                             │
-│                                        ▼                                             │
-│   PHASE 2: VALIDATION                                                                │
-│   ───────────────────                                                                │
-│                                                                                      │
+│                                        │                                            │
+│                                        ▼                                            │
+│   PHASE 2: VALIDATION                                                               │
+│   ───────────────────                                                               │
+│                                                                                     │
 │   ┌─────────────────────────────────────────────────────────────────────────────┐   │
-│   │  + validation_result = InputValidationResult(                                │   │
-│   │        is_valid = True,                                                      │   │
-│   │        confidence = 0.9,                                                     │   │
-│   │        issues = [],                                                          │   │
-│   │        warnings = []                                                         │   │
-│   │    )                                                                         │   │
-│   │  + execution_path = ["validation"]                                           │   │
-│   │  + models_used = ["input-validator"]                                         │   │
+│   │  + validation_result = InputValidationResult(                                │  │
+│   │        is_valid = True,                                                      │  │
+│   │        confidence = 0.9,                                                     │  │
+│   │        issues = [],                                                          │  │
+│   │        warnings = []                                                         │  │
+│   │    )                                                                         │  │
+│   │  + execution_path = ["validation"]                                           │  │
+│   │  + models_used = ["input-validator"]                                         │  │
 │   └─────────────────────────────────────────────────────────────────────────────┘   │
-│                                        │                                             │
-│                                        ▼                                             │
-│   PHASE 3: INTAKE                                                                    │
-│   ──────────────                                                                     │
-│                                                                                      │
+│                                        │                                            │
+│                                        ▼                                            │
+│   PHASE 3: INTAKE                                                                   │
+│   ──────────────                                                                    │
+│                                                                                     │
 │   ┌─────────────────────────────────────────────────────────────────────────────┐   │
-│   │  + metadata = CallMetadata(                                                  │   │
-│   │        call_id = "CALL-0A3F7B2E",                                            │   │
-│   │        timestamp = 2026-01-25T10:30:00,                                      │   │
-│   │        duration_seconds = 180.0                                              │   │
-│   │    )                                                                         │   │
-│   │  + execution_path = ["validation", "intake"]                                 │   │
-│   │  + models_used = ["input-validator", "rule-based"]                           │   │
+│   │  + metadata = CallMetadata(                                                  │  │
+│   │        call_id = "CALL-0A3F7B2E",                                            │  │
+│   │        timestamp = 2026-01-25T10:30:00,                                      │  │
+│   │        duration_seconds = 180.0                                              │  │
+│   │    )                                                                         │  │
+│   │  + execution_path = ["validation", "intake"]                                 │  │
+│   │  + models_used = ["input-validator", "rule-based"]                           │  │
 │   └─────────────────────────────────────────────────────────────────────────────┘   │
-│                                        │                                             │
-│                                        ▼                                             │
-│   PHASE 4: TRANSCRIPTION                                                             │
-│   ─────────────────────                                                              │
-│                                                                                      │
+│                                        │                                            │
+│                                        ▼                                            │
+│   PHASE 4: TRANSCRIPTION                                                            │
+│   ─────────────────────                                                             │
+│                                                                                     │
 │   ┌─────────────────────────────────────────────────────────────────────────────┐   │
-│   │  + transcript = TranscriptData(                                              │   │
-│   │        full_text = "Agent: Hello...",                                        │   │
-│   │        language = "en",                                                      │   │
-│   │        confidence = 1.0                                                      │   │
-│   │    )                                                                         │   │
-│   │  + execution_path = ["validation", "intake", "transcription"]                │   │
+│   │  + transcript = TranscriptData(                                              │  │
+│   │        full_text = "Agent: Hello...",                                        │  │
+│   │        language = "en",                                                      │  │
+│   │        confidence = 1.0                                                      │  │
+│   │    )                                                                         │  │
+│   │  + execution_path = ["validation", "intake", "transcription"]                │  │
 │   └─────────────────────────────────────────────────────────────────────────────┘   │
-│                                        │                                             │
-│                                        ▼                                             │
-│   PHASE 5: ABUSE DETECTION                                                           │
-│   ───────────────────────                                                            │
-│                                                                                      │
+│                                        │                                            │
+│                                        ▼                                            │
+│   PHASE 5: ABUSE DETECTION                                                          │
+│   ───────────────────────                                                           │
+│                                                                                     │
 │   ┌─────────────────────────────────────────────────────────────────────────────┐   │
-│   │  + abuse_flags = [                                                           │   │
-│   │        AbuseFlag(detected=True, abuse_type=[PROFANITY], severity=LOW)        │   │
-│   │    ]  OR  []                                                                 │   │
-│   │  + execution_path = [..., "abuse_detection"]                                 │   │
-│   │  + models_used = [..., "gpt-4o-mini"]                                        │   │
+│   │  + abuse_flags = [                                                           │  │
+│   │        AbuseFlag(detected=True, abuse_type=[PROFANITY], severity=LOW)        │  │
+│   │    ]  OR  []                                                                 │  │
+│   │  + execution_path = [..., "abuse_detection"]                                 │  │
+│   │  + models_used = [..., "gpt-4o-mini"]                                        │  │
 │   └─────────────────────────────────────────────────────────────────────────────┘   │
-│                                        │                                             │
-│                                        ▼                                             │
-│   PHASE 6: SUMMARIZATION (may repeat up to 3x)                                       │
-│   ────────────────────────────────────────────                                       │
-│                                                                                      │
+│                                        │                                            │
+│                                        ▼                                            │
+│   PHASE 6: SUMMARIZATION (may repeat up to 3x)                                      │
+│   ────────────────────────────────────────────                                      │
+│                                                                                     │
 │   ┌─────────────────────────────────────────────────────────────────────────────┐   │
-│   │  + summary = CallSummary(                                                    │   │
-│   │        brief_summary = "Customer called about...",                           │   │
-│   │        key_points = [...],                                                   │   │
-│   │        sentiment = NEGATIVE,                                                 │   │
-│   │        resolution_status = RESOLVED                                          │   │
-│   │    )                                                                         │   │
-│   │  + execution_path = [..., "summarization"]                                   │   │
+│   │  + summary = CallSummary(                                                    │  │
+│   │        brief_summary = "Customer called about...",                           │  │
+│   │        key_points = [...],                                                   │  │
+│   │        sentiment = NEGATIVE,                                                 │  │
+│   │        resolution_status = RESOLVED                                          │  │
+│   │    )                                                                         │  │
+│   │  + execution_path = [..., "summarization"]                                   │  │
 │   └─────────────────────────────────────────────────────────────────────────────┘   │
-│                                        │                                             │
-│                                        ▼                                             │
-│   PHASE 7: CRITIC                                                                    │
-│   ──────────────                                                                     │
-│                                                                                      │
+│                                        │                                            │
+│                                        ▼                                            │
+│   PHASE 7: CRITIC                                                                   │
+│   ──────────────                                                                    │
+│                                                                                     │
 │   ┌─────────────────────────────────────────────────────────────────────────────┐   │
-│   │  + summary_critique = SummaryCritique(                                       │   │
-│   │        faithfulness_score = 8,                                               │   │
-│   │        completeness_score = 9,                                               │   │
-│   │        conciseness_score = 7,                                                │   │
-│   │        needs_revision = False                                                │   │
-│   │    )                                                                         │   │
-│   │  + needs_revision = False                                                    │   │
-│   │  + revision_count = 0                                                        │   │
+│   │  + summary_critique = SummaryCritique(                                       │  │
+│   │        faithfulness_score = 8,                                               │  │
+│   │        completeness_score = 9,                                               │  │
+│   │        conciseness_score = 7,                                                │  │
+│   │        needs_revision = False                                                │  │
+│   │    )                                                                         │  │
+│   │  + needs_revision = False                                                    │  │
+│   │  + revision_count = 0                                                        │  │
 │   └─────────────────────────────────────────────────────────────────────────────┘   │
-│                                        │                                             │
-│                                        ▼                                             │
-│   PHASE 8: QA SCORING                                                                │
-│   ──────────────────                                                                 │
-│                                                                                      │
+│                                        │                                            │
+│                                        ▼                                            │
+│   PHASE 8: QA SCORING                                                               │
+│   ──────────────────                                                                │
+│                                                                                     │
 │   ┌─────────────────────────────────────────────────────────────────────────────┐   │
-│   │  + qa_scores = QAScores(                                                     │   │
-│   │        empathy = 8.0,                                                        │   │
-│   │        professionalism = 9.0,                                                │   │
-│   │        resolution = 8.5,                                                     │   │
-│   │        tone = 8.0,                                                           │   │
-│   │        overall = 8.4                                                         │   │
-│   │    )                                                                         │   │
-│   │  + execution_path = ["validation", "intake", "transcription",                │   │
-│   │                      "abuse_detection", "summarization", "critic",           │   │
-│   │                      "qa_scoring"]                                           │   │
+│   │  + qa_scores = QAScores(                                                     │  │
+│   │        empathy = 8.0,                                                        │  │
+│   │        professionalism = 9.0,                                                │  │
+│   │        resolution = 8.5,                                                     │  │
+│   │        tone = 8.0,                                                           │  │
+│   │        overall = 8.4                                                         │  │
+│   │    )                                                                         │  │
+│   │  + execution_path = ["validation", "intake", "transcription",                │  │
+│   │                      "abuse_detection", "summarization", "critic",           │  │
+│   │                      "qa_scoring"]                                           │  │
 │   └─────────────────────────────────────────────────────────────────────────────┘   │
-│                                                                                      │
-│   FINAL STATE: Complete state object with all outputs                                │
-│                                                                                      │
+│                                                                                     │
+│   FINAL STATE: Complete state object with all outputs                               │
+│                                                                                     │
 └─────────────────────────────────────────────────────────────────────────────────────┘
 ```
 
@@ -1140,60 +1140,60 @@ All data structures use Pydantic for validation and type safety:
 ```
 ┌─────────────────────────────────────────────────────────────────────────────────────┐
 │                           PYDANTIC DATA MODELS                                      │
-│                                                                                      │
+│                                                                                     │
 │  ┌─────────────────────────────────────────────────────────────────────────────┐    │
-│  │ ENUMS                                                                        │    │
+│  │ ENUMS                                                                        │   │
 │  ├─────────────────────────────────────────────────────────────────────────────┤    │
-│  │                                                                              │    │
-│  │  Sentiment             ResolutionStatus        AbuseType                     │    │
-│  │  ──────────            ────────────────        ─────────                     │    │
-│  │  • POSITIVE            • RESOLVED              • PROFANITY                   │    │
-│  │  • NEUTRAL             • UNRESOLVED            • THREAT                      │    │
-│  │  • NEGATIVE            • ESCALATED             • HARASSMENT                  │    │
-│  │                                                • DISCRIMINATION              │    │
-│  │                                                • NONE                        │    │
-│  │                                                                              │    │
-│  │  AbuseSeverity                                                               │    │
-│  │  ──────────────                                                              │    │
-│  │  • LOW • MEDIUM • HIGH • CRITICAL • NONE                                     │    │
-│  │                                                                              │    │
+│  │                                                                              │   │
+│  │  Sentiment             ResolutionStatus        AbuseType                     │   │
+│  │  ──────────            ────────────────        ─────────                     │   │
+│  │  • POSITIVE            • RESOLVED              • PROFANITY                   │   │
+│  │  • NEUTRAL             • UNRESOLVED            • THREAT                      │   │
+│  │  • NEGATIVE            • ESCALATED             • HARASSMENT                  │   │
+│  │                                                • DISCRIMINATION              │   │
+│  │                                                • NONE                        │   │
+│  │                                                                              │   │
+│  │  AbuseSeverity                                                               │   │
+│  │  ──────────────                                                              │   │
+│  │  • LOW • MEDIUM • HIGH • CRITICAL • NONE                                     │   │
+│  │                                                                              │   │
 │  └─────────────────────────────────────────────────────────────────────────────┘    │
-│                                                                                      │
+│                                                                                     │
 │  ┌─────────────────────────────────────────────────────────────────────────────┐    │
-│  │ DATA MODELS                                                                  │    │
+│  │ DATA MODELS                                                                  │   │
 │  ├─────────────────────────────────────────────────────────────────────────────┤    │
-│  │                                                                              │    │
-│  │  CallMetadata              TranscriptData          CallSummary               │    │
-│  │  ────────────              ──────────────          ───────────               │    │
-│  │  • call_id: str            • segments: List[]      • brief_summary: str      │    │
-│  │  • timestamp: datetime     • full_text: str        • key_points: List[str]   │    │
-│  │  • duration_seconds: float • language: str         • action_items: List[str] │    │
-│  │  • input_type: str         • confidence: float     • customer_intent: str    │    │
-│  │  • file_name: str          (0.0 - 1.0)            • sentiment: Sentiment     │    │
-│  │                                                    • resolution_status       │    │
-│  │                                                    • topics: List[str]       │    │
-│  │                                                                              │    │
-│  │  QAScores                  SummaryCritique         AbuseFlag                 │    │
-│  │  ────────                  ───────────────         ─────────                 │    │
-│  │  • empathy: float          • faithfulness: int     • detected: bool          │    │
-│  │  • professionalism: float  • completeness: int     • speaker: str            │    │
-│  │  • resolution: float       • conciseness: int      • abuse_type: List[]      │    │
-│  │  • tone: float             • needs_revision: bool  • severity: Severity      │    │
-│  │  • comments: str           • revision_instructions • evidence: List[str]     │    │
-│  │  • overall: float (calc)   • feedback: str         • recommended_action      │    │
-│  │                                                    • requires_escalation     │    │
-│  │                                                                              │    │
-│  │  InputValidationResult                                                       │    │
-│  │  ─────────────────────                                                       │    │
-│  │  • is_valid: bool                                                            │    │
-│  │  • confidence: float                                                         │    │
-│  │  • input_type_detected: str                                                  │    │
-│  │  • issues: List[str]                                                         │    │
-│  │  • warnings: List[str]                                                       │    │
-│  │  • rejection_reason: str                                                     │    │
-│  │                                                                              │    │
+│  │                                                                              │   │
+│  │  CallMetadata              TranscriptData          CallSummary               │   │
+│  │  ────────────              ──────────────          ───────────               │   │
+│  │  • call_id: str            • segments: List[]      • brief_summary: str      │   │
+│  │  • timestamp: datetime     • full_text: str        • key_points: List[str]   │   │
+│  │  • duration_seconds: float • language: str         • action_items: List[str] │   │
+│  │  • input_type: str         • confidence: float     • customer_intent: str    │   │
+│  │  • file_name: str          (0.0 - 1.0)            • sentiment: Sentiment     │   │
+│  │                                                    • resolution_status       │   │
+│  │                                                    • topics: List[str]       │   │
+│  │                                                                              │   │
+│  │  QAScores                  SummaryCritique         AbuseFlag                 │   │
+│  │  ────────                  ───────────────         ─────────                 │   │
+│  │  • empathy: float          • faithfulness: int     • detected: bool          │   │
+│  │  • professionalism: float  • completeness: int     • speaker: str            │   │
+│  │  • resolution: float       • conciseness: int      • abuse_type: List[]      │   │
+│  │  • tone: float             • needs_revision: bool  • severity: Severity      │   │
+│  │  • comments: str           • revision_instructions • evidence: List[str]     │   │
+│  │  • overall: float (calc)   • feedback: str         • recommended_action      │   │
+│  │                                                    • requires_escalation     │   │
+│  │                                                                              │   │
+│  │  InputValidationResult                                                       │   │
+│  │  ─────────────────────                                                       │   │
+│  │  • is_valid: bool                                                            │   │
+│  │  • confidence: float                                                         │   │
+│  │  • input_type_detected: str                                                  │   │
+│  │  • issues: List[str]                                                         │   │
+│  │  • warnings: List[str]                                                       │   │
+│  │  • rejection_reason: str                                                     │   │
+│  │                                                                              │   │
 │  └─────────────────────────────────────────────────────────────────────────────┘    │
-│                                                                                      │
+│                                                                                     │
 └─────────────────────────────────────────────────────────────────────────────────────┘
 ```
 
@@ -1219,41 +1219,41 @@ Guardrails are protective mechanisms that ensure input quality and content safet
 ```
 ┌─────────────────────────────────────────────────────────────────────────────────────┐
 │                           GUARDRAILS ARCHITECTURE                                   │
-│                                                                                      │
-│                              ┌───────────────────┐                                   │
-│                              │     USER INPUT    │                                   │
-│                              │  (transcript/     │                                   │
-│                              │   audio file)     │                                   │
-│                              └─────────┬─────────┘                                   │
-│                                        │                                             │
-│                                        ▼                                             │
+│                                                                                     │
+│                              ┌───────────────────┐                                  │
+│                              │     USER INPUT    │                                  │
+│                              │  (transcript/     │                                  │
+│                              │   audio file)     │                                  │
+│                              └─────────┬─────────┘                                  │
+│                                        │                                            │
+│                                        ▼                                            │
 │   ┌─────────────────────────────────────────────────────────────────────────────┐   │
-│   │                         GUARDRAIL LAYER 1                                    │   │
-│   │                      INPUT VALIDATION AGENT                                  │   │
-│   │                                                                              │   │
+│   │                         GUARDRAIL LAYER 1                                    │  │
+│   │                      INPUT VALIDATION AGENT                                  │  │
+│   │                                                                              │  │
 │   │   ┌────────────┐ ┌────────────┐ ┌────────────┐ ┌────────────┐               │   │
 │   │   │   Word     │ │  Structure │ │   Spam     │ │  Special   │               │   │
 │   │   │   Count    │ │   Check    │ │ Detection  │ │   Chars    │               │   │
 │   │   │  10-5000   │ │  Speaker   │ │  Vocab     │ │  < 10%     │               │   │
 │   │   │   words    │ │  Labels    │ │ Diversity  │ │  ratio     │               │   │
 │   │   └────────────┘ └────────────┘ └────────────┘ └────────────┘               │   │
-│   │                                                                              │   │
+│   │                                                                              │  │
 │   │   OUTCOME: ✓ PASS → Continue  |  ✗ FAIL → Stop & Return Error               │   │
-│   │                                                                              │   │
+│   │                                                                              │  │
 │   └─────────────────────────────────────────────────────────────────────────────┘   │
-│                                        │                                             │
-│                                   [If valid]                                         │
-│                                        ▼                                             │
-│                           ┌─────────────────────────┐                                │
-│                           │    CORE PROCESSING      │                                │
-│                           │  Intake → Transcription │                                │
-│                           └────────────┬────────────┘                                │
-│                                        │                                             │
-│                                        ▼                                             │
+│                                        │                                            │
+│                                   [If valid]                                        │
+│                                        ▼                                            │
+│                           ┌─────────────────────────┐                               │
+│                           │    CORE PROCESSING      │                               │
+│                           │  Intake → Transcription │                               │
+│                           └────────────┬────────────┘                               │
+│                                        │                                            │
+│                                        ▼                                            │
 │   ┌─────────────────────────────────────────────────────────────────────────────┐   │
-│   │                         GUARDRAIL LAYER 2                                    │   │
-│   │                      ABUSE DETECTION AGENT                                   │   │
-│   │                                                                              │   │
+│   │                         GUARDRAIL LAYER 2                                    │  │
+│   │                      ABUSE DETECTION AGENT                                   │  │
+│   │                                                                              │  │
 │   │   ┌────────────┐ ┌────────────┐ ┌────────────┐ ┌────────────┐               │   │
 │   │   │ PROFANITY  │ │  THREATS   │ │ HARASSMENT │ │HATE SPEECH │               │   │
 │   │   │            │ │            │ │            │ │            │               │   │
@@ -1261,18 +1261,18 @@ Guardrails are protective mechanisms that ensure input quality and content safet
 │   │   │ Vulgar     │ │ Physical   │ │ attacks,   │ │ Gender,    │               │   │
 │   │   │ language   │ │ threats    │ │ Insults    │ │ Religion   │               │   │
 │   │   └────────────┘ └────────────┘ └────────────┘ └────────────┘               │   │
-│   │                                                                              │   │
+│   │                                                                              │  │
 │   │   OUTCOME: Flag & Continue (doesn't block) → Abuse info in report           │   │
-│   │                                                                              │   │
+│   │                                                                              │  │
 │   └─────────────────────────────────────────────────────────────────────────────┘   │
-│                                        │                                             │
-│                                        ▼                                             │
-│                           ┌─────────────────────────┐                                │
-│                           │   CONTINUE PROCESSING   │                                │
-│                           │ Summarization → Critic  │                                │
-│                           │ → QA Scoring → END      │                                │
-│                           └─────────────────────────┘                                │
-│                                                                                      │
+│                                        │                                            │
+│                                        ▼                                            │
+│                           ┌─────────────────────────┐                               │
+│                           │   CONTINUE PROCESSING   │                               │
+│                           │ Summarization → Critic  │                               │
+│                           │ → QA Scoring → END      │                               │
+│                           └─────────────────────────┘                               │
+│                                                                                     │
 └─────────────────────────────────────────────────────────────────────────────────────┘
 ```
 
@@ -1281,33 +1281,33 @@ Guardrails are protective mechanisms that ensure input quality and content safet
 ```
 ┌─────────────────────────────────────────────────────────────────────────────────────┐
 │                         INPUT VALIDATION CHECKS                                     │
-│                                                                                      │
-│   CHECK              THRESHOLD              ACTION                                   │
-│   ─────              ─────────              ──────                                   │
-│                                                                                      │
-│   Word Count         < 10 words             ❌ HARD REJECT                           │
-│   (too short)        "Input too short"      Stop processing                          │
-│                                                                                      │
-│   Word Count         > 5000 words           ❌ HARD REJECT                           │
-│   (too long)         "Input too long"       Stop processing                          │
-│                                                                                      │
-│   Structure          No ":" characters      ⚠️ WARNING                               │
-│   (no speaker        when > 20 words        "No speaker labels detected"             │
-│    labels)                                  Continue processing                      │
-│                                                                                      │
-│   Special Chars      > 10% of text          ⚠️ WARNING                               │
-│   (corrupted?)       is special chars       "High special character ratio"           │
-│                                             Continue processing                      │
-│                                                                                      │
-│   Vocabulary         < 50% unique           ⚠️ WARNING                               │
-│   Diversity          words                  "Low vocabulary diversity                │
-│   (spam?)                                    (possible spam)"                        │
-│                                             Continue processing                      │
-│                                                                                      │
-│   Line Count         Single line with       ⚠️ WARNING                               │
-│                      > 50 words             "May not be conversation"                │
-│                                             Continue processing                      │
-│                                                                                      │
+│                                                                                     │
+│   CHECK              THRESHOLD              ACTION                                  │
+│   ─────              ─────────              ──────                                  │
+│                                                                                     │
+│   Word Count         < 10 words             ❌ HARD REJECT                          │
+│   (too short)        "Input too short"      Stop processing                         │
+│                                                                                     │
+│   Word Count         > 5000 words           ❌ HARD REJECT                          │
+│   (too long)         "Input too long"       Stop processing                         │
+│                                                                                     │
+│   Structure          No ":" characters      ⚠️ WARNING                              │
+│   (no speaker        when > 20 words        "No speaker labels detected"            │
+│    labels)                                  Continue processing                     │
+│                                                                                     │
+│   Special Chars      > 10% of text          ⚠️ WARNING                              │
+│   (corrupted?)       is special chars       "High special character ratio"          │
+│                                             Continue processing                     │
+│                                                                                     │
+│   Vocabulary         < 50% unique           ⚠️ WARNING                              │
+│   Diversity          words                  "Low vocabulary diversity               │
+│   (spam?)                                    (possible spam)"                       │
+│                                             Continue processing                     │
+│                                                                                     │
+│   Line Count         Single line with       ⚠️ WARNING                              │
+│                      > 50 words             "May not be conversation"               │
+│                                             Continue processing                     │
+│                                                                                     │
 └─────────────────────────────────────────────────────────────────────────────────────┘
 ```
 
@@ -1316,40 +1316,40 @@ Guardrails are protective mechanisms that ensure input quality and content safet
 ```
 ┌─────────────────────────────────────────────────────────────────────────────────────┐
 │                         ABUSE DETECTION MATRIX                                      │
-│                                                                                      │
+│                                                                                     │
 │   ┌─────────────────────────────────────────────────────────────────────────────┐   │
-│   │                                                                              │   │
-│   │   CATEGORY        EXAMPLES                               SEVERITY RANGE      │   │
-│   │   ────────        ────────                               ──────────────      │   │
-│   │                                                                              │   │
-│   │   PROFANITY       "bullshit", "damn", "crap"             🟡 LOW (1-3)        │   │
-│   │                   "f*ck", "sh*t", "a**hole"              🟠 MED (4-6)        │   │
-│   │                                                          🔴 HIGH (7-10)      │   │
-│   │                                                                              │   │
-│   │   THREATS         "I'll report this to authorities"      🟡 LOW (1-3)        │   │
-│   │                   "I'll sue you", "get a lawyer"         🟠 MED (4-6)        │   │
-│   │                   "I'll come to your office"             🔴 HIGH (7-10)      │   │
-│   │                   Physical harm implications                                 │   │
-│   │                                                                              │   │
+│   │                                                                              │  │
+│   │   CATEGORY        EXAMPLES                               SEVERITY RANGE      │  │
+│   │   ────────        ────────                               ──────────────      │  │
+│   │                                                                              │  │
+│   │   PROFANITY       "bullshit", "damn", "crap"             🟡 LOW (1-3)        │  │
+│   │                   "f*ck", "sh*t", "a**hole"              🟠 MED (4-6)        │  │
+│   │                                                          🔴 HIGH (7-10)      │  │
+│   │                                                                              │  │
+│   │   THREATS         "I'll report this to authorities"      🟡 LOW (1-3)        │  │
+│   │                   "I'll sue you", "get a lawyer"         🟠 MED (4-6)        │  │
+│   │                   "I'll come to your office"             🔴 HIGH (7-10)      │  │
+│   │                   Physical harm implications                                 │  │
+│   │                                                                              │  │
 │   │   HARASSMENT      "This is frustrating" (not abuse)      ✓ Not flagged      │   │
-│   │                   "You're incompetent"                   🟡 LOW (1-3)        │   │
-│   │                   "You're an idiot"                      🟠 MED (4-6)        │   │
-│   │                   Repeated personal attacks              🔴 HIGH (7-10)      │   │
-│   │                                                                              │   │
-│   │   HATE SPEECH     Stereotyping                           🟠 MED (4-6)        │   │
-│   │                   Racial/ethnic slurs                    🔴 HIGH (7-10)      │   │
-│   │                   Xenophobic comments                    🔴 HIGH (7-10)      │   │
-│   │                   Discrimination based on identity       🔴 HIGH (7-10)      │   │
-│   │                                                                              │   │
+│   │                   "You're incompetent"                   🟡 LOW (1-3)        │  │
+│   │                   "You're an idiot"                      🟠 MED (4-6)        │  │
+│   │                   Repeated personal attacks              🔴 HIGH (7-10)      │  │
+│   │                                                                              │  │
+│   │   HATE SPEECH     Stereotyping                           🟠 MED (4-6)        │  │
+│   │                   Racial/ethnic slurs                    🔴 HIGH (7-10)      │  │
+│   │                   Xenophobic comments                    🔴 HIGH (7-10)      │  │
+│   │                   Discrimination based on identity       🔴 HIGH (7-10)      │  │
+│   │                                                                              │  │
 │   └─────────────────────────────────────────────────────────────────────────────┘   │
-│                                                                                      │
-│   IMPORTANT: Normal frustration is NOT abuse                                         │
-│   ───────────────────────────────────────────                                        │
-│   • "I'm very upset about this" → ✓ Not flagged                                      │
-│   • "This is unacceptable service" → ✓ Not flagged                                   │
-│   • "I've been waiting for hours" → ✓ Not flagged                                    │
-│   • "You people are all the same" → ⚠️ Flagged (harassment)                          │
-│                                                                                      │
+│                                                                                     │
+│   IMPORTANT: Normal frustration is NOT abuse                                        │
+│   ───────────────────────────────────────────                                       │
+│   • "I'm very upset about this" → ✓ Not flagged                                     │
+│   • "This is unacceptable service" → ✓ Not flagged                                  │
+│   • "I've been waiting for hours" → ✓ Not flagged                                   │
+│   • "You people are all the same" → ⚠️ Flagged (harassment)                         │
+│                                                                                     │
 └─────────────────────────────────────────────────────────────────────────────────────┘
 ```
 
@@ -1360,31 +1360,31 @@ The system includes comprehensive test cases to validate guardrail behavior:
 ```
 ┌─────────────────────────────────────────────────────────────────────────────────────┐
 │                         GUARDRAIL TEST SUITE                                        │
-│                         (test_data/guardrail_tests/)                                 │
-│                                                                                      │
-│   FILE                          EXPECTED RESULT                                      │
-│   ────                          ───────────────                                      │
-│                                                                                      │
-│   INPUT VALIDATION TESTS:                                                            │
-│   ───────────────────────                                                            │
-│   01_valid_normal.txt           ✅ Pass validation, no abuse flags                   │
-│   02_too_short.txt              ❌ FAIL validation (< 10 words)                      │
-│   08_spam_repetition.txt        ⚠️ Pass with WARNING (low vocab diversity)           │
-│   10_no_structure.txt           ⚠️ Pass with WARNING (no speaker labels)             │
-│                                                                                      │
-│   ABUSE DETECTION TESTS:                                                             │
-│   ─────────────────────                                                              │
-│   03_profanity.txt              🚨 Detect profanity (low-medium severity)            │
-│   04_threats.txt                🚨 Detect threats (medium-high severity)             │
-│   05_harassment.txt             🚨 Detect harassment (medium severity)               │
-│   06_hate_speech.txt            🚨 Detect hate speech (high severity)                │
-│   07_mixed_abuse.txt            🚨 Detect multiple: profanity + threat + harassment  │
-│                                                                                      │
-│   EDGE CASES:                                                                        │
-│   ───────────                                                                        │
-│   09_frustrated_but_polite.txt  ✅ Pass - Strong frustration WITHOUT abuse           │
-│   11_professional_complaint.txt ✅ Pass - Professional tone complaint                │
-│                                                                                      │
+│                         (test_data/guardrail_tests/)                                │
+│                                                                                     │
+│   FILE                          EXPECTED RESULT                                     │
+│   ────                          ───────────────                                     │
+│                                                                                     │
+│   INPUT VALIDATION TESTS:                                                           │
+│   ───────────────────────                                                           │
+│   01_valid_normal.txt           ✅ Pass validation, no abuse flags                  │
+│   02_too_short.txt              ❌ FAIL validation (< 10 words)                     │
+│   08_spam_repetition.txt        ⚠️ Pass with WARNING (low vocab diversity)          │
+│   10_no_structure.txt           ⚠️ Pass with WARNING (no speaker labels)            │
+│                                                                                     │
+│   ABUSE DETECTION TESTS:                                                            │
+│   ─────────────────────                                                             │
+│   03_profanity.txt              🚨 Detect profanity (low-medium severity)           │
+│   04_threats.txt                🚨 Detect threats (medium-high severity)            │
+│   05_harassment.txt             🚨 Detect harassment (medium severity)              │
+│   06_hate_speech.txt            🚨 Detect hate speech (high severity)               │
+│   07_mixed_abuse.txt            🚨 Detect multiple: profanity + threat + harassment │
+│                                                                                     │
+│   EDGE CASES:                                                                       │
+│   ───────────                                                                       │
+│   09_frustrated_but_polite.txt  ✅ Pass - Strong frustration WITHOUT abuse          │
+│   11_professional_complaint.txt ✅ Pass - Professional tone complaint               │
+│                                                                                     │
 └─────────────────────────────────────────────────────────────────────────────────────┘
 ```
 
@@ -1393,34 +1393,34 @@ The system includes comprehensive test cases to validate guardrail behavior:
 ```
 ┌─────────────────────────────────────────────────────────────────────────────────────┐
 │                      SEVERITY-BASED RESPONSE ACTIONS                                │
-│                                                                                      │
-│   SEVERITY       SPEAKER       ACTION                                                │
-│   ────────       ───────       ──────                                                │
-│                                                                                      │
-│   🟡 LOW         Customer      • Flag in report                                      │
-│                                • Include in summary                                  │
-│                                • Continue processing                                 │
-│                                                                                      │
-│   🟡 LOW         Agent         • Flag for coaching                                   │
-│                                • Add to QA feedback                                  │
-│                                                                                      │
-│   🟠 MEDIUM      Customer      • Flag prominently in report                          │
-│                                • Supervisor notification recommended                 │
-│                                                                                      │
-│   🟠 MEDIUM      Agent         • Flag for coaching (priority)                        │
-│                                • Manager review recommended                          │
-│                                                                                      │
-│   🔴 HIGH        Customer      • Major flag in report                                │
-│                                • Account review recommended                          │
-│                                • Potential escalation trigger                        │
-│                                                                                      │
-│   🔴 HIGH        Agent         • Mandatory HR review                                 │
-│                                • Immediate escalation required                       │
-│                                                                                      │
-│   🔴 CRITICAL    Any           • Immediate escalation                                │
-│                                • Human review required                               │
-│                                • Legal team notification (if threats)                │
-│                                                                                      │
+│                                                                                     │
+│   SEVERITY       SPEAKER       ACTION                                               │
+│   ────────       ───────       ──────                                               │
+│                                                                                     │
+│   🟡 LOW         Customer      • Flag in report                                     │
+│                                • Include in summary                                 │
+│                                • Continue processing                                │
+│                                                                                     │
+│   🟡 LOW         Agent         • Flag for coaching                                  │
+│                                • Add to QA feedback                                 │
+│                                                                                     │
+│   🟠 MEDIUM      Customer      • Flag prominently in report                         │
+│                                • Supervisor notification recommended                │
+│                                                                                     │
+│   🟠 MEDIUM      Agent         • Flag for coaching (priority)                       │
+│                                • Manager review recommended                         │
+│                                                                                     │
+│   🔴 HIGH        Customer      • Major flag in report                               │
+│                                • Account review recommended                         │
+│                                • Potential escalation trigger                       │
+│                                                                                     │
+│   🔴 HIGH        Agent         • Mandatory HR review                                │
+│                                • Immediate escalation required                      │
+│                                                                                     │
+│   🔴 CRITICAL    Any           • Immediate escalation                               │
+│                                • Human review required                              │
+│                                • Legal team notification (if threats)               │
+│                                                                                     │
 └─────────────────────────────────────────────────────────────────────────────────────┘
 ```
 
@@ -1433,45 +1433,45 @@ The system includes comprehensive test cases to validate guardrail behavior:
 ```
 ┌─────────────────────────────────────────────────────────────────────────────────────┐
 │                            TECHNOLOGY STACK                                         │
-│                                                                                      │
+│                                                                                     │
 │   ┌─────────────────────────────────────────────────────────────────────────────┐   │
-│   │  LAYER              TECHNOLOGY           PURPOSE                             │   │
+│   │  LAYER              TECHNOLOGY           PURPOSE                             │  │
 │   ├─────────────────────────────────────────────────────────────────────────────┤   │
-│   │                                                                              │   │
-│   │  ORCHESTRATION      ┌───────────────┐   Multi-agent workflow                 │   │
-│   │                     │   LangGraph   │   State management                     │   │
-│   │                     └───────────────┘   Conditional routing                  │   │
-│   │                                                                              │   │
-│   │  LLM FRAMEWORK      ┌───────────────┐   LLM interactions                     │   │
-│   │                     │  LangChain    │   Prompts & chains                     │   │
-│   │                     └───────────────┘   Tool integration                     │   │
-│   │                                                                              │   │
-│   │  OBSERVABILITY      ┌───────────────┐   Tracing & debugging                  │   │
-│   │                     │  LangSmith    │   Evaluation framework                 │   │
-│   │                     └───────────────┘   Performance monitoring               │   │
-│   │                                                                              │   │
-│   │  MODEL CONTROL      ┌───────────────┐   Model routing                        │   │
-│   │                     │   LiteLLM     │   Cost management                      │   │
-│   │                     └───────────────┘   Fallback chains                      │   │
-│   │                                                                              │   │
-│   │  STRUCTURED DATA    ┌───────────────┐   Schema validation                    │   │
-│   │                     │   Pydantic    │   Type safety                          │   │
-│   │                     └───────────────┘   LLM output parsing                   │   │
-│   │                                                                              │   │
-│   │  TRANSCRIPTION      ┌───────────────┐   Audio to text                        │   │
-│   │                     │ Whisper API   │   Speech recognition                   │   │
-│   │                     └───────────────┘   (Future Phase)                       │   │
-│   │                                                                              │   │
-│   │  UI FRAMEWORK       ┌───────────────┐   Web interface                        │   │
-│   │                     │  Streamlit    │   Interactive dashboard                │   │
-│   │                     └───────────────┘   File upload                          │   │
-│   │                                                                              │   │
-│   │  CONTAINERIZATION   ┌───────────────┐   Development & deployment             │   │
-│   │                     │   Docker      │   Environment consistency              │   │
-│   │                     └───────────────┘   HF Spaces deployment                 │   │
-│   │                                                                              │   │
+│   │                                                                              │  │
+│   │  ORCHESTRATION      ┌───────────────┐   Multi-agent workflow                 │  │
+│   │                     │   LangGraph   │   State management                     │  │
+│   │                     └───────────────┘   Conditional routing                  │  │
+│   │                                                                              │  │
+│   │  LLM FRAMEWORK      ┌───────────────┐   LLM interactions                     │  │
+│   │                     │  LangChain    │   Prompts & chains                     │  │
+│   │                     └───────────────┘   Tool integration                     │  │
+│   │                                                                              │  │
+│   │  OBSERVABILITY      ┌───────────────┐   Tracing & debugging                  │  │
+│   │                     │  LangSmith    │   Evaluation framework                 │  │
+│   │                     └───────────────┘   Performance monitoring               │  │
+│   │                                                                              │  │
+│   │  MODEL CONTROL      ┌───────────────┐   Model routing                        │  │
+│   │                     │   LiteLLM     │   Cost management                      │  │
+│   │                     └───────────────┘   Fallback chains                      │  │
+│   │                                                                              │  │
+│   │  STRUCTURED DATA    ┌───────────────┐   Schema validation                    │  │
+│   │                     │   Pydantic    │   Type safety                          │  │
+│   │                     └───────────────┘   LLM output parsing                   │  │
+│   │                                                                              │  │
+│   │  TRANSCRIPTION      ┌───────────────┐   Audio to text                        │  │
+│   │                     │ Whisper API   │   Speech recognition                   │  │
+│   │                     └───────────────┘   (Future Phase)                       │  │
+│   │                                                                              │  │
+│   │  UI FRAMEWORK       ┌───────────────┐   Web interface                        │  │
+│   │                     │  Streamlit    │   Interactive dashboard                │  │
+│   │                     └───────────────┘   File upload                          │  │
+│   │                                                                              │  │
+│   │  CONTAINERIZATION   ┌───────────────┐   Development & deployment             │  │
+│   │                     │   Docker      │   Environment consistency              │  │
+│   │                     └───────────────┘   HF Spaces deployment                 │  │
+│   │                                                                              │  │
 │   └─────────────────────────────────────────────────────────────────────────────┘   │
-│                                                                                      │
+│                                                                                     │
 └─────────────────────────────────────────────────────────────────────────────────────┘
 ```
 
@@ -1480,29 +1480,29 @@ The system includes comprehensive test cases to validate guardrail behavior:
 ```
 ┌─────────────────────────────────────────────────────────────────────────────────────┐
 │                         MODEL CONFIGURATION                                         │
-│                                                                                      │
-│   AGENT               MODEL              RATIONALE                                   │
-│   ─────               ─────              ─────────                                   │
-│                                                                                      │
-│   Input Validation    Rule-based         No LLM needed - deterministic rules         │
-│                                                                                      │
-│   Intake              Rule-based         Metadata extraction is deterministic        │
-│                                                                                      │
-│   Transcription       pass-through       Text input doesn't need processing          │
-│                       whisper-1          For audio (future)                          │
-│                                                                                      │
-│   Abuse Detection     GPT-4o-mini        Context-aware content moderation            │
-│                       temp=0             Consistent detection                        │
-│                                                                                      │
-│   Summarization       GPT-4o-mini        Structured output generation                │
-│                                          Cost-effective for summaries                │
-│                                                                                      │
-│   Critic              GPT-4o-mini        Quality evaluation                          │
-│                                          Structured critique output                  │
-│                                                                                      │
-│   QA Scoring          GPT-4o-mini        Performance evaluation                      │
-│                                          Consistent rubric application               │
-│                                                                                      │
+│                                                                                     │
+│   AGENT               MODEL              RATIONALE                                  │
+│   ─────               ─────              ─────────                                  │
+│                                                                                     │
+│   Input Validation    Rule-based         No LLM needed - deterministic rules        │
+│                                                                                     │
+│   Intake              Rule-based         Metadata extraction is deterministic       │
+│                                                                                     │
+│   Transcription       pass-through       Text input doesn't need processing         │
+│                       whisper-1          For audio (future)                         │
+│                                                                                     │
+│   Abuse Detection     GPT-4o-mini        Context-aware content moderation           │
+│                       temp=0             Consistent detection                       │
+│                                                                                     │
+│   Summarization       GPT-4o-mini        Structured output generation               │
+│                                          Cost-effective for summaries               │
+│                                                                                     │
+│   Critic              GPT-4o-mini        Quality evaluation                         │
+│                                          Structured critique output                 │
+│                                                                                     │
+│   QA Scoring          GPT-4o-mini        Performance evaluation                     │
+│                                          Consistent rubric application              │
+│                                                                                     │
 └─────────────────────────────────────────────────────────────────────────────────────┘
 ```
 
@@ -1513,15 +1513,15 @@ For optimal quality control, the system is designed to support using different m
 ```
 ┌─────────────────────────────────────────────────────────────────────────────────────┐
 │                    CRITIC INDEPENDENCE PRINCIPLE                                    │
-│                                                                                      │
-│   PROBLEM:                                                                           │
+│                                                                                     │
+│   PROBLEM:                                                                          │
 │   If Model A generates content, Model A critiquing its own output may               │
 │   have blind spots - it might miss the same errors consistently.                    │
-│                                                                                      │
-│   SOLUTION (Recommended for production):                                             │
+│                                                                                     │
+│   SOLUTION (Recommended for production):                                            │
 │   Use a different model family for critique than for generation.                    │
-│                                                                                      │
-│                                                                                      │
+│                                                                                     │
+│                                                                                     │
 │   ┌─────────────────┐         ┌─────────────────┐                                   │
 │   │    GPT-4        │         │    Claude       │                                   │
 │   │  (OpenAI)       │         │  (Anthropic)    │                                   │
@@ -1530,18 +1530,18 @@ For optimal quality control, the system is designed to support using different m
 │   │  Summary        │         │  Summary        │                                   │
 │   │                 │         │                 │                                   │
 │   └─────────────────┘         └─────────────────┘                                   │
-│                                      │                                               │
-│                                      ▼                                               │
-│                        Catches errors GPT-4 might                                    │
-│                        be blind to                                                   │
-│                                                                                      │
-│   CURRENT IMPLEMENTATION:                                                            │
+│                                      │                                              │
+│                                      ▼                                              │
+│                        Catches errors GPT-4 might                                   │
+│                        be blind to                                                  │
+│                                                                                     │
+│   CURRENT IMPLEMENTATION:                                                           │
 │   Both use GPT-4o-mini for cost efficiency (development phase)                      │
-│                                                                                      │
-│   PRODUCTION RECOMMENDATION:                                                         │
+│                                                                                     │
+│   PRODUCTION RECOMMENDATION:                                                        │
 │   Summarization: GPT-4 (OpenAI)                                                     │
 │   Critic: Claude Sonnet (Anthropic)                                                 │
-│                                                                                      │
+│                                                                                     │
 └─────────────────────────────────────────────────────────────────────────────────────┘
 ```
 
@@ -1554,47 +1554,47 @@ For optimal quality control, the system is designed to support using different m
 ```
 ┌─────────────────────────────────────────────────────────────────────────────────────┐
 │                         LANGSMITH OBSERVABILITY                                     │
-│                                                                                      │
+│                                                                                     │
 │   ┌─────────────────────────────────────────────────────────────────────────────┐   │
-│   │                                                                              │   │
-│   │   CAPABILITY           USE CASE                                              │   │
-│   │   ──────────           ────────                                              │   │
-│   │                                                                              │   │
-│   │   Tracing              Track every agent call, LLM invocation                │   │
-│   │                        See complete execution flow                           │   │
-│   │                                                                              │   │
-│   │   Debugging            Visual debugging of agent handoffs                    │   │
-│   │                        Inspect supervisor decisions                          │   │
-│   │                        View intermediate states                              │   │
-│   │                                                                              │   │
-│   │   Monitoring           Latency tracking per agent                            │   │
-│   │                        Token usage and costs                                 │   │
-│   │                        Error rates                                           │   │
-│   │                                                                              │   │
-│   │   Replay               Re-run failed executions                              │   │
-│   │                        Debug with exact inputs                               │   │
-│   │                                                                              │   │
-│   │   Datasets             Store test cases                                      │   │
-│   │                        Version control for evaluations                       │   │
-│   │                                                                              │   │
-│   │   Evaluation           Automated quality assessment                          │   │
-│   │                        LLM-as-judge evaluators                               │   │
-│   │                                                                              │   │
-│   │   Feedback             Collect human ratings                                 │   │
-│   │                        Track improvements over time                          │   │
-│   │                                                                              │   │
+│   │                                                                              │  │
+│   │   CAPABILITY           USE CASE                                              │  │
+│   │   ──────────           ────────                                              │  │
+│   │                                                                              │  │
+│   │   Tracing              Track every agent call, LLM invocation                │  │
+│   │                        See complete execution flow                           │  │
+│   │                                                                              │  │
+│   │   Debugging            Visual debugging of agent handoffs                    │  │
+│   │                        Inspect supervisor decisions                          │  │
+│   │                        View intermediate states                              │  │
+│   │                                                                              │  │
+│   │   Monitoring           Latency tracking per agent                            │  │
+│   │                        Token usage and costs                                 │  │
+│   │                        Error rates                                           │  │
+│   │                                                                              │  │
+│   │   Replay               Re-run failed executions                              │  │
+│   │                        Debug with exact inputs                               │  │
+│   │                                                                              │  │
+│   │   Datasets             Store test cases                                      │  │
+│   │                        Version control for evaluations                       │  │
+│   │                                                                              │  │
+│   │   Evaluation           Automated quality assessment                          │  │
+│   │                        LLM-as-judge evaluators                               │  │
+│   │                                                                              │  │
+│   │   Feedback             Collect human ratings                                 │  │
+│   │                        Track improvements over time                          │  │
+│   │                                                                              │  │
 │   └─────────────────────────────────────────────────────────────────────────────┘   │
-│                                                                                      │
-│   TRACE METADATA CAPTURED:                                                           │
-│   ─────────────────────────                                                          │
-│   • Call ID / Session ID                                                             │
-│   • Input file type (audio/transcript)                                               │
-│   • Agent execution path (actual route taken)                                        │
-│   • Revision counts                                                                  │
-│   • Model used (including fallbacks)                                                 │
-│   • Token counts and costs                                                           │
-│   • Validation/guardrail results                                                     │
-│                                                                                      │
+│                                                                                     │
+│   TRACE METADATA CAPTURED:                                                          │
+│   ─────────────────────────                                                         │
+│   • Call ID / Session ID                                                            │
+│   • Input file type (audio/transcript)                                              │
+│   • Agent execution path (actual route taken)                                       │
+│   • Revision counts                                                                 │
+│   • Model used (including fallbacks)                                                │
+│   • Token counts and costs                                                          │
+│   • Validation/guardrail results                                                    │
+│                                                                                     │
 └─────────────────────────────────────────────────────────────────────────────────────┘
 ```
 
@@ -1603,41 +1603,41 @@ For optimal quality control, the system is designed to support using different m
 ```
 ┌─────────────────────────────────────────────────────────────────────────────────────┐
 │                         EVALUATION METRICS                                          │
-│                                                                                      │
-│   EVALUATOR               TYPE            TARGET AGENT      METRIC                   │
-│   ─────────               ────            ────────────      ──────                   │
-│                                                                                      │
-│   Faithfulness            LLM-as-Judge    Summarization     Summary matches          │
-│                                                             transcript (0-10)        │
-│                                                                                      │
-│   Completeness            LLM-as-Judge    Summarization     All key points           │
-│                                                             captured (0-10)          │
-│                                                                                      │
-│   Conciseness             LLM-as-Judge    Summarization     Appropriately            │
-│                                                             brief (0-10)             │
-│                                                                                      │
-│   QA Score Validity       Heuristic       QA Scoring        Scores in 0-10           │
-│                                                             range, fields present    │
-│                                                                                      │
-│   Rubric Consistency      LLM-as-Judge    QA Scoring        Scores align with        │
-│                                                             rubric definitions       │
-│                                                                                      │
-│   Schema Validation       Heuristic       Intake            Pydantic validation      │
-│                                                             pass rate                │
-│                                                                                      │
-│   Latency                 Heuristic       All               Per-agent and total      │
-│                                                             pipeline latency         │
-│                                                                                      │
-│   Routing Efficiency      Custom          Supervisor        Optimal path taken,      │
-│                                                             unnecessary loops        │
-│                                                             avoided                  │
-│                                                                                      │
-│   Revision Effectiveness  Custom          Critic Loop       Did revisions            │
-│                                                             improve quality?         │
-│                                                                                      │
-│   Abuse Detection         Custom          Abuse Guardrail   Flagged correctly        │
-│   Precision                                                 vs false positives       │
-│                                                                                      │
+│                                                                                     │
+│   EVALUATOR               TYPE            TARGET AGENT      METRIC                  │
+│   ─────────               ────            ────────────      ──────                  │
+│                                                                                     │
+│   Faithfulness            LLM-as-Judge    Summarization     Summary matches         │
+│                                                             transcript (0-10)       │
+│                                                                                     │
+│   Completeness            LLM-as-Judge    Summarization     All key points          │
+│                                                             captured (0-10)         │
+│                                                                                     │
+│   Conciseness             LLM-as-Judge    Summarization     Appropriately           │
+│                                                             brief (0-10)            │
+│                                                                                     │
+│   QA Score Validity       Heuristic       QA Scoring        Scores in 0-10          │
+│                                                             range, fields present   │
+│                                                                                     │
+│   Rubric Consistency      LLM-as-Judge    QA Scoring        Scores align with       │
+│                                                             rubric definitions      │
+│                                                                                     │
+│   Schema Validation       Heuristic       Intake            Pydantic validation     │
+│                                                             pass rate               │
+│                                                                                     │
+│   Latency                 Heuristic       All               Per-agent and total     │
+│                                                             pipeline latency        │
+│                                                                                     │
+│   Routing Efficiency      Custom          Supervisor        Optimal path taken,     │
+│                                                             unnecessary loops       │
+│                                                             avoided                 │
+│                                                                                     │
+│   Revision Effectiveness  Custom          Critic Loop       Did revisions           │
+│                                                             improve quality?        │
+│                                                                                     │
+│   Abuse Detection         Custom          Abuse Guardrail   Flagged correctly       │
+│   Precision                                                 vs false positives      │
+│                                                                                     │
 └─────────────────────────────────────────────────────────────────────────────────────┘
 ```
 
@@ -1650,45 +1650,45 @@ For optimal quality control, the system is designed to support using different m
 ```
 ┌─────────────────────────────────────────────────────────────────────────────────────┐
 │                       DEPLOYMENT ARCHITECTURE                                       │
-│                                                                                      │
+│                                                                                     │
 │   ┌─────────────────────────────────────────────────────────────────────────────┐   │
-│   │                         HUGGING FACE SPACES                                  │   │
-│   │                                                                              │   │
+│   │                         HUGGING FACE SPACES                                  │  │
+│   │                                                                              │  │
 │   │   ┌─────────────────────────────────────────────────────────────────────┐   │   │
-│   │   │                     DOCKER CONTAINER                                 │   │   │
-│   │   │                                                                      │   │   │
+│   │   │                     DOCKER CONTAINER                                 │   │  │
+│   │   │                                                                      │   │  │
 │   │   │   ┌─────────────────────────────────────────────────────────────┐   │   │   │
-│   │   │   │  Python 3.11 Runtime                                         │   │   │   │
-│   │   │   │                                                              │   │   │   │
+│   │   │   │  Python 3.11 Runtime                                         │   │   │  │
+│   │   │   │                                                              │   │   │  │
 │   │   │   │  ┌──────────────┐  ┌──────────────┐  ┌──────────────────┐   │   │   │   │
 │   │   │   │  │  Streamlit   │  │  LangGraph   │  │  Agent Module    │   │   │   │   │
 │   │   │   │  │  (Port 7860) │  │  Workflow    │  │  (7 Agents)      │   │   │   │   │
 │   │   │   │  └──────────────┘  └──────────────┘  └──────────────────┘   │   │   │   │
-│   │   │   │                                                              │   │   │   │
+│   │   │   │                                                              │   │   │  │
 │   │   │   └─────────────────────────────────────────────────────────────┘   │   │   │
-│   │   │                                                                      │   │   │
-│   │   │   ENVIRONMENT VARIABLES (HF Secrets):                                │   │   │
-│   │   │   • OPENAI_API_KEY                                                   │   │   │
-│   │   │   • LANGCHAIN_API_KEY                                                │   │   │
-│   │   │   • LANGCHAIN_TRACING_V2=true                                        │   │   │
-│   │   │   • LANGCHAIN_PROJECT=call-center-assistant                          │   │   │
-│   │   │                                                                      │   │   │
+│   │   │                                                                      │   │  │
+│   │   │   ENVIRONMENT VARIABLES (HF Secrets):                                │   │  │
+│   │   │   • OPENAI_API_KEY                                                   │   │  │
+│   │   │   • LANGCHAIN_API_KEY                                                │   │  │
+│   │   │   • LANGCHAIN_TRACING_V2=true                                        │   │  │
+│   │   │   • LANGCHAIN_PROJECT=call-center-assistant                          │   │  │
+│   │   │                                                                      │   │  │
 │   │   └─────────────────────────────────────────────────────────────────────┘   │   │
-│   │                                                                              │   │
-│   │   PUBLIC URL: https://huggingface.co/spaces/[username]/call-center-assistant │   │
-│   │                                                                              │   │
+│   │                                                                              │  │
+│   │   PUBLIC URL: https://huggingface.co/spaces/[username]/call-center-assistant │  │
+│   │                                                                              │  │
 │   └─────────────────────────────────────────────────────────────────────────────┘   │
-│                                                                                      │
-│   EXTERNAL SERVICES:                                                                 │
-│   ──────────────────                                                                 │
-│                                                                                      │
+│                                                                                     │
+│   EXTERNAL SERVICES:                                                                │
+│   ──────────────────                                                                │
+│                                                                                     │
 │   ┌──────────────────┐    ┌──────────────────┐    ┌──────────────────┐              │
 │   │    OpenAI API    │    │   LangSmith      │    │  Anthropic API   │              │
 │   │                  │    │                  │    │   (optional)     │              │
 │   │  • GPT-4o-mini   │    │  • Tracing       │    │  • Claude        │              │
 │   │  • Whisper       │    │  • Evaluation    │    │                  │              │
 │   └──────────────────┘    └──────────────────┘    └──────────────────┘              │
-│                                                                                      │
+│                                                                                     │
 └─────────────────────────────────────────────────────────────────────────────────────┘
 ```
 
@@ -1727,33 +1727,33 @@ CMD ["streamlit", "run", "app.py", "--server.port=7860", "--server.address=0.0.0
 ```
 ┌─────────────────────────────────────────────────────────────────────────────────────┐
 │                         DEVELOPMENT WORKFLOW                                        │
-│                                                                                      │
-│   ┌─────────────────┐                                                                │
-│   │ Local Dev       │                                                                │
-│   │ (venv)          │  ← Daily development                                           │
-│   │ Fast iteration  │    source venv/bin/activate                                    │
-│   │                 │    streamlit run app.py                                        │
-│   └────────┬────────┘                                                                │
-│            │                                                                         │
-│            ▼                                                                         │
-│   ┌─────────────────┐                                                                │
-│   │ Docker Test     │  ← Before committing                                           │
-│   │ (local)         │    docker build -t call-center-assistant .                     │
-│   │ Verify build    │    docker run -p 7860:7860 call-center-assistant               │
-│   └────────┬────────┘                                                                │
-│            │                                                                         │
-│            ▼                                                                         │
-│   ┌─────────────────┐                                                                │
-│   │ Git Push        │  ← Commit & push                                               │
-│   │ GitHub/HF       │    git push origin main                                        │
-│   └────────┬────────┘                                                                │
-│            │                                                                         │
-│            ▼                                                                         │
-│   ┌─────────────────┐                                                                │
-│   │ HF Spaces       │  ← Auto-deploy                                                 │
-│   │ Production      │    Automatic build on push                                     │
-│   └─────────────────┘                                                                │
-│                                                                                      │
+│                                                                                     │
+│   ┌─────────────────┐                                                               │
+│   │ Local Dev       │                                                               │
+│   │ (venv)          │  ← Daily development                                          │
+│   │ Fast iteration  │    source venv/bin/activate                                   │
+│   │                 │    streamlit run app.py                                       │
+│   └────────┬────────┘                                                               │
+│            │                                                                        │
+│            ▼                                                                        │
+│   ┌─────────────────┐                                                               │
+│   │ Docker Test     │  ← Before committing                                          │
+│   │ (local)         │    docker build -t call-center-assistant .                    │
+│   │ Verify build    │    docker run -p 7860:7860 call-center-assistant              │
+│   └────────┬────────┘                                                               │
+│            │                                                                        │
+│            ▼                                                                        │
+│   ┌─────────────────┐                                                               │
+│   │ Git Push        │  ← Commit & push                                              │
+│   │ GitHub/HF       │    git push origin main                                       │
+│   └────────┬────────┘                                                               │
+│            │                                                                        │
+│            ▼                                                                        │
+│   ┌─────────────────┐                                                               │
+│   │ HF Spaces       │  ← Auto-deploy                                                │
+│   │ Production      │    Automatic build on push                                    │
+│   └─────────────────┘                                                               │
+│                                                                                     │
 └─────────────────────────────────────────────────────────────────────────────────────┘
 ```
 
@@ -1766,20 +1766,20 @@ CMD ["streamlit", "run", "app.py", "--server.port=7860", "--server.address=0.0.0
 ```
 ┌─────────────────────────────────────────────────────────────────────────────────────┐
 │                    PLANNED: n8n-STYLE WORKFLOW ANIMATION                            │
-│                                                                                      │
-│   FEATURES:                                                                          │
-│   • Real-time node highlighting as agents execute                                    │
-│   • Color-coded states: Pending (gray) → Running (amber) → Complete (green)          │
-│   • Animated edges showing data flow direction                                       │
-│   • Loop visualization for revision cycles                                           │
-│   • Interactive: zoom, pan, drag nodes                                               │
-│   • Execution history display                                                        │
-│                                                                                      │
-│   IMPLEMENTATION:                                                                    │
-│   • streamlit-flow-component for graph rendering                                     │
-│   • LangGraph callbacks for animation updates                                        │
-│   • Real-time state synchronization                                                  │
-│                                                                                      │
+│                                                                                     │
+│   FEATURES:                                                                         │
+│   • Real-time node highlighting as agents execute                                   │
+│   • Color-coded states: Pending (gray) → Running (amber) → Complete (green)         │
+│   • Animated edges showing data flow direction                                      │
+│   • Loop visualization for revision cycles                                          │
+│   • Interactive: zoom, pan, drag nodes                                              │
+│   • Execution history display                                                       │
+│                                                                                     │
+│   IMPLEMENTATION:                                                                   │
+│   • streamlit-flow-component for graph rendering                                    │
+│   • LangGraph callbacks for animation updates                                       │
+│   • Real-time state synchronization                                                 │
+│                                                                                     │
 └─────────────────────────────────────────────────────────────────────────────────────┘
 ```
 
@@ -1788,20 +1788,20 @@ CMD ["streamlit", "run", "app.py", "--server.port=7860", "--server.address=0.0.0
 ```
 ┌─────────────────────────────────────────────────────────────────────────────────────┐
 │                    PLANNED: WHISPER API INTEGRATION                                 │
-│                                                                                      │
-│   FEATURES:                                                                          │
-│   • Audio file upload (.wav, .mp3, .m4a)                                             │
-│   • Whisper API transcription                                                        │
-│   • Speaker diarization (who said what)                                              │
-│   • Timestamp extraction                                                             │
-│   • Language detection                                                               │
-│                                                                                      │
-│   AUDIO VALIDATION:                                                                  │
-│   • Duration: 10s - 3600s (1 hour max)                                               │
-│   • File integrity checks                                                            │
-│   • Speech vs music/silence classification                                           │
-│   • Speaker count detection                                                          │
-│                                                                                      │
+│                                                                                     │
+│   FEATURES:                                                                         │
+│   • Audio file upload (.wav, .mp3, .m4a)                                            │
+│   • Whisper API transcription                                                       │
+│   • Speaker diarization (who said what)                                             │
+│   • Timestamp extraction                                                            │
+│   • Language detection                                                              │
+│                                                                                     │
+│   AUDIO VALIDATION:                                                                 │
+│   • Duration: 10s - 3600s (1 hour max)                                              │
+│   • File integrity checks                                                           │
+│   • Speech vs music/silence classification                                          │
+│   • Speaker count detection                                                         │
+│                                                                                     │
 └─────────────────────────────────────────────────────────────────────────────────────┘
 ```
 
@@ -1810,33 +1810,33 @@ CMD ["streamlit", "run", "app.py", "--server.port=7860", "--server.address=0.0.0
 ```
 ┌─────────────────────────────────────────────────────────────────────────────────────┐
 │                         FUTURE ENHANCEMENTS                                         │
-│                                                                                      │
-│   SUPERVISOR AGENT (Full Implementation)                                             │
-│   • Dynamic routing based on state analysis                                          │
-│   • Multi-model reasoning for routing decisions                                      │
-│   • Autonomous escalation decisions                                                  │
-│                                                                                      │
-│   HUMAN ESCALATION                                                                   │
-│   • Terminal node for critical issues                                                │
-│   • Integration with ticketing systems                                               │
-│   • Real-time alerts for high-severity abuse                                         │
-│                                                                                      │
-│   MULTI-MODEL STRATEGY                                                               │
-│   • Claude for critic (different perspective)                                        │
-│   • GPT-4 for summarization (best quality)                                           │
-│   • Cost-optimized model routing                                                     │
-│   • Automatic fallback chains                                                        │
-│                                                                                      │
-│   BATCH PROCESSING                                                                   │
-│   • Process multiple calls in parallel                                               │
-│   • CSV/Excel export of results                                                      │
-│   • Aggregate analytics dashboard                                                    │
-│                                                                                      │
-│   REAL-TIME PROCESSING                                                               │
-│   • Live call analysis                                                               │
-│   • Streaming transcription                                                          │
-│   • Real-time abuse alerts                                                           │
-│                                                                                      │
+│                                                                                     │
+│   SUPERVISOR AGENT (Full Implementation)                                            │
+│   • Dynamic routing based on state analysis                                         │
+│   • Multi-model reasoning for routing decisions                                     │
+│   • Autonomous escalation decisions                                                 │
+│                                                                                     │
+│   HUMAN ESCALATION                                                                  │
+│   • Terminal node for critical issues                                               │
+│   • Integration with ticketing systems                                              │
+│   • Real-time alerts for high-severity abuse                                        │
+│                                                                                     │
+│   MULTI-MODEL STRATEGY                                                              │
+│   • Claude for critic (different perspective)                                       │
+│   • GPT-4 for summarization (best quality)                                          │
+│   • Cost-optimized model routing                                                    │
+│   • Automatic fallback chains                                                       │
+│                                                                                     │
+│   BATCH PROCESSING                                                                  │
+│   • Process multiple calls in parallel                                              │
+│   • CSV/Excel export of results                                                     │
+│   • Aggregate analytics dashboard                                                   │
+│                                                                                     │
+│   REAL-TIME PROCESSING                                                              │
+│   • Live call analysis                                                              │
+│   • Streaming transcription                                                         │
+│   • Real-time abuse alerts                                                          │
+│                                                                                     │
 └─────────────────────────────────────────────────────────────────────────────────────┘
 ```
 
