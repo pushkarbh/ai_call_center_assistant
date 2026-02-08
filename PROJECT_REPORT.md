@@ -77,7 +77,7 @@ The **AI Call Center Assistant** is a **true multi-agent AI system** that automa
 │                              SYSTEM ARCHITECTURE                                    │
 │                                                                                     │
 │  ┌─────────────────────────────────────────────────────────────────────────────┐    │
-│  │                              PRESENTATION LAYER                              │   │
+│  │                              PRESENTATION LAYER                             │    │
 │  │  ┌─────────────────┐  ┌─────────────────┐  ┌─────────────────────────────┐  │    │
 │  │  │   Streamlit     │  │   File Upload   │  │   Results Dashboard         │  │    │
 │  │  │   Web Interface │  │   (.txt/.wav)   │  │   (Summary, QA, Abuse)      │  │    │
@@ -86,13 +86,13 @@ The **AI Call Center Assistant** is a **true multi-agent AI system** that automa
 │                                       │                                             │
 │                                       ▼                                             │
 │  ┌─────────────────────────────────────────────────────────────────────────────┐    │
-│  │                           ORCHESTRATION LAYER                                │   │
-│  │                                                                              │   │
+│  │                           ORCHESTRATION LAYER                               │    │
+│  │                                                                             │    │
 │  │    ┌──────────────────────────────────────────────────────────────────┐     │    │
-│  │    │                     LangGraph StateGraph                          │     │   │
-│  │    │                                                                   │     │   │
+│  │    │                     LangGraph StateGraph                         │     │    │
+│  │    │                                                                  │     │    │
 │  │    │   ┌─────────┐  ┌─────────┐  ┌─────────┐  ┌─────────┐  ┌────────┐ │     │    │
-│  │    │   │Validation│─▶│ Intake  │─▶│Transcrip│─▶│ Abuse   │─▶│Summari-│ │     │   │
+│  │    │   │Validation│─▶│ Intake  │─▶│Transcrip│─▶│ Abuse   │─▶│Summari-││     │    │
 │  │    │   │  Agent  │  │  Agent  │  │  Agent  │  │Detection│  │ zation │ │     │    │
 │  │    │   └─────────┘  └─────────┘  └─────────┘  └─────────┘  └───┬────┘ │     │    │
 │  │    │                                                           │      │     │    │
@@ -102,12 +102,12 @@ The **AI Call Center Assistant** is a **true multi-agent AI system** that automa
 │  │    │                          └─────────┘        └────┬────┘ Revision │     │    │
 │  │    │                                                  └─────Loop──────┘     │    │
 │  │    └──────────────────────────────────────────────────────────────────┘     │    │
-│  │                                                                              │   │
+│  │                                                                             │    │
 │  └─────────────────────────────────────────────────────────────────────────────┘    │
 │                                       │                                             │
 │                                       ▼                                             │
 │  ┌─────────────────────────────────────────────────────────────────────────────┐    │
-│  │                              AI/LLM LAYER                                    │   │
+│  │                              AI/LLM LAYER                                   │    │
 │  │  ┌─────────────┐  ┌─────────────┐  ┌─────────────┐  ┌─────────────────────┐ │    │
 │  │  │  GPT-4o-mini│  │  GPT-4o     │  │  Claude     │  │  Whisper API        │ │    │
 │  │  │  (Summaries)│  │  (Critical) │  │  (Abuse)    │  │  (Transcription)    │ │    │
@@ -116,7 +116,7 @@ The **AI Call Center Assistant** is a **true multi-agent AI system** that automa
 │                                       │                                             │
 │                                       ▼                                             │
 │  ┌─────────────────────────────────────────────────────────────────────────────┐    │
-│  │                          OBSERVABILITY LAYER                                 │   │
+│  │                          OBSERVABILITY LAYER                                │    │
 │  │  ┌─────────────────────────┐  ┌─────────────────────────┐                   │    │
 │  │  │     LangSmith           │  │     LiteLLM             │                   │    │
 │  │  │  • Tracing & Debugging  │  │  • Model Routing        │                   │    │
@@ -154,8 +154,8 @@ LangGraph is a framework for building stateful, multi-actor applications with LL
 
 ```
                             ┌─────────────────────────────────────────────────────┐
-                            │              PHASE 5 WORKFLOW                        │
-                            │          (Guardrails + Revision Loop)                │
+                            │              PHASE 5 WORKFLOW                       │
+                            │          (Guardrails + Revision Loop)               │
                             └─────────────────────────────────────────────────────┘
 
                                               START
@@ -168,7 +168,7 @@ LangGraph is a framework for building stateful, multi-actor applications with LL
                                     └──────────┬──────────┘
                                                │
                                ┌───────────────┴───────────────┐
-                               │    is_valid?                   │
+                               │    is_valid?                  │
                                ▼                               ▼
                           [YES ✓]                         [NO ✗]
                                │                               │
@@ -634,30 +634,30 @@ CONTEXT: [explanation]
 │                                 │                                   │
 │                                 ▼                                   │
 │  ┌──────────────────────────────────────────────────────────────┐   │
-│  │                     CallSummary (Pydantic)                    │  │
+│  │                     CallSummary (Pydantic)                   │   │
 │  ├──────────────────────────────────────────────────────────────┤   │
-│  │                                                               │  │
-│  │  brief_summary: str                                           │  │
-│  │  ├── "2-3 sentence overview of the call"                      │  │
-│  │                                                               │  │
-│  │  key_points: List[str]                                        │  │
-│  │  ├── "3-5 bullet points of important information"             │  │
-│  │                                                               │  │
-│  │  action_items: List[str]                                      │  │
-│  │  ├── "Follow-up tasks identified"                             │  │
-│  │                                                               │  │
-│  │  customer_intent: str                                         │  │
-│  │  ├── "What the customer wanted to achieve"                    │  │
-│  │                                                               │  │
-│  │  sentiment: Sentiment                                         │  │
-│  │  ├── POSITIVE | NEUTRAL | NEGATIVE                            │  │
-│  │                                                               │  │
-│  │  resolution_status: ResolutionStatus                          │  │
-│  │  ├── RESOLVED | UNRESOLVED | ESCALATED                        │  │
-│  │                                                               │  │
-│  │  topics: List[str]                                            │  │
-│  │  └── "Main topics discussed during the call"                  │  │
-│  │                                                               │  │
+│  │                                                              │   │
+│  │  brief_summary: str                                          │   │
+│  │  ├── "2-3 sentence overview of the call"                     │   │
+│  │                                                              │   │
+│  │  key_points: List[str]                                       │   │
+│  │  ├── "3-5 bullet points of important information"            │   │
+│  │                                                              │   │
+│  │  action_items: List[str]                                     │   │
+│  │  ├── "Follow-up tasks identified"                            │   │
+│  │                                                              │   │
+│  │  customer_intent: str                                        │   │
+│  │  ├── "What the customer wanted to achieve"                   │   │
+│  │                                                              │   │
+│  │  sentiment: Sentiment                                        │   │
+│  │  ├── POSITIVE | NEUTRAL | NEGATIVE                           │   │
+│  │                                                              │   │
+│  │  resolution_status: ResolutionStatus                         │   │
+│  │  ├── RESOLVED | UNRESOLVED | ESCALATED                       │   │
+│  │                                                              │   │
+│  │  topics: List[str]                                           │   │
+│  │  └── "Main topics discussed during the call"                 │   │
+│  │                                                              │   │
 │  └──────────────────────────────────────────────────────────────┘   │
 │                                                                     │
 ├─────────────────────────────────────────────────────────────────────┤
@@ -689,7 +689,7 @@ CONTEXT: [explanation]
 │  EVALUATION DIMENSIONS:                                             │
 │                                                                     │
 │  ┌──────────────────────────────────────────────────────────────┐   │
-│  │                                                               │  │
+│  │                                                              │   │
 │  │  ┌────────────────┐  ┌────────────────┐  ┌────────────────┐  │   │
 │  │  │  FAITHFULNESS  │  │ COMPLETENESS   │  │  CONCISENESS   │  │   │
 │  │  │    (1-10)      │  │    (1-10)      │  │    (1-10)      │  │   │
@@ -704,24 +704,24 @@ CONTEXT: [explanation]
 │  │  │ 5-6:  Some     │  │ 5-6:  Missing  │  │ 5-6:  Verbose  │  │   │
 │  │  │ 1-4:  Major    │  │ 1-4:  Major    │  │ 1-4:  Confusing│  │   │
 │  │  └────────────────┘  └────────────────┘  └────────────────┘  │   │
-│  │                                                               │  │
+│  │                                                              │   │
 │  └──────────────────────────────────────────────────────────────┘   │
 │                                                                     │
 ├─────────────────────────────────────────────────────────────────────┤
 │  DECISION LOGIC:                                                    │
 │                                                                     │
 │  ┌──────────────────────────────────────────────────────────────┐   │
-│  │                                                               │  │
-│  │   IF any score < 7:                                           │  │
-│  │       needs_revision = True                                   │  │
-│  │       Generate revision_instructions                          │  │
-│  │                                                               │  │
-│  │   IF all scores >= 7:                                         │  │
-│  │       needs_revision = False                                  │  │
-│  │       Proceed to QA Scoring                                   │  │
-│  │                                                               │  │
-│  │   Maximum revision attempts: 3                                │  │
-│  │                                                               │  │
+│  │                                                              │   │
+│  │   IF any score < 7:                                          │   │
+│  │       needs_revision = True                                  │   │
+│  │       Generate revision_instructions                         │   │
+│  │                                                              │   │
+│  │   IF all scores >= 7:                                        │   │
+│  │       needs_revision = False                                 │   │
+│  │       Proceed to QA Scoring                                  │   │
+│  │                                                              │   │
+│  │   Maximum revision attempts: 3                               │   │
+│  │                                                              │   │
 │  └──────────────────────────────────────────────────────────────┘   │
 │                                                                     │
 ├─────────────────────────────────────────────────────────────────────┤
@@ -756,26 +756,26 @@ CONTEXT: [explanation]
 │  SCORING RUBRIC:                                                    │
 │                                                                     │
 │  ┌──────────────────────────────────────────────────────────────┐   │
-│  │                                                               │  │
-│  │  ┌──────────────┐  ┌──────────────┐                           │  │
+│  │                                                              │   │
+│  │  ┌──────────────┐  ┌──────────────┐                          │   │
 │  │  │   EMPATHY    │  │PROFESSIONAL-│                           │   │
 │  │  │   (0-10)     │  │  ISM (0-10) │                           │   │
-│  │  ├──────────────┤  ├──────────────┤                           │  │
+│  │  ├──────────────┤  ├──────────────┤                          │   │
 │  │  │ Understanding│  │ Courteous & │                           │   │
 │  │  │ & compassion │  │ respectful  │                           │   │
 │  │  │ for customer │  │ behavior    │                           │   │
 │  │  │ situation    │  │             │                           │   │
-│  │  └──────────────┘  └──────────────┘                           │  │
-│  │                                                               │  │
-│  │  ┌──────────────┐  ┌──────────────┐                           │  │
-│  │  │ RESOLUTION   │  │    TONE      │                           │  │
-│  │  │   (0-10)     │  │   (0-10)     │                           │  │
-│  │  ├──────────────┤  ├──────────────┤                           │  │
+│  │  └──────────────┘  └──────────────┘                          │   │
+│  │                                                              │   │
+│  │  ┌──────────────┐  ┌──────────────┐                          │   │
+│  │  │ RESOLUTION   │  │    TONE      │                          │   │
+│  │  │   (0-10)     │  │   (0-10)     │                          │   │
+│  │  ├──────────────┤  ├──────────────┤                          │   │
 │  │  │ Effectiveness│  │ Friendly &  │                           │   │
 │  │  │ of issue     │  │ appropriate │                           │   │
 │  │  │ resolution   │  │ throughout  │                           │   │
-│  │  └──────────────┘  └──────────────┘                           │  │
-│  │                                                               │  │
+│  │  └──────────────┘  └──────────────┘                          │   │
+│  │                                                              │   │
 │  └──────────────────────────────────────────────────────────────┘   │
 │                                                                     │
 ├─────────────────────────────────────────────────────────────────────┤
@@ -814,14 +814,14 @@ The agents in this system collaborate through a **shared state pattern** orchest
 │                         AGENT COLLABORATION PATTERN                                 │
 │                                                                                     │
 │  ┌──────────────────────────────────────────────────────────────────────────────┐   │
-│  │                           SHARED STATE (AgentState)                           │  │
-│  │                                                                               │  │
-│  │   ┌─────────┐  ┌─────────┐  ┌─────────┐  ┌─────────┐  ┌─────────┐           │    │
-│  │   │ Input   │  │Metadata │  │Transcript│  │ Summary │  │ QA      │           │   │
-│  │   │ Data    │  │         │  │ Data    │  │ Data    │  │ Scores  │           │    │
-│  │   └────▲────┘  └────▲────┘  └────▲────┘  └────▲────┘  └────▲────┘           │    │
-│  │        │            │            │            │            │                  │  │
-│  └────────┼────────────┼────────────┼────────────┼────────────┼──────────────────┘  │
+│  │                           SHARED STATE (AgentState)                          │   │
+│  │                                                                              │   │
+│  │   ┌─────────┐  ┌─────────┐  ┌─────────┐  ┌─────────┐  ┌─────────┐            │   │
+│  │   │ Input   │  │Metadata │  │Transcript│ │ Summary │  │ QA      │            │   │
+│  │   │ Data    │  │         │  │ Data    │  │ Data    │  │ Scores  │            │   │
+│  │   └────▲────┘  └────▲────┘  └────▲────┘  └────▲────┘  └────▲────┘            │   │
+│  │        │            │            │            │            │                 │   │
+│  └────────┼────────────┼────────────┼────────────┼────────────┼─────────────────┘   │
 │           │            │            │            │            │                     │
 │           │ writes     │ writes     │ writes     │ writes     │ writes              │
 │           │            │            │            │            │                     │
@@ -1021,11 +1021,11 @@ class AgentState(BaseModel):
 │   ───────────────────────                                                           │
 │                                                                                     │
 │   ┌─────────────────────────────────────────────────────────────────────────────┐   │
-│   │  AgentState(                                                                 │  │
-│   │      raw_input = "Agent: Hello...",                                          │  │
-│   │      input_type = "transcript",                                              │  │
-│   │      input_file_path = "billing_inquiry.txt"                                 │  │
-│   │  )                                                                           │  │
+│   │  AgentState(                                                                │   │
+│   │      raw_input = "Agent: Hello...",                                         │   │
+│   │      input_type = "transcript",                                             │   │
+│   │      input_file_path = "billing_inquiry.txt"                                │   │
+│   │  )                                                                          │   │
 │   └─────────────────────────────────────────────────────────────────────────────┘   │
 │                                        │                                            │
 │                                        ▼                                            │
@@ -1033,14 +1033,14 @@ class AgentState(BaseModel):
 │   ───────────────────                                                               │
 │                                                                                     │
 │   ┌─────────────────────────────────────────────────────────────────────────────┐   │
-│   │  + validation_result = InputValidationResult(                                │  │
-│   │        is_valid = True,                                                      │  │
-│   │        confidence = 0.9,                                                     │  │
-│   │        issues = [],                                                          │  │
-│   │        warnings = []                                                         │  │
-│   │    )                                                                         │  │
-│   │  + execution_path = ["validation"]                                           │  │
-│   │  + models_used = ["input-validator"]                                         │  │
+│   │  + validation_result = InputValidationResult(                               │   │
+│   │        is_valid = True,                                                     │   │
+│   │        confidence = 0.9,                                                    │   │
+│   │        issues = [],                                                         │   │
+│   │        warnings = []                                                        │   │
+│   │    )                                                                        │   │
+│   │  + execution_path = ["validation"]                                          │   │
+│   │  + models_used = ["input-validator"]                                        │   │
 │   └─────────────────────────────────────────────────────────────────────────────┘   │
 │                                        │                                            │
 │                                        ▼                                            │
@@ -1048,13 +1048,13 @@ class AgentState(BaseModel):
 │   ──────────────                                                                    │
 │                                                                                     │
 │   ┌─────────────────────────────────────────────────────────────────────────────┐   │
-│   │  + metadata = CallMetadata(                                                  │  │
-│   │        call_id = "CALL-0A3F7B2E",                                            │  │
-│   │        timestamp = 2026-01-25T10:30:00,                                      │  │
-│   │        duration_seconds = 180.0                                              │  │
-│   │    )                                                                         │  │
-│   │  + execution_path = ["validation", "intake"]                                 │  │
-│   │  + models_used = ["input-validator", "rule-based"]                           │  │
+│   │  + metadata = CallMetadata(                                                 │   │
+│   │        call_id = "CALL-0A3F7B2E",                                           │   │
+│   │        timestamp = 2026-01-25T10:30:00,                                     │   │
+│   │        duration_seconds = 180.0                                             │   │
+│   │    )                                                                        │   │
+│   │  + execution_path = ["validation", "intake"]                                │   │
+│   │  + models_used = ["input-validator", "rule-based"]                          │   │
 │   └─────────────────────────────────────────────────────────────────────────────┘   │
 │                                        │                                            │
 │                                        ▼                                            │
@@ -1062,12 +1062,12 @@ class AgentState(BaseModel):
 │   ─────────────────────                                                             │
 │                                                                                     │
 │   ┌─────────────────────────────────────────────────────────────────────────────┐   │
-│   │  + transcript = TranscriptData(                                              │  │
-│   │        full_text = "Agent: Hello...",                                        │  │
-│   │        language = "en",                                                      │  │
-│   │        confidence = 1.0                                                      │  │
-│   │    )                                                                         │  │
-│   │  + execution_path = ["validation", "intake", "transcription"]                │  │
+│   │  + transcript = TranscriptData(                                             │   │
+│   │        full_text = "Agent: Hello...",                                       │   │
+│   │        language = "en",                                                     │   │
+│   │        confidence = 1.0                                                     │   │
+│   │    )                                                                        │   │
+│   │  + execution_path = ["validation", "intake", "transcription"]               │   │
 │   └─────────────────────────────────────────────────────────────────────────────┘   │
 │                                        │                                            │
 │                                        ▼                                            │
@@ -1075,11 +1075,11 @@ class AgentState(BaseModel):
 │   ───────────────────────                                                           │
 │                                                                                     │
 │   ┌─────────────────────────────────────────────────────────────────────────────┐   │
-│   │  + abuse_flags = [                                                           │  │
-│   │        AbuseFlag(detected=True, abuse_type=[PROFANITY], severity=LOW)        │  │
-│   │    ]  OR  []                                                                 │  │
-│   │  + execution_path = [..., "abuse_detection"]                                 │  │
-│   │  + models_used = [..., "gpt-4o-mini"]                                        │  │
+│   │  + abuse_flags = [                                                          │   │
+│   │        AbuseFlag(detected=True, abuse_type=[PROFANITY], severity=LOW)       │   │
+│   │    ]  OR  []                                                                │   │
+│   │  + execution_path = [..., "abuse_detection"]                                │   │
+│   │  + models_used = [..., "gpt-4o-mini"]                                       │   │
 │   └─────────────────────────────────────────────────────────────────────────────┘   │
 │                                        │                                            │
 │                                        ▼                                            │
@@ -1087,13 +1087,13 @@ class AgentState(BaseModel):
 │   ────────────────────────────────────────────                                      │
 │                                                                                     │
 │   ┌─────────────────────────────────────────────────────────────────────────────┐   │
-│   │  + summary = CallSummary(                                                    │  │
-│   │        brief_summary = "Customer called about...",                           │  │
-│   │        key_points = [...],                                                   │  │
-│   │        sentiment = NEGATIVE,                                                 │  │
-│   │        resolution_status = RESOLVED                                          │  │
-│   │    )                                                                         │  │
-│   │  + execution_path = [..., "summarization"]                                   │  │
+│   │  + summary = CallSummary(                                                   │   │
+│   │        brief_summary = "Customer called about...",                          │   │
+│   │        key_points = [...],                                                  │   │
+│   │        sentiment = NEGATIVE,                                                │   │
+│   │        resolution_status = RESOLVED                                         │   │
+│   │    )                                                                        │   │
+│   │  + execution_path = [..., "summarization"]                                  │   │
 │   └─────────────────────────────────────────────────────────────────────────────┘   │
 │                                        │                                            │
 │                                        ▼                                            │
@@ -1101,14 +1101,14 @@ class AgentState(BaseModel):
 │   ──────────────                                                                    │
 │                                                                                     │
 │   ┌─────────────────────────────────────────────────────────────────────────────┐   │
-│   │  + summary_critique = SummaryCritique(                                       │  │
-│   │        faithfulness_score = 8,                                               │  │
-│   │        completeness_score = 9,                                               │  │
-│   │        conciseness_score = 7,                                                │  │
-│   │        needs_revision = False                                                │  │
-│   │    )                                                                         │  │
-│   │  + needs_revision = False                                                    │  │
-│   │  + revision_count = 0                                                        │  │
+│   │  + summary_critique = SummaryCritique(                                      │   │
+│   │        faithfulness_score = 8,                                              │   │
+│   │        completeness_score = 9,                                              │   │
+│   │        conciseness_score = 7,                                               │   │
+│   │        needs_revision = False                                               │   │
+│   │    )                                                                        │   │
+│   │  + needs_revision = False                                                   │   │
+│   │  + revision_count = 0                                                       │   │
 │   └─────────────────────────────────────────────────────────────────────────────┘   │
 │                                        │                                            │
 │                                        ▼                                            │
@@ -1116,16 +1116,16 @@ class AgentState(BaseModel):
 │   ──────────────────                                                                │
 │                                                                                     │
 │   ┌─────────────────────────────────────────────────────────────────────────────┐   │
-│   │  + qa_scores = QAScores(                                                     │  │
-│   │        empathy = 8.0,                                                        │  │
-│   │        professionalism = 9.0,                                                │  │
-│   │        resolution = 8.5,                                                     │  │
-│   │        tone = 8.0,                                                           │  │
-│   │        overall = 8.4                                                         │  │
-│   │    )                                                                         │  │
-│   │  + execution_path = ["validation", "intake", "transcription",                │  │
-│   │                      "abuse_detection", "summarization", "critic",           │  │
-│   │                      "qa_scoring"]                                           │  │
+│   │  + qa_scores = QAScores(                                                    │   │
+│   │        empathy = 8.0,                                                       │   │
+│   │        professionalism = 9.0,                                               │   │
+│   │        resolution = 8.5,                                                    │   │
+│   │        tone = 8.0,                                                          │   │
+│   │        overall = 8.4                                                        │   │
+│   │    )                                                                        │   │
+│   │  + execution_path = ["validation", "intake", "transcription",               │   │
+│   │                      "abuse_detection", "summarization", "critic",          │   │
+│   │                      "qa_scoring"]                                          │   │
 │   └─────────────────────────────────────────────────────────────────────────────┘   │
 │                                                                                     │
 │   FINAL STATE: Complete state object with all outputs                               │
@@ -1142,56 +1142,56 @@ All data structures use Pydantic for validation and type safety:
 │                           PYDANTIC DATA MODELS                                      │
 │                                                                                     │
 │  ┌─────────────────────────────────────────────────────────────────────────────┐    │
-│  │ ENUMS                                                                        │   │
+│  │ ENUMS                                                                       │    │
 │  ├─────────────────────────────────────────────────────────────────────────────┤    │
-│  │                                                                              │   │
-│  │  Sentiment             ResolutionStatus        AbuseType                     │   │
-│  │  ──────────            ────────────────        ─────────                     │   │
-│  │  • POSITIVE            • RESOLVED              • PROFANITY                   │   │
-│  │  • NEUTRAL             • UNRESOLVED            • THREAT                      │   │
-│  │  • NEGATIVE            • ESCALATED             • HARASSMENT                  │   │
-│  │                                                • DISCRIMINATION              │   │
-│  │                                                • NONE                        │   │
-│  │                                                                              │   │
-│  │  AbuseSeverity                                                               │   │
-│  │  ──────────────                                                              │   │
-│  │  • LOW • MEDIUM • HIGH • CRITICAL • NONE                                     │   │
-│  │                                                                              │   │
+│  │                                                                             │    │
+│  │  Sentiment             ResolutionStatus        AbuseType                    │    │
+│  │  ──────────            ────────────────        ─────────                    │    │
+│  │  • POSITIVE            • RESOLVED              • PROFANITY                  │    │
+│  │  • NEUTRAL             • UNRESOLVED            • THREAT                     │    │
+│  │  • NEGATIVE            • ESCALATED             • HARASSMENT                 │    │
+│  │                                                • DISCRIMINATION             │    │
+│  │                                                • NONE                       │    │
+│  │                                                                             │    │
+│  │  AbuseSeverity                                                              │    │
+│  │  ──────────────                                                             │    │
+│  │  • LOW • MEDIUM • HIGH • CRITICAL • NONE                                    │    │
+│  │                                                                             │    │
 │  └─────────────────────────────────────────────────────────────────────────────┘    │
 │                                                                                     │
 │  ┌─────────────────────────────────────────────────────────────────────────────┐    │
-│  │ DATA MODELS                                                                  │   │
+│  │ DATA MODELS                                                                 │    │
 │  ├─────────────────────────────────────────────────────────────────────────────┤    │
-│  │                                                                              │   │
-│  │  CallMetadata              TranscriptData          CallSummary               │   │
-│  │  ────────────              ──────────────          ───────────               │   │
-│  │  • call_id: str            • segments: List[]      • brief_summary: str      │   │
-│  │  • timestamp: datetime     • full_text: str        • key_points: List[str]   │   │
-│  │  • duration_seconds: float • language: str         • action_items: List[str] │   │
-│  │  • input_type: str         • confidence: float     • customer_intent: str    │   │
-│  │  • file_name: str          (0.0 - 1.0)            • sentiment: Sentiment     │   │
-│  │                                                    • resolution_status       │   │
-│  │                                                    • topics: List[str]       │   │
-│  │                                                                              │   │
-│  │  QAScores                  SummaryCritique         AbuseFlag                 │   │
-│  │  ────────                  ───────────────         ─────────                 │   │
-│  │  • empathy: float          • faithfulness: int     • detected: bool          │   │
-│  │  • professionalism: float  • completeness: int     • speaker: str            │   │
-│  │  • resolution: float       • conciseness: int      • abuse_type: List[]      │   │
-│  │  • tone: float             • needs_revision: bool  • severity: Severity      │   │
-│  │  • comments: str           • revision_instructions • evidence: List[str]     │   │
-│  │  • overall: float (calc)   • feedback: str         • recommended_action      │   │
-│  │                                                    • requires_escalation     │   │
-│  │                                                                              │   │
-│  │  InputValidationResult                                                       │   │
-│  │  ─────────────────────                                                       │   │
-│  │  • is_valid: bool                                                            │   │
-│  │  • confidence: float                                                         │   │
-│  │  • input_type_detected: str                                                  │   │
-│  │  • issues: List[str]                                                         │   │
-│  │  • warnings: List[str]                                                       │   │
-│  │  • rejection_reason: str                                                     │   │
-│  │                                                                              │   │
+│  │                                                                             │    │
+│  │  CallMetadata              TranscriptData          CallSummary              │    │
+│  │  ────────────              ──────────────          ───────────              │    │
+│  │  • call_id: str            • segments: List[]      • brief_summary: str     │    │
+│  │  • timestamp: datetime     • full_text: str        • key_points: List[str]  │    │
+│  │  • duration_seconds: float • language: str         • action_items: List[str]│    │
+│  │  • input_type: str         • confidence: float     • customer_intent: str   │    │
+│  │  • file_name: str          (0.0 - 1.0)            • sentiment: Sentiment    │    │
+│  │                                                    • resolution_status      │    │
+│  │                                                    • topics: List[str]      │    │
+│  │                                                                             │    │
+│  │  QAScores                  SummaryCritique         AbuseFlag                │    │
+│  │  ────────                  ───────────────         ─────────                │    │
+│  │  • empathy: float          • faithfulness: int     • detected: bool         │    │
+│  │  • professionalism: float  • completeness: int     • speaker: str           │    │
+│  │  • resolution: float       • conciseness: int      • abuse_type: List[]     │    │
+│  │  • tone: float             • needs_revision: bool  • severity: Severity     │    │
+│  │  • comments: str           • revision_instructions • evidence: List[str]    │    │
+│  │  • overall: float (calc)   • feedback: str         • recommended_action     │    │
+│  │                                                    • requires_escalation    │    │
+│  │                                                                             │    │
+│  │  InputValidationResult                                                      │    │
+│  │  ─────────────────────                                                      │    │
+│  │  • is_valid: bool                                                           │    │
+│  │  • confidence: float                                                        │    │
+│  │  • input_type_detected: str                                                 │    │
+│  │  • issues: List[str]                                                        │    │
+│  │  • warnings: List[str]                                                      │    │
+│  │  • rejection_reason: str                                                    │    │
+│  │                                                                             │    │
 │  └─────────────────────────────────────────────────────────────────────────────┘    │
 │                                                                                     │
 └─────────────────────────────────────────────────────────────────────────────────────┘
@@ -1228,18 +1228,18 @@ Guardrails are protective mechanisms that ensure input quality and content safet
 │                                        │                                            │
 │                                        ▼                                            │
 │   ┌─────────────────────────────────────────────────────────────────────────────┐   │
-│   │                         GUARDRAIL LAYER 1                                    │  │
-│   │                      INPUT VALIDATION AGENT                                  │  │
-│   │                                                                              │  │
+│   │                         GUARDRAIL LAYER 1                                   │   │
+│   │                      INPUT VALIDATION AGENT                                 │   │
+│   │                                                                             │   │
 │   │   ┌────────────┐ ┌────────────┐ ┌────────────┐ ┌────────────┐               │   │
 │   │   │   Word     │ │  Structure │ │   Spam     │ │  Special   │               │   │
 │   │   │   Count    │ │   Check    │ │ Detection  │ │   Chars    │               │   │
 │   │   │  10-5000   │ │  Speaker   │ │  Vocab     │ │  < 10%     │               │   │
 │   │   │   words    │ │  Labels    │ │ Diversity  │ │  ratio     │               │   │
 │   │   └────────────┘ └────────────┘ └────────────┘ └────────────┘               │   │
-│   │                                                                              │  │
+│   │                                                                             │   │
 │   │   OUTCOME: ✓ PASS → Continue  |  ✗ FAIL → Stop & Return Error               │   │
-│   │                                                                              │  │
+│   │                                                                             │   │
 │   └─────────────────────────────────────────────────────────────────────────────┘   │
 │                                        │                                            │
 │                                   [If valid]                                        │
@@ -1251,9 +1251,9 @@ Guardrails are protective mechanisms that ensure input quality and content safet
 │                                        │                                            │
 │                                        ▼                                            │
 │   ┌─────────────────────────────────────────────────────────────────────────────┐   │
-│   │                         GUARDRAIL LAYER 2                                    │  │
-│   │                      ABUSE DETECTION AGENT                                   │  │
-│   │                                                                              │  │
+│   │                         GUARDRAIL LAYER 2                                   │   │
+│   │                      ABUSE DETECTION AGENT                                  │   │
+│   │                                                                             │   │
 │   │   ┌────────────┐ ┌────────────┐ ┌────────────┐ ┌────────────┐               │   │
 │   │   │ PROFANITY  │ │  THREATS   │ │ HARASSMENT │ │HATE SPEECH │               │   │
 │   │   │            │ │            │ │            │ │            │               │   │
@@ -1261,9 +1261,9 @@ Guardrails are protective mechanisms that ensure input quality and content safet
 │   │   │ Vulgar     │ │ Physical   │ │ attacks,   │ │ Gender,    │               │   │
 │   │   │ language   │ │ threats    │ │ Insults    │ │ Religion   │               │   │
 │   │   └────────────┘ └────────────┘ └────────────┘ └────────────┘               │   │
-│   │                                                                              │  │
+│   │                                                                             │   │
 │   │   OUTCOME: Flag & Continue (doesn't block) → Abuse info in report           │   │
-│   │                                                                              │  │
+│   │                                                                             │   │
 │   └─────────────────────────────────────────────────────────────────────────────┘   │
 │                                        │                                            │
 │                                        ▼                                            │
@@ -1318,29 +1318,29 @@ Guardrails are protective mechanisms that ensure input quality and content safet
 │                         ABUSE DETECTION MATRIX                                      │
 │                                                                                     │
 │   ┌─────────────────────────────────────────────────────────────────────────────┐   │
-│   │                                                                              │  │
-│   │   CATEGORY        EXAMPLES                               SEVERITY RANGE      │  │
-│   │   ────────        ────────                               ──────────────      │  │
-│   │                                                                              │  │
-│   │   PROFANITY       "bullshit", "damn", "crap"             🟡 LOW (1-3)        │  │
-│   │                   "f*ck", "sh*t", "a**hole"              🟠 MED (4-6)        │  │
-│   │                                                          🔴 HIGH (7-10)      │  │
-│   │                                                                              │  │
-│   │   THREATS         "I'll report this to authorities"      🟡 LOW (1-3)        │  │
-│   │                   "I'll sue you", "get a lawyer"         🟠 MED (4-6)        │  │
-│   │                   "I'll come to your office"             🔴 HIGH (7-10)      │  │
-│   │                   Physical harm implications                                 │  │
-│   │                                                                              │  │
+│   │                                                                             │   │
+│   │   CATEGORY        EXAMPLES                               SEVERITY RANGE     │   │
+│   │   ────────        ────────                               ──────────────     │   │
+│   │                                                                             │   │
+│   │   PROFANITY       "bullshit", "damn", "crap"             🟡 LOW (1-3)       │   │
+│   │                   "f*ck", "sh*t", "a**hole"              🟠 MED (4-6)       │   │
+│   │                                                          🔴 HIGH (7-10)     │   │
+│   │                                                                             │   │
+│   │   THREATS         "I'll report this to authorities"      🟡 LOW (1-3)       │   │
+│   │                   "I'll sue you", "get a lawyer"         🟠 MED (4-6)       │   │
+│   │                   "I'll come to your office"             🔴 HIGH (7-10)     │   │
+│   │                   Physical harm implications                                │   │
+│   │                                                                             │   │
 │   │   HARASSMENT      "This is frustrating" (not abuse)      ✓ Not flagged      │   │
-│   │                   "You're incompetent"                   🟡 LOW (1-3)        │  │
-│   │                   "You're an idiot"                      🟠 MED (4-6)        │  │
-│   │                   Repeated personal attacks              🔴 HIGH (7-10)      │  │
-│   │                                                                              │  │
-│   │   HATE SPEECH     Stereotyping                           🟠 MED (4-6)        │  │
-│   │                   Racial/ethnic slurs                    🔴 HIGH (7-10)      │  │
-│   │                   Xenophobic comments                    🔴 HIGH (7-10)      │  │
-│   │                   Discrimination based on identity       🔴 HIGH (7-10)      │  │
-│   │                                                                              │  │
+│   │                   "You're incompetent"                   🟡 LOW (1-3)       │   │
+│   │                   "You're an idiot"                      🟠 MED (4-6)       │   │
+│   │                   Repeated personal attacks              🔴 HIGH (7-10)     │   │
+│   │                                                                             │   │
+│   │   HATE SPEECH     Stereotyping                           🟠 MED (4-6)       │   │
+│   │                   Racial/ethnic slurs                    🔴 HIGH (7-10)     │   │
+│   │                   Xenophobic comments                    🔴 HIGH (7-10)     │   │
+│   │                   Discrimination based on identity       🔴 HIGH (7-10)     │   │
+│   │                                                                             │   │
 │   └─────────────────────────────────────────────────────────────────────────────┘   │
 │                                                                                     │
 │   IMPORTANT: Normal frustration is NOT abuse                                        │
@@ -1360,31 +1360,31 @@ The system includes comprehensive test cases to validate guardrail behavior:
 ```
 ┌─────────────────────────────────────────────────────────────────────────────────────┐
 │                         GUARDRAIL TEST SUITE                                        │
-│                         (test_data/guardrail_tests/)                                │
-│                                                                                     │
-│   FILE                          EXPECTED RESULT                                     │
-│   ────                          ───────────────                                     │
-│                                                                                     │
-│   INPUT VALIDATION TESTS:                                                           │
-│   ───────────────────────                                                           │
-│   01_valid_normal.txt           ✅ Pass validation, no abuse flags                  │
-│   02_too_short.txt              ❌ FAIL validation (< 10 words)                     │
-│   08_spam_repetition.txt        ⚠️ Pass with WARNING (low vocab diversity)          │
-│   10_no_structure.txt           ⚠️ Pass with WARNING (no speaker labels)            │
-│                                                                                     │
-│   ABUSE DETECTION TESTS:                                                            │
-│   ─────────────────────                                                             │
-│   03_profanity.txt              🚨 Detect profanity (low-medium severity)           │
-│   04_threats.txt                🚨 Detect threats (medium-high severity)            │
-│   05_harassment.txt             🚨 Detect harassment (medium severity)              │
-│   06_hate_speech.txt            🚨 Detect hate speech (high severity)               │
-│   07_mixed_abuse.txt            🚨 Detect multiple: profanity + threat + harassment │
-│                                                                                     │
-│   EDGE CASES:                                                                       │
-│   ───────────                                                                       │
-│   09_frustrated_but_polite.txt  ✅ Pass - Strong frustration WITHOUT abuse          │
-│   11_professional_complaint.txt ✅ Pass - Professional tone complaint               │
-│                                                                                     │
+│                         (test_data/guardrail_tests/)                                 │
+│                                                                                      │
+│   FILE                          EXPECTED RESULT                                      │
+│   ────                          ───────────────                                      │
+│                                                                                      │
+│   INPUT VALIDATION TESTS:                                                            │
+│   ───────────────────────                                                            │
+│   01_valid_normal.txt           ✅ Pass validation, no abuse flags                   │
+│   02_too_short.txt              ❌ FAIL validation (< 10 words)                      │
+│   08_spam_repetition.txt        ⚠️ Pass with WARNING (low vocab diversity)           │
+│   10_no_structure.txt           ⚠️ Pass with WARNING (no speaker labels)             │
+│                                                                                      │
+│   ABUSE DETECTION TESTS:                                                             │
+│   ─────────────────────                                                              │
+│   03_profanity.txt              🚨 Detect profanity (low-medium severity)            │
+│   04_threats.txt                🚨 Detect threats (medium-high severity)             │
+│   05_harassment.txt             🚨 Detect harassment (medium severity)               │
+│   06_hate_speech.txt            🚨 Detect hate speech (high severity)                │
+│   07_mixed_abuse.txt            🚨 Detect multiple: profanity + threat + harassment  │
+│                                                                                      │
+│   EDGE CASES:                                                                        │
+│   ───────────                                                                        │
+│   09_frustrated_but_polite.txt  ✅ Pass - Strong frustration WITHOUT abuse           │
+│   11_professional_complaint.txt ✅ Pass - Professional tone complaint                │
+│                                                                                      │
 └─────────────────────────────────────────────────────────────────────────────────────┘
 ```
 
@@ -1435,41 +1435,41 @@ The system includes comprehensive test cases to validate guardrail behavior:
 │                            TECHNOLOGY STACK                                         │
 │                                                                                     │
 │   ┌─────────────────────────────────────────────────────────────────────────────┐   │
-│   │  LAYER              TECHNOLOGY           PURPOSE                             │  │
+│   │  LAYER              TECHNOLOGY           PURPOSE                            │   │
 │   ├─────────────────────────────────────────────────────────────────────────────┤   │
-│   │                                                                              │  │
-│   │  ORCHESTRATION      ┌───────────────┐   Multi-agent workflow                 │  │
-│   │                     │   LangGraph   │   State management                     │  │
-│   │                     └───────────────┘   Conditional routing                  │  │
-│   │                                                                              │  │
-│   │  LLM FRAMEWORK      ┌───────────────┐   LLM interactions                     │  │
-│   │                     │  LangChain    │   Prompts & chains                     │  │
-│   │                     └───────────────┘   Tool integration                     │  │
-│   │                                                                              │  │
-│   │  OBSERVABILITY      ┌───────────────┐   Tracing & debugging                  │  │
-│   │                     │  LangSmith    │   Evaluation framework                 │  │
-│   │                     └───────────────┘   Performance monitoring               │  │
-│   │                                                                              │  │
-│   │  MODEL CONTROL      ┌───────────────┐   Model routing                        │  │
-│   │                     │   LiteLLM     │   Cost management                      │  │
-│   │                     └───────────────┘   Fallback chains                      │  │
-│   │                                                                              │  │
-│   │  STRUCTURED DATA    ┌───────────────┐   Schema validation                    │  │
-│   │                     │   Pydantic    │   Type safety                          │  │
-│   │                     └───────────────┘   LLM output parsing                   │  │
-│   │                                                                              │  │
-│   │  TRANSCRIPTION      ┌───────────────┐   Audio to text                        │  │
-│   │                     │ Whisper API   │   Speech recognition                   │  │
-│   │                     └───────────────┘   (Future Phase)                       │  │
-│   │                                                                              │  │
-│   │  UI FRAMEWORK       ┌───────────────┐   Web interface                        │  │
-│   │                     │  Streamlit    │   Interactive dashboard                │  │
-│   │                     └───────────────┘   File upload                          │  │
-│   │                                                                              │  │
-│   │  CONTAINERIZATION   ┌───────────────┐   Development & deployment             │  │
-│   │                     │   Docker      │   Environment consistency              │  │
-│   │                     └───────────────┘   HF Spaces deployment                 │  │
-│   │                                                                              │  │
+│   │                                                                             │   │
+│   │  ORCHESTRATION      ┌───────────────┐   Multi-agent workflow                │   │
+│   │                     │   LangGraph   │   State management                    │   │
+│   │                     └───────────────┘   Conditional routing                 │   │
+│   │                                                                             │   │
+│   │  LLM FRAMEWORK      ┌───────────────┐   LLM interactions                    │   │
+│   │                     │  LangChain    │   Prompts & chains                    │   │
+│   │                     └───────────────┘   Tool integration                    │   │
+│   │                                                                             │   │
+│   │  OBSERVABILITY      ┌───────────────┐   Tracing & debugging                 │   │
+│   │                     │  LangSmith    │   Evaluation framework                │   │
+│   │                     └───────────────┘   Performance monitoring              │   │
+│   │                                                                             │   │
+│   │  MODEL CONTROL      ┌───────────────┐   Model routing                       │   │
+│   │                     │   LiteLLM     │   Cost management                     │   │
+│   │                     └───────────────┘   Fallback chains                     │   │
+│   │                                                                             │   │
+│   │  STRUCTURED DATA    ┌───────────────┐   Schema validation                   │   │
+│   │                     │   Pydantic    │   Type safety                         │   │
+│   │                     └───────────────┘   LLM output parsing                  │   │
+│   │                                                                             │   │
+│   │  TRANSCRIPTION      ┌───────────────┐   Audio to text                       │   │
+│   │                     │ Whisper API   │   Speech recognition                  │   │
+│   │                     └───────────────┘   (Future Phase)                      │   │
+│   │                                                                             │   │
+│   │  UI FRAMEWORK       ┌───────────────┐   Web interface                       │   │
+│   │                     │  Streamlit    │   Interactive dashboard               │   │
+│   │                     └───────────────┘   File upload                         │   │
+│   │                                                                             │   │
+│   │  CONTAINERIZATION   ┌───────────────┐   Development & deployment            │   │
+│   │                     │   Docker      │   Environment consistency             │   │
+│   │                     └───────────────┘   HF Spaces deployment                │   │
+│   │                                                                             │   │
 │   └─────────────────────────────────────────────────────────────────────────────┘   │
 │                                                                                     │
 └─────────────────────────────────────────────────────────────────────────────────────┘
@@ -1556,33 +1556,33 @@ For optimal quality control, the system is designed to support using different m
 │                         LANGSMITH OBSERVABILITY                                     │
 │                                                                                     │
 │   ┌─────────────────────────────────────────────────────────────────────────────┐   │
-│   │                                                                              │  │
-│   │   CAPABILITY           USE CASE                                              │  │
-│   │   ──────────           ────────                                              │  │
-│   │                                                                              │  │
-│   │   Tracing              Track every agent call, LLM invocation                │  │
-│   │                        See complete execution flow                           │  │
-│   │                                                                              │  │
-│   │   Debugging            Visual debugging of agent handoffs                    │  │
-│   │                        Inspect supervisor decisions                          │  │
-│   │                        View intermediate states                              │  │
-│   │                                                                              │  │
-│   │   Monitoring           Latency tracking per agent                            │  │
-│   │                        Token usage and costs                                 │  │
-│   │                        Error rates                                           │  │
-│   │                                                                              │  │
-│   │   Replay               Re-run failed executions                              │  │
-│   │                        Debug with exact inputs                               │  │
-│   │                                                                              │  │
-│   │   Datasets             Store test cases                                      │  │
-│   │                        Version control for evaluations                       │  │
-│   │                                                                              │  │
-│   │   Evaluation           Automated quality assessment                          │  │
-│   │                        LLM-as-judge evaluators                               │  │
-│   │                                                                              │  │
-│   │   Feedback             Collect human ratings                                 │  │
-│   │                        Track improvements over time                          │  │
-│   │                                                                              │  │
+│   │                                                                             │   │
+│   │   CAPABILITY           USE CASE                                             │   │
+│   │   ──────────           ────────                                             │   │
+│   │                                                                             │   │
+│   │   Tracing              Track every agent call, LLM invocation               │   │
+│   │                        See complete execution flow                          │   │
+│   │                                                                             │   │
+│   │   Debugging            Visual debugging of agent handoffs                   │   │
+│   │                        Inspect supervisor decisions                         │   │
+│   │                        View intermediate states                             │   │
+│   │                                                                             │   │
+│   │   Monitoring           Latency tracking per agent                           │   │
+│   │                        Token usage and costs                                │   │
+│   │                        Error rates                                          │   │
+│   │                                                                             │   │
+│   │   Replay               Re-run failed executions                             │   │
+│   │                        Debug with exact inputs                              │   │
+│   │                                                                             │   │
+│   │   Datasets             Store test cases                                     │   │
+│   │                        Version control for evaluations                      │   │
+│   │                                                                             │   │
+│   │   Evaluation           Automated quality assessment                         │   │
+│   │                        LLM-as-judge evaluators                              │   │
+│   │                                                                             │   │
+│   │   Feedback             Collect human ratings                                │   │
+│   │                        Track improvements over time                         │   │
+│   │                                                                             │   │
 │   └─────────────────────────────────────────────────────────────────────────────┘   │
 │                                                                                     │
 │   TRACE METADATA CAPTURED:                                                          │
@@ -1652,31 +1652,31 @@ For optimal quality control, the system is designed to support using different m
 │                       DEPLOYMENT ARCHITECTURE                                       │
 │                                                                                     │
 │   ┌─────────────────────────────────────────────────────────────────────────────┐   │
-│   │                         HUGGING FACE SPACES                                  │  │
-│   │                                                                              │  │
+│   │                         HUGGING FACE SPACES                                 │   │
+│   │                                                                             │   │
 │   │   ┌─────────────────────────────────────────────────────────────────────┐   │   │
-│   │   │                     DOCKER CONTAINER                                 │   │  │
-│   │   │                                                                      │   │  │
+│   │   │                     DOCKER CONTAINER                                │   │   │
+│   │   │                                                                     │   │   │
 │   │   │   ┌─────────────────────────────────────────────────────────────┐   │   │   │
-│   │   │   │  Python 3.11 Runtime                                         │   │   │  │
-│   │   │   │                                                              │   │   │  │
+│   │   │   │  Python 3.11 Runtime                                        │   │   │   │
+│   │   │   │                                                             │   │   │   │
 │   │   │   │  ┌──────────────┐  ┌──────────────┐  ┌──────────────────┐   │   │   │   │
 │   │   │   │  │  Streamlit   │  │  LangGraph   │  │  Agent Module    │   │   │   │   │
 │   │   │   │  │  (Port 7860) │  │  Workflow    │  │  (7 Agents)      │   │   │   │   │
 │   │   │   │  └──────────────┘  └──────────────┘  └──────────────────┘   │   │   │   │
-│   │   │   │                                                              │   │   │  │
+│   │   │   │                                                             │   │   │   │
 │   │   │   └─────────────────────────────────────────────────────────────┘   │   │   │
-│   │   │                                                                      │   │  │
-│   │   │   ENVIRONMENT VARIABLES (HF Secrets):                                │   │  │
-│   │   │   • OPENAI_API_KEY                                                   │   │  │
-│   │   │   • LANGCHAIN_API_KEY                                                │   │  │
-│   │   │   • LANGCHAIN_TRACING_V2=true                                        │   │  │
-│   │   │   • LANGCHAIN_PROJECT=call-center-assistant                          │   │  │
-│   │   │                                                                      │   │  │
+│   │   │                                                                     │   │   │
+│   │   │   ENVIRONMENT VARIABLES (HF Secrets):                               │   │   │
+│   │   │   • OPENAI_API_KEY                                                  │   │   │
+│   │   │   • LANGCHAIN_API_KEY                                               │   │   │
+│   │   │   • LANGCHAIN_TRACING_V2=true                                       │   │   │
+│   │   │   • LANGCHAIN_PROJECT=call-center-assistant                         │   │   │
+│   │   │                                                                     │   │   │
 │   │   └─────────────────────────────────────────────────────────────────────┘   │   │
-│   │                                                                              │  │
-│   │   PUBLIC URL: https://huggingface.co/spaces/[username]/call-center-assistant │  │
-│   │                                                                              │  │
+│   │                                                                             │   │
+│   │   PUBLIC URL: https://huggingface.co/spaces/[username]/call-center-assistan │   │
+│   │                                                                             │   │
 │   └─────────────────────────────────────────────────────────────────────────────┘   │
 │                                                                                     │
 │   EXTERNAL SERVICES:                                                                │
