@@ -8,8 +8,13 @@ Fast iteration, full IDE support, easy debugging.
 
 ```bash
 # One-time setup
-chmod +x setup_local.sh
-./setup_local.sh
+chmod +x scripts/setup_local.sh
+./scripts/setup_local.sh
+
+# This script will:
+# - Create a Python virtual environment
+# - Install all dependencies from requirements.txt
+# - Set up your .env file (you'll need to add your API keys)
 
 # Daily workflow
 source venv/bin/activate
@@ -18,6 +23,18 @@ streamlit run app.py --server.port=7860
 
 # When done
 deactivate
+```
+
+**Required Environment Variables:**
+
+Create a `.env` file in the project root with:
+
+```bash
+OPENAI_API_KEY=sk-...
+ANTHROPIC_API_KEY=sk-ant-...
+LANGCHAIN_TRACING_V2=true
+LANGCHAIN_API_KEY=ls__...
+LANGCHAIN_PROJECT=call-center-assistant
 ```
 
 ### 2. Docker Testing - Before deploying to HF Spaces
@@ -161,23 +178,23 @@ lsof -ti:7860 | xargs kill -9
 streamlit run app.py --server.port=8501
 ```
 
-## Phase 3 - Multi-Agent Pipeline
+## Multi-Agent Pipeline
 
-### What's New in Phase 3
+### Multi-Agent Workflow
 
-Phase 3 introduces a **linear multi-agent workflow** using LangGraph:
+The system implements a **linear multi-agent workflow** using LangGraph:
 
 **Pipeline**: Intake → Transcription → Summarization → QA Scoring
 
 **Agents**:
 1. **Intake Agent**: Validates input, extracts metadata, generates call ID
 2. **Transcription Agent**: Pass-through for text, Whisper API for audio (future)
-3. **Summarization Agent**: Analyzes call with GPT-4o-mini (from Phase 2)
+3. **Summarization Agent**: Analyzes call with GPT-4o-mini
 4. **QA Scoring Agent**: Evaluates empathy, professionalism, resolution, tone (0-10 scale)
 
 **State Management**: Uses `AgentState` Pydantic model to pass data between agents
 
-### Testing Phase 3
+### Testing the Pipeline
 
 ```bash
 # Activate venv
@@ -212,7 +229,7 @@ Input (text/audio)
 Final State → UI Display
 ```
 
-### Files Created in Phase 3
+### Pipeline Files
 
 - `agents/intake_agent.py` - Input validation and metadata extraction
 - `agents/transcription_agent.py` - Text pass-through and Whisper integration

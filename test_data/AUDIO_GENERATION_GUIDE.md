@@ -279,6 +279,6 @@ test_data/
 ## Next Steps
 
 1. Run the TTS generation script above
-2. Test audio files work with Whisper API in Phase 3
-3. Validate guardrails catch invalid audio in Phase 5
-4. Create evaluation dataset in Phase 7
+2. Test audio files work with Whisper API
+3. Validate guardrails catch invalid audio
+4. Create evaluation dataset

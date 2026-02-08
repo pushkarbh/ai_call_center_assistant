@@ -23,7 +23,7 @@ if not os.getenv("OPENAI_API_KEY"):
     st.stop()
 
 # Import after env check
-from graph.workflow_phase5 import run_phase5_analysis
+from graph.workflow import run_analysis
 from models.schemas import AgentState
 
 # ===================
@@ -152,8 +152,8 @@ with col_right:
         
         with st.spinner("Running analysis with guardrails..."):
             try:
-                # Run the Phase 5 workflow
-                final_state = run_phase5_analysis(
+                # Run the workflow
+                final_state = run_analysis(
                     raw_input=transcript_input if input_type == "transcript" else "",
                     input_type=input_type,
                     input_file_path=file_name,
@@ -507,4 +507,4 @@ with col_right:
 # Footer
 # ===================
 st.divider()
-st.caption("AI Call Center Assistant | Capstone Project | Phase 5 - Guardrails")
+st.caption("AI Call Center Assistant | Capstone Project")

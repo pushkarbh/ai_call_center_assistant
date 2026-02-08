@@ -1,6 +1,6 @@
 # Guardrail Test Transcripts
 
-This folder contains test transcripts designed to validate the Phase 5 Guardrails functionality (Input Validation + Abuse Detection).
+This folder contains test transcripts designed to validate the Guardrails functionality (Input Validation + Abuse Detection).
 
 ## Test Files
 

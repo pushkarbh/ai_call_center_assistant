@@ -104,12 +104,12 @@ def target_function(inputs: dict) -> dict:
     Returns:
         Dictionary with pipeline outputs
     """
-    from graph.workflow_phase5 import run_phase5_analysis
+    from graph.workflow import run_analysis
 
     transcript = inputs.get("transcript", "")
 
     # Run the pipeline
-    result = run_phase5_analysis(
+    result = run_analysis(
         raw_input=transcript,
         input_type="transcript"
     )

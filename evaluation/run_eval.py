@@ -16,7 +16,7 @@ from pathlib import Path
 from typing import Optional
 from datetime import datetime
 
-from graph.workflow_phase5 import run_phase5_analysis
+from graph.workflow import run_analysis
 from evaluation.evaluators import (
     FaithfulnessEvaluator,
     CompletenessEvaluator,
@@ -63,7 +63,7 @@ def run_single_evaluation(test_case: dict, verbose: bool = False) -> dict:
     try:
         # Run the pipeline
         start_time = time.time()
-        final_state = run_phase5_analysis(
+        final_state = run_analysis(
             raw_input=transcript,
             input_type="transcript"
         )

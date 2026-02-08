@@ -1288,16 +1288,16 @@ ANTHROPIC_API_KEY=your_anthropic_api_key
 ### Deployment Strategy
 
 ```
-Phase 0: Minimal app ────────▶ Deploy to HF Spaces ────▶ Verify working
+Step 1: Minimal app ────────▶ Deploy to HF Spaces ────▶ Verify working
     │
     ▼
-Phase 1: All dependencies ───▶ Deploy to HF Spaces ────▶ Verify imports
+Step 2: All dependencies ───▶ Deploy to HF Spaces ────▶ Verify imports
     │
     ▼
-Phase 2-7: Add features ─────▶ Deploy each phase ──────▶ Verify incrementally
+Step 3+: Add features ──────▶ Deploy incrementally ────▶ Verify each step
 ```
 
-**Key Principle**: Every phase ends with a working deployment on HF Spaces.
+**Key Principle**: The project was built iteratively with continuous deployment verification.
 
 ---
 

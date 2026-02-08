@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-"""Comprehensive test suite for Phase 5 Guardrails using test transcripts"""
+"""Comprehensive test suite for Guardrails using test transcripts"""
 
 import os
 from pathlib import Path
@@ -9,7 +9,7 @@ load_dotenv()
 # Disable LangSmith for testing
 os.environ["LANGCHAIN_TRACING_V2"] = "false"
 
-from graph.workflow_phase5 import run_phase5_analysis
+from graph.workflow import run_analysis
 
 # Define test cases with expected results
 test_cases = [
@@ -98,7 +98,7 @@ failed = 0
 errors = []
 
 print("=" * 80)
-print("PHASE 5 GUARDRAILS - COMPREHENSIVE TEST SUITE")
+print("GUARDRAILS - COMPREHENSIVE TEST SUITE")
 print("=" * 80)
 print()
 
@@ -121,7 +121,7 @@ for i, test in enumerate(test_cases, 1):
         transcript = file_path.read_text()
         
         # Run analysis
-        result = run_phase5_analysis(transcript, "transcript")
+        result = run_analysis(transcript, "transcript")
         
         # Check validation result
         validation_passed = result['validation_result'].is_valid

@@ -28,8 +28,8 @@ A multi-agent system for analyzing call center recordings and transcripts using 
 - ✅ **Supervisor Agent**: Dynamic routing and workflow control
 - ✅ **LangGraph Conditional Routing**: Stops on validation failure, loops for revisions
 - ✅ **File Upload**: Support for .txt, .wav, .mp3, .m4a files
-- ⏳ **Audio Transcription**: Whisper API integration (Phase 7)
-- ⏳ **Workflow Visualization**: n8n-style animation (Phase 6)
+- ⏳ **Audio Transcription**: Whisper API integration (planned)
+- ⏳ **Workflow Visualization**: n8n-style animation (planned)
 
 ## How It Works
 
@@ -52,6 +52,32 @@ A multi-agent system for analyzing call center recordings and transcripts using 
 - **Model Control**: LiteLLM
 - **UI**: Streamlit
 - **Deployment**: Docker
+
+## Quick Start - Run Locally
+
+```bash
+# 1. Clone the repository
+git clone https://github.com/pushkarbh/ai_call_center_assistant.git
+cd ai_call_center_assistant
+
+# 2. Set up environment
+chmod +x scripts/setup_local.sh
+./scripts/setup_local.sh
+
+# 3. Add your API keys to .env file
+cp .env.example .env
+# Edit .env with your actual API keys:
+# - OPENAI_API_KEY
+# - ANTHROPIC_API_KEY
+# - LANGCHAIN_API_KEY (optional, for observability)
+
+# 4. Run the app
+source venv/bin/activate
+streamlit run app.py --server.port=7860
+
+# 5. Open in browser
+# Navigate to http://localhost:7860
+```
 
 ## Repository
 GitHub: https://github.com/pushkarbh/ai_call_center_assistant
