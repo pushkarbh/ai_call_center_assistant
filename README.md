@@ -53,31 +53,87 @@ A multi-agent system for analyzing call center recordings and transcripts using 
 - **UI**: Streamlit
 - **Deployment**: Docker
 
-## Quick Start - Run Locally
+## Quick Start - Local Build & Run
 
 ```bash
 # 1. Clone the repository
 git clone https://github.com/pushkarbh/ai_call_center_assistant.git
 cd ai_call_center_assistant
 
-# 2. Set up environment
+# 2. Set up environment (one-time)
 chmod +x scripts/setup_local.sh
 ./scripts/setup_local.sh
 
-# 3. Add your API keys to .env file
+# 3. Configure API keys
 cp .env.example .env
-# Edit .env with your actual API keys:
-# - OPENAI_API_KEY
-# - ANTHROPIC_API_KEY
-# - LANGCHAIN_API_KEY (optional, for observability)
+# Edit .env with your API keys:
+# - OPENAI_API_KEY=sk-...       (required)
+# - ANTHROPIC_API_KEY=sk-ant-... (required)
+# - LANGCHAIN_API_KEY=ls__...   (optional)
 
-# 4. Run the app
+# 4. Activate environment
 source venv/bin/activate
+
+# 5. Run tests (recommended)
+pytest tests/ -v -m "not integration"  # Unit tests (fast)
+pytest tests/ -v                        # All tests (requires API keys)
+
+# 6. Run the application
 streamlit run app.py --server.port=7860
 
-# 5. Open in browser
+# 7. Open in browser
 # Navigate to http://localhost:7860
 ```
 
 ## Repository
 GitHub: https://github.com/pushkarbh/ai_call_center_assistant
+
+---
+
+## Testing
+
+### Test Suite
+
+The project includes 42 comprehensive tests covering all components.
+
+```bash
+# Activate environment first
+source venv/bin/activate
+
+# Unit tests only (fast, ~5 seconds, no API calls)
+pytest tests/ -v -m "not integration"
+# ✅ 40 tests: Models, agents, evaluators, workflow structure
+
+# Integration tests only (requires API keys, ~30 seconds)
+pytest tests/ -v -m integration
+# ✅ 2 tests: Full pipeline with real API calls
+
+# All tests (complete suite)
+pytest tests/ -v
+# ✅ 42 tests total
+
+# With coverage report
+pytest tests/ --cov=agents --cov=graph --cov=models --cov-report=term-missing
+
+# Generate HTML coverage report
+pytest tests/ --cov=agents --cov=graph --cov=models --cov-report=html
+# Open htmlcov/index.html in browser
+```
+
+### Test Coverage
+
+| Component | Tests | Coverage |
+|-----------|-------|----------|
+| **Pydantic Models** | 18 tests | Model validation, defaults, constraints |
+| **Agents** | 9 tests | Intake, Transcription, Validation, Mocked LLM agents |
+| **Workflow** | 5 tests | Graph creation, routing, validation, integration |
+| **Evaluators** | 6 tests | Faithfulness, Completeness, QA validation |
+| **Integration** | 2 tests | Full pipeline end-to-end with real APIs |
+
+**Test Files:**
+- `tests/test_models.py` - Pydantic schema validation
+- `tests/test_agents.py` - Individual agent unit tests
+- `tests/test_workflow.py` - Workflow and integration tests
+- `tests/test_evaluators.py` - Evaluator tests
+- `tests/conftest.py` - Shared fixtures and configuration
+- `pytest.ini` - Test configuration

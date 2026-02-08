@@ -1,90 +1,239 @@
 # Development Guide
 
-## Two Development Approaches
+## Local Build & Development Workflow
 
-### 1. Local Development (venv) - Recommended for daily work
-
-Fast iteration, full IDE support, easy debugging.
+### Step 1: Initial Setup (One-time)
 
 ```bash
-# One-time setup
+# Clone the repository (if not already done)
+git clone https://github.com/pushkarbh/ai_call_center_assistant.git
+cd ai_call_center_assistant
+
+# Run setup script
 chmod +x scripts/setup_local.sh
 ./scripts/setup_local.sh
 
 # This script will:
-# - Create a Python virtual environment
+# - Create a Python virtual environment (venv/)
 # - Install all dependencies from requirements.txt
-# - Set up your .env file (you'll need to add your API keys)
-
-# Daily workflow
-source venv/bin/activate
-streamlit run app.py --server.port=7860
-# Open http://localhost:7860
-
-# When done
-deactivate
+# - Install test dependencies (pytest, pytest-cov, etc.)
+# - Set up your .env file template
 ```
 
 **Required Environment Variables:**
 
-Create a `.env` file in the project root with:
+Edit the `.env` file in the project root with your API keys:
 
 ```bash
-OPENAI_API_KEY=sk-...
-ANTHROPIC_API_KEY=sk-ant-...
-LANGCHAIN_TRACING_V2=true
-LANGCHAIN_API_KEY=ls__...
-LANGCHAIN_PROJECT=call-center-assistant
+OPENAI_API_KEY=sk-...                    # Required for GPT-4o-mini agents
+ANTHROPIC_API_KEY=sk-ant-...            # Required for Claude Sonnet critic
+LANGCHAIN_TRACING_V2=true               # Optional: Enable LangSmith tracing
+LANGCHAIN_API_KEY=ls__...               # Optional: LangSmith API key
+LANGCHAIN_PROJECT=call-center-assistant # Optional: LangSmith project name
 ```
 
-### 2. Docker Testing - Before deploying to HF Spaces
-
-Test exact production environment locally.
+### Step 2: Activate Environment (Every Session)
 
 ```bash
-# One-time setup
-chmod +x test_docker.sh
+# Activate virtual environment
+source venv/bin/activate
 
-# Test before deploying
-./test_docker.sh
+# Verify installation
+python --version  # Should show Python 3.12.x
+pip list | grep pytest  # Should show pytest packages
+```
+
+### Step 3: Run Tests
+
+#### Unit Tests (Fast, No API Calls)
+
+```bash
+# Run only unit tests (uses mocks, no external API calls)
+pytest tests/ -v -m "not integration"
+
+# Expected: ~40 tests pass in <5 seconds
+```
+
+#### Integration Tests (Requires API Keys)
+
+```bash
+# Run only integration tests (makes real API calls)
+pytest tests/ -v -m integration
+
+# Expected: ~2 tests pass in ~30 seconds
+# Note: These tests will consume API credits
+```
+
+#### All Tests
+
+```bash
+# Run complete test suite
+pytest tests/ -v
+
+# Expected: All 42 tests pass
+```
+
+#### Test Coverage Report
+
+```bash
+# Generate coverage report
+pytest tests/ --cov=agents --cov=graph --cov=models --cov=evaluation/evaluators --cov-report=term-missing
+
+# Generate HTML coverage report
+pytest tests/ --cov=agents --cov=graph --cov=models --cov-report=html
+# Open htmlcov/index.html in browser
+```
+
+### Step 4: Run Application Locally
+
+```bash
+# Start Streamlit app (ensure venv is activated)
+streamlit run app.py --server.port=7860
+
+# Open http://localhost:7860 in your browser
+```
+
+### Step 5: Test with Sample Data
+
+```bash
+# Use provided test transcripts
+data/sample_transcripts/billing_inquiry.txt
+data/sample_transcripts/complaint_with_frustration.txt
+data/sample_transcripts/tech_support_unresolved.txt
+
+# Or use guardrail test cases
+test_data/guardrail_tests/01_valid_normal.txt
+test_data/guardrail_tests/03_profanity.txt
+test_data/guardrail_tests/07_mixed_abuse.txt
+```
+
+### Step 6: Deactivate Environment
+
+```bash
+# When done developing
+deactivate
+```
+
+## Docker Build & Testing (Pre-deployment)
+
+### Test Production Environment Locally
+
+```bash
+# Build and run in Docker (matches HF Spaces environment)
+chmod +x scripts/test_docker.sh
+./scripts/test_docker.sh
+
 # Open http://localhost:7860
+# Test the same way end-users will experience it
 
-# View logs
+# View container logs
 docker logs -f call-center-test
 
 # Stop and cleanup
 docker stop call-center-test
 docker rm call-center-test
+
+# Remove old images (optional)
+chmod +x scripts/cleanup_docker.sh
+./scripts/cleanup_docker.sh
 ```
 
-## Recommended Workflow
+## Recommended Development Workflow
 
 ```
-┌─────────────────┐
-│ Local Dev       │
-│ (venv)          │  ← Daily development
-│ Fast iteration  │
-└────────┬────────┘
-         │
-         ▼
-┌─────────────────┐
-│ Docker Test     │  ← Before committing
-│ (local)         │
-│ Verify build    │
-└────────┬────────┘
-         │
-         ▼
-┌─────────────────┐
-│ Git Push        │  ← Commit & push
-│ GitHub/HF       │
-└────────┬────────┘
-         │
-         ▼
-┌─────────────────┐
-│ HF Spaces       │  ← Auto-deploy
-│ Production      │
-└─────────────────┘
+┌─────────────────────────────────────┐
+│ 1. Local Development (venv)         │
+│    - source venv/bin/activate       │
+│    - Make code changes              │
+│    - Test manually with app         │
+└──────────────┬──────────────────────┘
+               │
+               ▼
+┌─────────────────────────────────────┐
+│ 2. Run Unit Tests                   │
+│    pytest tests/ -m "not integration" │
+│    - Fast feedback (~5 sec)         │
+│    - No API calls                   │
+└──────────────┬──────────────────────┘
+               │
+               ▼
+┌─────────────────────────────────────┐
+│ 3. Run Integration Tests            │
+│    pytest tests/ -v                 │
+│    - Complete validation (~30 sec)  │
+│    - Tests real API integration     │
+└──────────────┬──────────────────────┘
+               │
+               ▼
+┌─────────────────────────────────────┐
+│ 4. Docker Build Test (optional)     │
+│    ./scripts/test_docker.sh         │
+│    - Matches production environment │
+└──────────────┬──────────────────────┘
+               │
+               ▼
+┌─────────────────────────────────────┐
+│ 5. Git Commit & Push                │
+│    git add . && git commit          │
+│    git push origin main             │
+└──────────────┬──────────────────────┘
+               │
+               ▼
+┌─────────────────────────────────────┐
+│ 6. Auto-Deploy to HF Spaces         │
+│    - Automatic on push to main      │
+│    - Monitor build logs on HF       │
+└─────────────────────────────────────┘
 ```
+
+---
+
+## Running Tests
+
+### Unit Tests (Fast)
+
+Run unit tests without API calls:
+
+```bash
+source venv/bin/activate
+pytest tests/ -m "not integration"
+```
+
+### Integration Tests (Require API Keys)
+
+Run full integration tests (requires API keys in `.env`):
+
+```bash
+source venv/bin/activate
+pytest tests/ -m integration
+```
+
+### All Tests
+
+Run all tests:
+
+```bash
+source venv/bin/activate
+pytest tests/
+```
+
+### Test Coverage
+
+Generate coverage report:
+
+```bash
+source venv/bin/activate
+pytest tests/ --cov=agents --cov=graph --cov=models --cov-report=html
+# Open htmlcov/index.html in browser
+```
+
+### Test Organization
+
+- `test_models.py` - Pydantic model validation tests
+- `test_agents.py` - Individual agent unit tests
+- `test_workflow.py` - Workflow and integration tests
+- `test_evaluators.py` - Evaluator tests
+- `conftest.py` - Shared fixtures and configuration
 
 ## File Structure
 
