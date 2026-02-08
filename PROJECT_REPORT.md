@@ -40,18 +40,18 @@ The **AI Call Center Assistant** is a **true multi-agent AI system** that automa
 
 ```
 ┌─────────────────────────────────────────────────────────────────────────────┐
-│                        AI CALL CENTER ASSISTANT                              │
-│                                                                              │
-│  ┌─────────────┐    ┌─────────────┐    ┌─────────────┐    ┌─────────────┐   │
-│  │   INPUT     │ ─▶ │  MULTI-AGENT│ ─▶ │  QUALITY    │ ─▶ │  STRUCTURED │   │
-│  │  (Audio/    │    │  ANALYSIS   │    │  GUARDRAILS │    │   INSIGHTS  │   │
-│  │  Transcript)│    │  PIPELINE   │    │  & SAFETY   │    │   OUTPUT    │   │
-│  └─────────────┘    └─────────────┘    └─────────────┘    └─────────────┘   │
-│                                                                              │
-│  Features:                                                                   │
-│  ✓ 7 Specialized AI Agents    ✓ Self-Correction Loops                       │
-│  ✓ Dynamic Routing            ✓ Abuse Detection                             │
-│  ✓ Input Validation           ✓ Production Observability                    │
+│                        AI CALL CENTER ASSISTANT                             │
+│                                                                             │
+│  ┌─────────────┐    ┌─────────────┐    ┌─────────────┐    ┌─────────────┐  │
+│  │   INPUT     │ ─▶ │  MULTI-AGENT│ ─▶ │  QUALITY    │ ─▶ │  STRUCTURED │  │
+│  │  (Audio/    │    │  ANALYSIS   │    │  GUARDRAILS │    │   INSIGHTS  │  │
+│  │  Transcript)│    │  PIPELINE   │    │  & SAFETY   │    │   OUTPUT    │  │
+│  └─────────────┘    └─────────────┘    └─────────────┘    └─────────────┘  │
+│                                                                             │
+│  Features:                                                                  │
+│  ✓ 7 Specialized AI Agents    ✓ Self-Correction Loops                      │
+│  ✓ Dynamic Routing            ✓ Abuse Detection                            │
+│  ✓ Input Validation           ✓ Production Observability                   │
 └─────────────────────────────────────────────────────────────────────────────┘
 ```
 
@@ -74,57 +74,57 @@ The **AI Call Center Assistant** is a **true multi-agent AI system** that automa
 
 ```
 ┌─────────────────────────────────────────────────────────────────────────────────────┐
-│                              SYSTEM ARCHITECTURE                                     │
-│                                                                                      │
-│  ┌─────────────────────────────────────────────────────────────────────────────┐    │
-│  │                              PRESENTATION LAYER                              │    │
-│  │  ┌─────────────────┐  ┌─────────────────┐  ┌─────────────────────────────┐  │    │
-│  │  │   Streamlit     │  │   File Upload   │  │   Results Dashboard         │  │    │
-│  │  │   Web Interface │  │   (.txt/.wav)   │  │   (Summary, QA, Abuse)      │  │    │
-│  │  └─────────────────┘  └─────────────────┘  └─────────────────────────────┘  │    │
-│  └─────────────────────────────────────────────────────────────────────────────┘    │
-│                                       │                                              │
-│                                       ▼                                              │
-│  ┌─────────────────────────────────────────────────────────────────────────────┐    │
-│  │                           ORCHESTRATION LAYER                                │    │
-│  │                                                                              │    │
-│  │    ┌──────────────────────────────────────────────────────────────────┐     │    │
-│  │    │                     LangGraph StateGraph                          │     │    │
-│  │    │                                                                   │     │    │
-│  │    │   ┌─────────┐  ┌─────────┐  ┌─────────┐  ┌─────────┐  ┌────────┐│     │    │
-│  │    │   │Validation│─▶│ Intake  │─▶│Transcrip│─▶│ Abuse   │─▶│Summari-││     │    │
-│  │    │   │  Agent  │  │  Agent  │  │  Agent  │  │Detection│  │ zation ││     │    │
-│  │    │   └─────────┘  └─────────┘  └─────────┘  └─────────┘  └───┬────┘│     │    │
-│  │    │                                                           │      │     │    │
-│  │    │                          ┌─────────┐        ┌─────────┐   │      │     │    │
-│  │    │                          │   QA    │◀───────│  Critic │◀──┘      │     │    │
-│  │    │                          │ Scoring │        │  Agent  │──────────│     │    │
-│  │    │                          └─────────┘        └────┬────┘ Revision │     │    │
-│  │    │                                                  └─────Loop──────┘     │    │
-│  │    └──────────────────────────────────────────────────────────────────┘     │    │
-│  │                                                                              │    │
-│  └─────────────────────────────────────────────────────────────────────────────┘    │
-│                                       │                                              │
-│                                       ▼                                              │
-│  ┌─────────────────────────────────────────────────────────────────────────────┐    │
-│  │                              AI/LLM LAYER                                    │    │
-│  │  ┌─────────────┐  ┌─────────────┐  ┌─────────────┐  ┌─────────────────────┐ │    │
-│  │  │  GPT-4o-mini│  │  GPT-4o     │  │  Claude     │  │  Whisper API        │ │    │
-│  │  │  (Summaries)│  │  (Critical) │  │  (Abuse)    │  │  (Transcription)    │ │    │
-│  │  └─────────────┘  └─────────────┘  └─────────────┘  └─────────────────────┘ │    │
-│  └─────────────────────────────────────────────────────────────────────────────┘    │
-│                                       │                                              │
-│                                       ▼                                              │
-│  ┌─────────────────────────────────────────────────────────────────────────────┐    │
-│  │                          OBSERVABILITY LAYER                                 │    │
-│  │  ┌─────────────────────────┐  ┌─────────────────────────┐                   │    │
-│  │  │     LangSmith           │  │     LiteLLM             │                   │    │
-│  │  │  • Tracing & Debugging  │  │  • Model Routing        │                   │    │
-│  │  │  • Evaluation           │  │  • Cost Management      │                   │    │
-│  │  │  • Monitoring           │  │  • Fallback Chains      │                   │    │
-│  │  └─────────────────────────┘  └─────────────────────────┘                   │    │
-│  └─────────────────────────────────────────────────────────────────────────────┘    │
-│                                                                                      │
+│                              SYSTEM ARCHITECTURE                                    │
+│                                                                                     │
+│  ┌─────────────────────────────────────────────────────────────────────────────┐   │
+│  │                              PRESENTATION LAYER                              │   │
+│  │  ┌─────────────────┐  ┌─────────────────┐  ┌─────────────────────────────┐  │   │
+│  │  │   Streamlit     │  │   File Upload   │  │   Results Dashboard         │  │   │
+│  │  │   Web Interface │  │   (.txt/.wav)   │  │   (Summary, QA, Abuse)      │  │   │
+│  │  └─────────────────┘  └─────────────────┘  └─────────────────────────────┘  │   │
+│  └─────────────────────────────────────────────────────────────────────────────┘   │
+│                                       │                                             │
+│                                       ▼                                             │
+│  ┌─────────────────────────────────────────────────────────────────────────────┐   │
+│  │                           ORCHESTRATION LAYER                                │   │
+│  │                                                                              │   │
+│  │    ┌──────────────────────────────────────────────────────────────────┐     │   │
+│  │    │                     LangGraph StateGraph                          │     │   │
+│  │    │                                                                   │     │   │
+│  │    │   ┌─────────┐  ┌─────────┐  ┌─────────┐  ┌─────────┐  ┌────────┐ │     │   │
+│  │    │   │Validation│─▶│ Intake  │─▶│Transcrip│─▶│ Abuse   │─▶│Summari-│ │     │   │
+│  │    │   │  Agent  │  │  Agent  │  │  Agent  │  │Detection│  │ zation │ │     │   │
+│  │    │   └─────────┘  └─────────┘  └─────────┘  └─────────┘  └───┬────┘ │     │   │
+│  │    │                                                           │      │     │   │
+│  │    │                          ┌─────────┐        ┌─────────┐   │      │     │   │
+│  │    │                          │   QA    │◀───────│  Critic │◀──┘      │     │   │
+│  │    │                          │ Scoring │        │  Agent  │──────────│     │   │
+│  │    │                          └─────────┘        └────┬────┘ Revision │     │   │
+│  │    │                                                  └─────Loop──────┘     │   │
+│  │    └──────────────────────────────────────────────────────────────────┘     │   │
+│  │                                                                              │   │
+│  └─────────────────────────────────────────────────────────────────────────────┘   │
+│                                       │                                             │
+│                                       ▼                                             │
+│  ┌─────────────────────────────────────────────────────────────────────────────┐   │
+│  │                              AI/LLM LAYER                                    │   │
+│  │  ┌─────────────┐  ┌─────────────┐  ┌─────────────┐  ┌─────────────────────┐ │   │
+│  │  │  GPT-4o-mini│  │  GPT-4o     │  │  Claude     │  │  Whisper API        │ │   │
+│  │  │  (Summaries)│  │  (Critical) │  │  (Abuse)    │  │  (Transcription)    │ │   │
+│  │  └─────────────┘  └─────────────┘  └─────────────┘  └─────────────────────┘ │   │
+│  └─────────────────────────────────────────────────────────────────────────────┘   │
+│                                       │                                             │
+│                                       ▼                                             │
+│  ┌─────────────────────────────────────────────────────────────────────────────┐   │
+│  │                          OBSERVABILITY LAYER                                 │   │
+│  │  ┌─────────────────────────┐  ┌─────────────────────────┐                   │   │
+│  │  │     LangSmith           │  │     LiteLLM             │                   │   │
+│  │  │  • Tracing & Debugging  │  │  • Model Routing        │                   │   │
+│  │  │  • Evaluation           │  │  • Cost Management      │                   │   │
+│  │  │  • Monitoring           │  │  • Fallback Chains      │                   │   │
+│  │  └─────────────────────────┘  └─────────────────────────┘                   │   │
+│  └─────────────────────────────────────────────────────────────────────────────┘   │
+│                                                                                     │
 └─────────────────────────────────────────────────────────────────────────────────────┘
 ```
 
@@ -345,7 +345,7 @@ def should_continue_after_critic(state: AgentState) -> str:
 
 ```
 ┌────────────────────────────────────────────────────────────────────────────────────┐
-│                              AGENT ECOSYSTEM                                        │
+│                              AGENT ECOSYSTEM                                       │
 ├────────────────────┬────────────────┬──────────────┬───────────────────────────────┤
 │      Agent         │     Type       │    Model     │         Responsibility        │
 ├────────────────────┼────────────────┼──────────────┼───────────────────────────────┤
@@ -811,7 +811,7 @@ The agents in this system collaborate through a **shared state pattern** orchest
 
 ```
 ┌─────────────────────────────────────────────────────────────────────────────────────┐
-│                         AGENT COLLABORATION PATTERN                                  │
+│                         AGENT COLLABORATION PATTERN                                 │
 │                                                                                      │
 │  ┌──────────────────────────────────────────────────────────────────────────────┐   │
 │  │                           SHARED STATE (AgentState)                           │   │
@@ -931,7 +931,7 @@ The agents in this system collaborate through a **shared state pattern** orchest
 
 ```
 ┌─────────────────────────────────────────────────────────────────────────────────────┐
-│                           AGENT DEPENDENCIES                                         │
+│                           AGENT DEPENDENCIES                                        │
 │                                                                                      │
 │   AGENT              READS FROM STATE           WRITES TO STATE                      │
 │   ─────              ────────────────           ───────────────                      │
@@ -1015,7 +1015,7 @@ class AgentState(BaseModel):
 
 ```
 ┌─────────────────────────────────────────────────────────────────────────────────────┐
-│                           STATE LIFECYCLE                                            │
+│                           STATE LIFECYCLE                                           │
 │                                                                                      │
 │   PHASE 1: INITIALIZATION                                                            │
 │   ───────────────────────                                                            │
@@ -1139,7 +1139,7 @@ All data structures use Pydantic for validation and type safety:
 
 ```
 ┌─────────────────────────────────────────────────────────────────────────────────────┐
-│                           PYDANTIC DATA MODELS                                       │
+│                           PYDANTIC DATA MODELS                                      │
 │                                                                                      │
 │  ┌─────────────────────────────────────────────────────────────────────────────┐    │
 │  │ ENUMS                                                                        │    │
@@ -1218,7 +1218,7 @@ Guardrails are protective mechanisms that ensure input quality and content safet
 
 ```
 ┌─────────────────────────────────────────────────────────────────────────────────────┐
-│                           GUARDRAILS ARCHITECTURE                                    │
+│                           GUARDRAILS ARCHITECTURE                                   │
 │                                                                                      │
 │                              ┌───────────────────┐                                   │
 │                              │     USER INPUT    │                                   │
@@ -1280,7 +1280,7 @@ Guardrails are protective mechanisms that ensure input quality and content safet
 
 ```
 ┌─────────────────────────────────────────────────────────────────────────────────────┐
-│                         INPUT VALIDATION CHECKS                                      │
+│                         INPUT VALIDATION CHECKS                                     │
 │                                                                                      │
 │   CHECK              THRESHOLD              ACTION                                   │
 │   ─────              ─────────              ──────                                   │
@@ -1315,7 +1315,7 @@ Guardrails are protective mechanisms that ensure input quality and content safet
 
 ```
 ┌─────────────────────────────────────────────────────────────────────────────────────┐
-│                         ABUSE DETECTION MATRIX                                       │
+│                         ABUSE DETECTION MATRIX                                      │
 │                                                                                      │
 │   ┌─────────────────────────────────────────────────────────────────────────────┐   │
 │   │                                                                              │   │
@@ -1359,7 +1359,7 @@ The system includes comprehensive test cases to validate guardrail behavior:
 
 ```
 ┌─────────────────────────────────────────────────────────────────────────────────────┐
-│                         GUARDRAIL TEST SUITE                                         │
+│                         GUARDRAIL TEST SUITE                                        │
 │                         (test_data/guardrail_tests/)                                 │
 │                                                                                      │
 │   FILE                          EXPECTED RESULT                                      │
@@ -1392,7 +1392,7 @@ The system includes comprehensive test cases to validate guardrail behavior:
 
 ```
 ┌─────────────────────────────────────────────────────────────────────────────────────┐
-│                      SEVERITY-BASED RESPONSE ACTIONS                                 │
+│                      SEVERITY-BASED RESPONSE ACTIONS                                │
 │                                                                                      │
 │   SEVERITY       SPEAKER       ACTION                                                │
 │   ────────       ───────       ──────                                                │
@@ -1432,7 +1432,7 @@ The system includes comprehensive test cases to validate guardrail behavior:
 
 ```
 ┌─────────────────────────────────────────────────────────────────────────────────────┐
-│                            TECHNOLOGY STACK                                          │
+│                            TECHNOLOGY STACK                                         │
 │                                                                                      │
 │   ┌─────────────────────────────────────────────────────────────────────────────┐   │
 │   │  LAYER              TECHNOLOGY           PURPOSE                             │   │
@@ -1479,7 +1479,7 @@ The system includes comprehensive test cases to validate guardrail behavior:
 
 ```
 ┌─────────────────────────────────────────────────────────────────────────────────────┐
-│                         MODEL CONFIGURATION                                          │
+│                         MODEL CONFIGURATION                                         │
 │                                                                                      │
 │   AGENT               MODEL              RATIONALE                                   │
 │   ─────               ─────              ─────────                                   │
@@ -1512,7 +1512,7 @@ For optimal quality control, the system is designed to support using different m
 
 ```
 ┌─────────────────────────────────────────────────────────────────────────────────────┐
-│                    CRITIC INDEPENDENCE PRINCIPLE                                     │
+│                    CRITIC INDEPENDENCE PRINCIPLE                                    │
 │                                                                                      │
 │   PROBLEM:                                                                           │
 │   If Model A generates content, Model A critiquing its own output may               │
@@ -1553,7 +1553,7 @@ For optimal quality control, the system is designed to support using different m
 
 ```
 ┌─────────────────────────────────────────────────────────────────────────────────────┐
-│                         LANGSMITH OBSERVABILITY                                      │
+│                         LANGSMITH OBSERVABILITY                                     │
 │                                                                                      │
 │   ┌─────────────────────────────────────────────────────────────────────────────┐   │
 │   │                                                                              │   │
@@ -1602,7 +1602,7 @@ For optimal quality control, the system is designed to support using different m
 
 ```
 ┌─────────────────────────────────────────────────────────────────────────────────────┐
-│                         EVALUATION METRICS                                           │
+│                         EVALUATION METRICS                                          │
 │                                                                                      │
 │   EVALUATOR               TYPE            TARGET AGENT      METRIC                   │
 │   ─────────               ────            ────────────      ──────                   │
@@ -1649,7 +1649,7 @@ For optimal quality control, the system is designed to support using different m
 
 ```
 ┌─────────────────────────────────────────────────────────────────────────────────────┐
-│                       DEPLOYMENT ARCHITECTURE                                        │
+│                       DEPLOYMENT ARCHITECTURE                                       │
 │                                                                                      │
 │   ┌─────────────────────────────────────────────────────────────────────────────┐   │
 │   │                         HUGGING FACE SPACES                                  │   │
@@ -1726,7 +1726,7 @@ CMD ["streamlit", "run", "app.py", "--server.port=7860", "--server.address=0.0.0
 
 ```
 ┌─────────────────────────────────────────────────────────────────────────────────────┐
-│                         DEVELOPMENT WORKFLOW                                         │
+│                         DEVELOPMENT WORKFLOW                                        │
 │                                                                                      │
 │   ┌─────────────────┐                                                                │
 │   │ Local Dev       │                                                                │
@@ -1765,7 +1765,7 @@ CMD ["streamlit", "run", "app.py", "--server.port=7860", "--server.address=0.0.0
 
 ```
 ┌─────────────────────────────────────────────────────────────────────────────────────┐
-│                    PLANNED: n8n-STYLE WORKFLOW ANIMATION                             │
+│                    PLANNED: n8n-STYLE WORKFLOW ANIMATION                            │
 │                                                                                      │
 │   FEATURES:                                                                          │
 │   • Real-time node highlighting as agents execute                                    │
@@ -1787,7 +1787,7 @@ CMD ["streamlit", "run", "app.py", "--server.port=7860", "--server.address=0.0.0
 
 ```
 ┌─────────────────────────────────────────────────────────────────────────────────────┐
-│                    PLANNED: WHISPER API INTEGRATION                                  │
+│                    PLANNED: WHISPER API INTEGRATION                                 │
 │                                                                                      │
 │   FEATURES:                                                                          │
 │   • Audio file upload (.wav, .mp3, .m4a)                                             │
@@ -1809,7 +1809,7 @@ CMD ["streamlit", "run", "app.py", "--server.port=7860", "--server.address=0.0.0
 
 ```
 ┌─────────────────────────────────────────────────────────────────────────────────────┐
-│                         FUTURE ENHANCEMENTS                                          │
+│                         FUTURE ENHANCEMENTS                                         │
 │                                                                                      │
 │   SUPERVISOR AGENT (Full Implementation)                                             │
 │   • Dynamic routing based on state analysis                                          │
