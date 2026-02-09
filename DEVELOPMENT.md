@@ -258,6 +258,107 @@ __pycache__/             # Python cache
 .env                     # Environment variables
 ```
 
+## Deploying to Hugging Face Spaces
+
+### Prerequisites
+
+Your repository should have the HF Spaces remote configured:
+
+```bash
+# Check configured remotes
+git remote -v
+
+# Should show:
+# hf      https://huggingface.co/spaces/USERNAME/SPACE_NAME (fetch)
+# hf      https://huggingface.co/spaces/USERNAME/SPACE_NAME (push)
+# origin  https://github.com/USERNAME/REPO_NAME.git (fetch)
+# origin  https://github.com/USERNAME/REPO_NAME.git (push)
+```
+
+### Deployment Steps
+
+```bash
+# 1. Ensure all changes are committed
+git add .
+git commit -m "Your commit message"
+
+# 2. Push to GitHub first (recommended)
+git push origin main
+
+# 3. Push to Hugging Face Spaces
+git push hf main
+```
+
+### Troubleshooting Large Files
+
+HF Spaces rejects files larger than 10MB. If you encounter this error:
+
+```bash
+# 1. Remove large files from current commit
+git rm --cached "Large File.pdf"
+echo "*.pdf" >> .gitignore  # Add to gitignore
+git add .gitignore
+git commit -m "Remove large files for HF compatibility"
+
+# 2. If the file is in git history, remove it from ALL commits
+git filter-branch --force --index-filter \
+  "git rm --cached --ignore-unmatch '*.pdf'" \
+  --prune-empty --tag-name-filter cat -- --all
+
+# 3. Force push to clean history
+git push --force origin main
+git push --force hf main
+```
+
+### Common File Types to Exclude
+
+Add these to `.gitignore` before committing:
+
+```
+# Large binary files
+*.pdf
+*.zip
+*.tar.gz
+
+# Development files
+venv/
+__pycache__/
+.pytest_cache/
+htmlcov/
+.coverage
+.env
+
+# IDE files
+.vscode/
+.idea/
+.DS_Store
+```
+
+### Monitoring Deployment
+
+After pushing to HF Spaces:
+
+1. Visit your space: `https://huggingface.co/spaces/USERNAME/SPACE_NAME`
+2. Check the **Logs** tab for build status
+3. Build typically takes 2-5 minutes
+4. App auto-restarts once build completes
+
+### Force Rebuild
+
+If changes don't appear after push:
+
+```bash
+# 1. Make a trivial change and commit
+echo "" >> README.md
+git add README.md
+git commit -m "Trigger rebuild"
+
+# 2. Push to HF
+git push hf main
+```
+
+---
+
 ## Adding New Dependencies
 
 ```bash
@@ -270,13 +371,14 @@ pip install package-name
 # Update requirements.txt
 pip freeze > requirements.txt
 
-# Test with Docker
-./test_docker.sh
+# Test with Docker (matches HF environment)
+./scripts/test_docker.sh
 
-# Commit and push
+# Commit and push to both remotes
 git add requirements.txt
 git commit -m "deps: Add package-name"
 git push origin main
+git push hf main  # Deploy to HF Spaces
 ```
 
 ## Environment Variables
