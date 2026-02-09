@@ -12,6 +12,12 @@ license: mit
 
 A multi-agent system for analyzing call center recordings and transcripts using LangGraph.
 
+## 🔗 Quick Links
+
+- **🚀 Live Demo**: [https://huggingface.co/spaces/pbhi0717/ai-call-center-assistant](https://huggingface.co/spaces/pbhi0717/ai-call-center-assistant)
+- **🎥 Demo Recording**: [Watch on Google Drive](https://drive.google.com/file/d/1ZbaXRT1Ce1jPXXGw05UMJ58j_ThEYHvH/view?usp=sharing)
+- **📊 Presentation Slides**: [Presentation Slides - AI Call Center Assistant.pdf](Presentation%20Slides%20-%20AI%20Call%20Center%20Assistant.pdf)
+
 ## Multi-Agent Pipeline
 
 **Workflow**: Validation → Intake → Transcription → Abuse Detection → Summarization → Critic → (Revision Loop) → QA Scoring
