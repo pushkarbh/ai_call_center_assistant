@@ -12,9 +12,9 @@ license: mit
 
 A multi-agent system for analyzing call center recordings and transcripts using LangGraph.
 
-## Current Phase: 5 - Guardrails ✅
+## Multi-Agent Pipeline
 
-**Pipeline**: Validation → Intake → Transcription → Abuse Detection → Summarization → Critic → (Revision Loop) → QA Scoring
+**Workflow**: Validation → Intake → Transcription → Abuse Detection → Summarization → Critic → (Revision Loop) → QA Scoring
 
 ### Features
 - ✅ **Input Validation Agent**: Checks transcript quality (word count, structure, spam detection)
